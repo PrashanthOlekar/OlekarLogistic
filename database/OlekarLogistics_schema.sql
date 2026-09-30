@@ -349,8 +349,8 @@ CREATE TABLE dbo.Trips (
     DriverId            BIGINT        NOT NULL CONSTRAINT FK_Trips_Drivers  REFERENCES dbo.Drivers(DriverId),
     Status              VARCHAR(20)   NOT NULL CONSTRAINT DF_Trips_Status DEFAULT ('Assigned') CONSTRAINT CK_Trips_Status CHECK (Status IN (
                             'Assigned','EnRouteToPickup','AtPickup','Loaded','InTransit','AtDestination','Delivered','Completed','Cancelled')),
-    PickupOtpHash       VARCHAR(128)  NULL,          -- sender shares code with driver at loading
-    DeliveryOtpHash     VARCHAR(128)  NULL,          -- receiver shares code with driver at unloading
+    PickupOtpProtected  VARCHAR(400)  NULL,          -- encrypted 4-digit code; sender gives it to the driver at loading
+    DeliveryOtpProtected VARCHAR(400) NULL,          -- encrypted 4-digit code; receiver gives it to the driver at unloading
     EwayBillNumber      VARCHAR(20)   NULL,
     PlannedDistanceKm   DECIMAL(8,1)  NULL,
     ActualDistanceKm    DECIMAL(8,1)  NULL,

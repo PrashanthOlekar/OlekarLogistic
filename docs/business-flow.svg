@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 860" width="1560" height="860" font-family="Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-label="How Olekar Logistics works, from sign-up to payout">
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5b6886"/></marker>
+</defs>
+<rect width="1560" height="860" fill="#ffffff"/>
+<text x="40" y="52" font-size="28" font-weight="800" fill="#0b1530">How Olekar Logistics works</text>
+<text x="40" y="82" font-size="15" fill="#5b6886">From an owner signing up to the owner getting paid. Follow the arrows left to right; each lane is one party.</text>
+<circle cx="209.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="209.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1</text>
+<text x="227.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Join &amp; verify</text>
+<circle cx="357.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="357.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2</text>
+<text x="375.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Book</text>
+<circle cx="505.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="505.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3</text>
+<text x="523.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Pay</text>
+<circle cx="653.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="653.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4</text>
+<text x="671.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Match a truck</text>
+<circle cx="801.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="801.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5</text>
+<text x="819.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Pickup</text>
+<circle cx="949.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="949.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">6</text>
+<text x="967.0" y="133" font-size="14" font-weight="700" fill="#0b1530">On the road</text>
+<circle cx="1097.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="1097.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">7</text>
+<text x="1115.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Deliver</text>
+<circle cx="1245.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="1245.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">8</text>
+<text x="1263.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Close</text>
+<circle cx="1393.0" cy="128" r="11" fill="#ff7a1a"/>
+<text x="1393.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">9</text>
+<text x="1411.0" y="133" font-size="14" font-weight="700" fill="#0b1530">Payout</text>
+<rect x="20" y="150" width="1520" height="124" fill="#eef3fd"/>
+<rect x="20" y="150" width="6" height="124" fill="#2257c9"/>
+<text x="42" y="217.0" font-size="16" font-weight="700" fill="#2257c9">Customer</text>
+<rect x="20" y="274" width="1520" height="124" fill="#f1f3f8"/>
+<rect x="20" y="274" width="6" height="124" fill="#0a1a3a"/>
+<text x="42" y="341.0" font-size="16" font-weight="700" fill="#0a1a3a">Olekar platform</text>
+<line x1="20" x2="1540" y1="274" y2="274" stroke="#ffffff" stroke-width="2"/>
+<rect x="20" y="398" width="1520" height="124" fill="#eef8f3"/>
+<rect x="20" y="398" width="6" height="124" fill="#12805a"/>
+<text x="42" y="465.0" font-size="16" font-weight="700" fill="#12805a">Lorry owner</text>
+<line x1="20" x2="1540" y1="398" y2="398" stroke="#ffffff" stroke-width="2"/>
+<rect x="20" y="522" width="1520" height="124" fill="#fff8e8"/>
+<rect x="20" y="522" width="6" height="124" fill="#a86a00"/>
+<text x="42" y="589.0" font-size="16" font-weight="700" fill="#a86a00">Driver</text>
+<line x1="20" x2="1540" y1="522" y2="522" stroke="#ffffff" stroke-width="2"/>
+<rect x="20" y="646" width="1520" height="124" fill="#fff2e8"/>
+<rect x="20" y="646" width="6" height="124" fill="#c24a08"/>
+<text x="42" y="713.0" font-size="16" font-weight="700" fill="#c24a08">Money</text>
+<line x1="20" x2="1540" y1="646" y2="646" stroke="#ffffff" stroke-width="2"/>
+<path d="M264.0 538.0 V508.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="272.0" y="526.0" text-anchor="start" font-size="11.5" font-style="italic" fill="#5b6886">links</text>
+<path d="M264.0 414.0 V384.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M331.0 460.0 H639.0" fill="none" stroke="#5b6886" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+<text x="345.0" y="452.0" text-anchor="start" font-size="11.5" font-style="italic" fill="#5b6886">only verified owners get loads</text>
+<path d="M412.0 258.0 V288.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M479.0 336.0 H486.0 V212.0 H491.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M560.0 258.0 V660.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M627.0 708.0 H634.0 V336.0 H639.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M708.0 382.0 V412.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M708.0 290.0 V260.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M775.0 460.0 H782.0 V584.0 H787.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M923.0 584.0 H935.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M1071.0 584.0 H1083.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M1004.0 538.0 V260.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M1152.0 538.0 V384.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M1219.0 336.0 H1231.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M1300.0 290.0 V260.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M1367.0 336.0 H1374.0 V708.0 H1379.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<text x="1380.0" y="522.0" text-anchor="start" font-size="11.5" font-style="italic" fill="#5b6886">releases</text>
+<path d="M1448.0 662.0 V508.0" fill="none" stroke="#5b6886" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="197.0" y="414.0" width="134" height="92" rx="10" fill="#fff" stroke="#12805a" stroke-width="1.4"/>
+<text x="209.0" y="440.0" font-size="13.5" font-weight="700" fill="#0b1530">Registers</text>
+<text x="209.0" y="462.0" font-size="12" fill="#3d4863">Aadhaar, PAN, bank,</text>
+<text x="209.0" y="479.0" font-size="12" fill="#3d4863">RC, insurance, permit</text>
+<rect x="197.0" y="538.0" width="134" height="92" rx="10" fill="#fff" stroke="#a86a00" stroke-width="1.4"/>
+<text x="209.0" y="564.0" font-size="13.5" font-weight="700" fill="#0b1530">Registers</text>
+<text x="209.0" y="586.0" font-size="12" fill="#3d4863">Licence and ID,</text>
+<text x="209.0" y="603.0" font-size="12" fill="#3d4863">links to the owner</text>
+<rect x="197.0" y="290.0" width="134" height="92" rx="10" fill="#fff" stroke="#0a1a3a" stroke-width="1.4"/>
+<text x="209.0" y="316.0" font-size="13.5" font-weight="700" fill="#0b1530">Verifies KYC</text>
+<text x="209.0" y="338.0" font-size="12" fill="#3d4863">Checks documents,</text>
+<text x="209.0" y="355.0" font-size="12" fill="#3d4863">approves or rejects</text>
+<rect x="345.0" y="166.0" width="134" height="92" rx="10" fill="#fff" stroke="#2257c9" stroke-width="1.4"/>
+<text x="357.0" y="192.0" font-size="13.5" font-weight="700" fill="#0b1530">Requests a truck</text>
+<text x="357.0" y="214.0" font-size="12" fill="#3d4863">Route, goods, weight,</text>
+<text x="357.0" y="231.0" font-size="12" fill="#3d4863">vehicle type, date</text>
+<rect x="345.0" y="290.0" width="134" height="92" rx="10" fill="#fff" stroke="#0a1a3a" stroke-width="1.4"/>
+<text x="357.0" y="316.0" font-size="13.5" font-weight="700" fill="#0b1530">Prices the trip</text>
+<text x="357.0" y="338.0" font-size="12" fill="#3d4863">Rate × km + driver</text>
+<text x="357.0" y="355.0" font-size="12" fill="#3d4863">+ GST, valid 30 min</text>
+<rect x="493.0" y="166.0" width="134" height="92" rx="10" fill="#fff" stroke="#2257c9" stroke-width="1.4"/>
+<text x="505.0" y="192.0" font-size="13.5" font-weight="700" fill="#0b1530">Pays the quote</text>
+<text x="505.0" y="214.0" font-size="12" fill="#3d4863">UPI, card, net</text>
+<text x="505.0" y="231.0" font-size="12" fill="#3d4863">banking or wallet</text>
+<rect x="493.0" y="662.0" width="134" height="92" rx="10" fill="#fff7f0" stroke="#c24a08" stroke-width="2"/>
+<text x="505.0" y="688.0" font-size="13.5" font-weight="700" fill="#0b1530">Held in escrow</text>
+<text x="505.0" y="710.0" font-size="12" fill="#3d4863">Nobody is paid</text>
+<text x="505.0" y="727.0" font-size="12" fill="#3d4863">until delivery</text>
+<rect x="641.0" y="290.0" width="134" height="92" rx="10" fill="#fff" stroke="#0a1a3a" stroke-width="1.4"/>
+<text x="653.0" y="316.0" font-size="13.5" font-weight="700" fill="#0b1530">Offers the load</text>
+<text x="653.0" y="338.0" font-size="12" fill="#3d4863">To verified owners</text>
+<text x="653.0" y="355.0" font-size="12" fill="#3d4863">with a free truck</text>
+<rect x="641.0" y="414.0" width="134" height="92" rx="10" fill="#fff" stroke="#12805a" stroke-width="1.4"/>
+<text x="653.0" y="440.0" font-size="13.5" font-weight="700" fill="#0b1530">Takes the load</text>
+<text x="653.0" y="462.0" font-size="12" fill="#3d4863">Picks the truck</text>
+<text x="653.0" y="479.0" font-size="12" fill="#3d4863">and driver</text>
+<rect x="641.0" y="166.0" width="134" height="92" rx="10" fill="#fff" stroke="#2257c9" stroke-width="1.4"/>
+<text x="653.0" y="192.0" font-size="13.5" font-weight="700" fill="#0b1530">Sees the truck</text>
+<text x="653.0" y="214.0" font-size="12" fill="#3d4863">Driver, vehicle,</text>
+<text x="653.0" y="231.0" font-size="12" fill="#3d4863">pickup &amp; drop OTPs</text>
+<rect x="789.0" y="538.0" width="134" height="92" rx="10" fill="#fff" stroke="#a86a00" stroke-width="1.4"/>
+<text x="801.0" y="564.0" font-size="13.5" font-weight="700" fill="#0b1530">Loads the goods</text>
+<text x="801.0" y="586.0" font-size="12" fill="#3d4863">Enters sender&#x27;s</text>
+<text x="801.0" y="603.0" font-size="12" fill="#3d4863">pickup OTP, photo</text>
+<rect x="937.0" y="538.0" width="134" height="92" rx="10" fill="#fff" stroke="#a86a00" stroke-width="1.4"/>
+<text x="949.0" y="564.0" font-size="13.5" font-weight="700" fill="#0b1530">Drives</text>
+<text x="949.0" y="586.0" font-size="12" fill="#3d4863">Trip started,</text>
+<text x="949.0" y="603.0" font-size="12" fill="#3d4863">location shared</text>
+<rect x="937.0" y="166.0" width="134" height="92" rx="10" fill="#fff" stroke="#2257c9" stroke-width="1.4"/>
+<text x="949.0" y="192.0" font-size="13.5" font-weight="700" fill="#0b1530">Tracks the trip</text>
+<text x="949.0" y="214.0" font-size="12" fill="#3d4863">Live timeline</text>
+<text x="949.0" y="231.0" font-size="12" fill="#3d4863">and ETA</text>
+<rect x="1085.0" y="538.0" width="134" height="92" rx="10" fill="#fff" stroke="#a86a00" stroke-width="1.4"/>
+<text x="1097.0" y="564.0" font-size="13.5" font-weight="700" fill="#0b1530">Delivers</text>
+<text x="1097.0" y="586.0" font-size="12" fill="#3d4863">Uploads signed POD,</text>
+<text x="1097.0" y="603.0" font-size="12" fill="#3d4863">enters receiver OTP</text>
+<rect x="1085.0" y="290.0" width="134" height="92" rx="10" fill="#fff" stroke="#0a1a3a" stroke-width="1.4"/>
+<text x="1097.0" y="316.0" font-size="13.5" font-weight="700" fill="#0b1530">Frees the truck</text>
+<text x="1097.0" y="338.0" font-size="12" fill="#3d4863">Opens the owner&#x27;s</text>
+<text x="1097.0" y="355.0" font-size="12" fill="#3d4863">settlement</text>
+<rect x="1233.0" y="290.0" width="134" height="92" rx="10" fill="#fff" stroke="#0a1a3a" stroke-width="1.4"/>
+<text x="1245.0" y="316.0" font-size="13.5" font-weight="700" fill="#0b1530">Approves POD</text>
+<text x="1245.0" y="338.0" font-size="12" fill="#3d4863">Trip completed,</text>
+<text x="1245.0" y="355.0" font-size="12" fill="#3d4863">GST invoice issued</text>
+<rect x="1233.0" y="166.0" width="134" height="92" rx="10" fill="#fff" stroke="#2257c9" stroke-width="1.4"/>
+<text x="1245.0" y="192.0" font-size="13.5" font-weight="700" fill="#0b1530">Gets the invoice</text>
+<text x="1245.0" y="214.0" font-size="12" fill="#3d4863">Tax invoice for</text>
+<text x="1245.0" y="231.0" font-size="12" fill="#3d4863">their books</text>
+<rect x="1381.0" y="662.0" width="134" height="92" rx="10" fill="#fff7f0" stroke="#c24a08" stroke-width="2"/>
+<text x="1393.0" y="688.0" font-size="13.5" font-weight="700" fill="#0b1530">Splits payment</text>
+<text x="1393.0" y="710.0" font-size="12" fill="#3d4863">Owner: freight − 7%</text>
+<text x="1393.0" y="727.0" font-size="12" fill="#3d4863">Olekar keeps 7%</text>
+<rect x="1381.0" y="414.0" width="134" height="92" rx="10" fill="#fff" stroke="#12805a" stroke-width="1.4"/>
+<text x="1393.0" y="440.0" font-size="13.5" font-weight="700" fill="#0b1530">Gets paid</text>
+<text x="1393.0" y="462.0" font-size="12" fill="#3d4863">Bank transfer,</text>
+<text x="1393.0" y="479.0" font-size="12" fill="#3d4863">UTR recorded</text>
+<text x="40" y="810" font-size="14" fill="#0b1530"><tspan font-weight="700">Money rule: </tspan>the customer pays freight + GST up front; the owner is paid freight minus Olekar's 7% commission only after the delivery proof (POD) is approved. Cancelled before loading = full refund.</text>
+<text x="40" y="834" font-size="12.5" fill="#5b6886">Solid arrow: next step. Dashed arrow: a condition. Rates, the 7% commission and GST treatment are placeholders to confirm with your CA.</text>
+</svg>

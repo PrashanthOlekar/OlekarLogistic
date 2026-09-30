@@ -13,6 +13,8 @@ Prepared 1 Oct 2026 for Prashanth Olekar. Also available as a live, editable doc
 7. [Security and compliance](#security-and-compliance)
 8. [Build roadmap](#build-roadmap)
 
+![How Olekar Logistics works](business-flow.svg)
+
 ## What has been built so far
 
 You now have a clickable prototype of the whole platform: a motion homepage plus customer, owner, driver and admin dashboards. It runs in the browser only, with sample data and no database yet. This blueprint is how to turn it into the real product.
@@ -26,6 +28,8 @@ You now have a clickable prototype of the whole platform: a motion homepage plus
 | 5 | Tested in a headless browser | No script errors; no sideways scroll at phone width |
 | 6 | Designed the SQL Server database | 30 tables in [`database/OlekarLogistics_schema.sql`](../database/OlekarLogistics_schema.sql) |
 | 7 | Published to this GitHub repository | `index.html`, SQL script and this blueprint |
+| 8 | Built the working portal and API | React pages for all four roles on an ASP.NET Core 8 API that saves everything to SQL Server |
+| 9 | Drew the business flow | [`business-flow.svg`](business-flow.svg), from sign-up to owner payout |
 
 **Technology in the prototype:** plain HTML, CSS and JavaScript, with GSAP for scroll animation, Lucide for icons, and Google Fonts (Archivo, Instrument Sans, JetBrains Mono, Noto Sans Kannada). The truck, highway, maps and phones are drawn in code, so there are no image files.
 
@@ -94,7 +98,7 @@ The database has 30 tables in 8 modules, all in one SQL Server database named `O
 | Bookings | `Bookings` | A customer's transport request | BookingNumber, pickup and drop address and coordinates, GoodsDescription, WeightKg, PickupDate, SpecialInstructions, Status | Customers, VehicleTypes, GoodsCategories |
 | Bookings | `Quotes` | Price offered for a booking | DistanceKm, VehicleCost, DriverCost, PlatformFee, TaxAmount, TotalAmount, ValidUntil, Status | Bookings |
 | Bookings | `LoadOffers` | Loads shown to owners | OfferedPayout, Status (Offered, Accepted, Declined, Expired), RespondedAt | Bookings, Owners, Vehicles |
-| Trips | `Trips` | The actual journey | TripNumber, Status, PickupOtpHash, DeliveryOtpHash, StartedAt, DeliveredAt, OwnerPayout | Bookings, Vehicles, Drivers, Owners |
+| Trips | `Trips` | The actual journey | TripNumber, Status, PickupOtpProtected, DeliveryOtpProtected (encrypted), StartedAt, DeliveredAt, OwnerPayout | Bookings, Vehicles, Drivers, Owners |
 | Trips | `TripEvents` | Timeline shown to customers | EventType (ReachedPickup, Loaded, Started…), Note, Latitude, Longitude, CreatedBy | Trips |
 | Trips | `TripLocations` | GPS pings every 30 s | Latitude, Longitude, SpeedKmph, RecordedAt | Trips |
 | Money | `Payments` | Customer payments | Amount, Method (UPI, Card, NetBanking, Wallet), Gateway, GatewayOrderId, GatewayPaymentId, Status | Bookings |
@@ -296,7 +300,7 @@ Build the money path first and launch on one lane, Bengaluru to Hubballi, before
 **Your next steps**
 
 - [x] Push the prototype, SQL script and blueprint to GitHub
-- [ ] Run `database/OlekarLogistics_schema.sql` on a local SQL Server Express or a small Azure SQL database
+- [ ] Run `database/OlekarLogistics_schema.sql`, start the API and portal, and walk through the flow in the README
 - [ ] Open accounts with a payment gateway and a DLT-registered SMS provider (both need business KYC and take 1–3 weeks)
 - [ ] Confirm rates, commission and GST treatment with your CA
 - [ ] Line up 10–20 lorry owners on the Bengaluru–Hubballi lane for the pilot
