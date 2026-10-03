@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="ProCargo">
+  <title>ProCargo</title>
+  <rect width="64" height="64" rx="15" fill="#0A1A3A"/>
+    <rect x="15" y="13" width="10" height="38" rx="2.5" fill="#FFFFFF"/>
+    <path d="M25 13 H37 L50 25.5 L37 38 H25 V30 H33.5 L38 25.5 L33.5 21 H25 Z" fill="#FF7A1A"/>
+    <rect x="27.5" y="22.5" width="6" height="6" rx="1" fill="#FFFFFF"/>
+</svg>

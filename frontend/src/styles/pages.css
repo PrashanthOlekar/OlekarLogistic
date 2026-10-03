@@ -1,0 +1,119 @@
+/* Parts used by a single area of the portal. */
+
+/* ---------- owner: load offers ---------- */
+.load-card {
+  padding: 16px;
+}
+.load-payout {
+  font: 800 1.4rem var(--display);
+}
+.load-meta {
+  margin: 6px 0 12px;
+}
+
+/* ---------- owner: vehicles ---------- */
+.plate {
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* ---------- driver app ---------- */
+.driver-wrap {
+  max-width: 480px;
+}
+
+.trip-hero {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.trip-hero h2 {
+  margin-top: 8px;
+  color: #fff;
+}
+.trip-hero p {
+  color: #b9c6e2;
+}
+.trip-hero .mono {
+  color: var(--navy-text);
+}
+
+.trip-pick {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.trip-pick[aria-current='true'] {
+  border-color: var(--accent);
+}
+
+.big-btn {
+  width: 100%;
+  min-height: 68px;
+  border-radius: 16px;
+  border: 0;
+  font: 700 1.1rem var(--body);
+  color: #fff;
+  background: var(--accent-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(194, 74, 8, 0.3);
+}
+.big-btn.navy {
+  background: var(--navy);
+  box-shadow: 0 8px 20px rgba(10, 26, 58, 0.25);
+}
+.big-btn.green {
+  background: var(--green);
+  box-shadow: 0 8px 20px rgba(18, 128, 90, 0.25);
+}
+.big-btn:disabled {
+  opacity: 0.6;
+}
+
+.checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.checklist li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  color: var(--faint);
+}
+.checklist li .d {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.checklist li.done {
+  color: var(--ink);
+}
+.checklist li.done .d {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.checklist li.now {
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 650;
+}
+.checklist li.now .d {
+  border-color: var(--accent);
+}

@@ -1,0 +1,113 @@
+/* Element defaults and small text helpers. */
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-stretch: 108%;
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+p {
+  margin: 0;
+}
+a {
+  color: var(--accent-strong);
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Text helpers */
+.mono {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+.muted {
+  color: var(--muted);
+}
+.small {
+  font-size: 0.85rem;
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+.strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+.error-text {
+  color: var(--red);
+}
+.warn-text {
+  color: var(--amber);
+}
+.selectable {
+  user-select: all;
+}
+
+/* Spacing helpers (used where a component sits between other blocks) */
+.mt-sm {
+  margin-top: 8px;
+}
+.mt-md {
+  margin-top: 12px;
+}
+.mt-lg {
+  margin-top: 16px;
+}
+.mb-sm {
+  margin-bottom: 12px;
+}
+.mb-md {
+  margin-bottom: 16px;
+}
+.mb-lg {
+  margin-bottom: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

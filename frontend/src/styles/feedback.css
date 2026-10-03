@@ -1,0 +1,149 @@
+/* Status pills, alerts, empty states, toasts and dialogs. */
+
+/* ---------- pills ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.pill.green {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.pill.amber {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.pill.red {
+  background: var(--red-soft);
+  color: var(--red);
+}
+.pill.blue {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+.pill.orange {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.pill.grey {
+  background: var(--bg);
+  color: var(--muted);
+}
+button.pill {
+  border: 0;
+  cursor: pointer;
+}
+
+/* ---------- alerts ---------- */
+.alert {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  font-size: 0.92rem;
+}
+.alert b {
+  display: block;
+}
+.alert.info {
+  background: var(--blue-soft);
+  color: #173f94;
+}
+.alert.warn {
+  background: var(--amber-soft);
+  color: #7a4d00;
+}
+.alert.error {
+  background: var(--red-soft);
+  color: #962626;
+}
+.alert.success {
+  background: var(--green-soft);
+  color: #0b5e41;
+}
+
+/* ---------- empty and loading ---------- */
+.empty {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--muted);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+.empty b {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+/* ---------- toasts ---------- */
+.toasts {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  display: grid;
+  gap: 8px;
+}
+.toast {
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  font-size: 0.9rem;
+  max-width: 360px;
+  animation: toast-in 0.25s ease-out;
+}
+.toast.error {
+  background: var(--red);
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- dialogs ---------- */
+.dialog-back {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 26, 58, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 90;
+}
+.dialog {
+  background: #fff;
+  border-radius: var(--r-lg);
+  padding: 22px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: grid;
+  gap: 16px;
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+}
+.dialog-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}

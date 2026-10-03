@@ -1,0 +1,225 @@
+/* Showing data: stats, tables, key–value lists, money breakdowns, progress and timelines. */
+
+/* ---------- stat tiles ---------- */
+.stat {
+  display: grid;
+  gap: 6px;
+}
+.stat small {
+  font: 600 0.7rem/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.stat b {
+  font: 800 1.7rem/1 var(--display);
+  font-stretch: 105%;
+  font-variant-numeric: tabular-nums;
+}
+.stat span {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.stat.alert b {
+  color: var(--accent-strong);
+}
+a.stat {
+  text-decoration: none;
+  color: inherit;
+}
+a.stat:hover {
+  border-color: var(--line-strong);
+}
+
+/* ---------- tables ---------- */
+.table-wrap {
+  overflow-x: auto;
+  margin: 0 -4px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 620px;
+}
+th {
+  text-align: left;
+  font: 600 0.7rem/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+tr:last-child td {
+  border-bottom: 0;
+}
+td.num,
+th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+tbody tr.link {
+  cursor: pointer;
+}
+tbody tr.link:hover {
+  background: #fafbfd;
+}
+
+/* ---------- key–value pairs ---------- */
+.kv {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 20px;
+}
+.kv small {
+  display: block;
+  font: 600 0.68rem/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.kv b {
+  font-weight: 600;
+}
+.kv .wide {
+  grid-column: 1 / -1;
+}
+
+/* ---------- money breakdown ---------- */
+.money-rows {
+  display: grid;
+}
+.money-rows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px dashed var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.money-rows .total {
+  border: 0;
+  padding-top: 14px;
+  align-items: baseline;
+}
+.money-rows .total b {
+  font: 800 1.8rem/1 var(--display);
+  font-stretch: 105%;
+}
+
+/* ---------- route "Bengaluru → Hubballi" ---------- */
+.route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 650;
+  flex-wrap: wrap;
+}
+.route .arrow {
+  color: var(--accent-strong);
+}
+
+/* ---------- booking progress bar ---------- */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+.steps li {
+  display: grid;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--faint);
+}
+.steps li::before {
+  content: '';
+  height: 5px;
+  border-radius: 4px;
+  background: var(--line);
+}
+.steps li.done {
+  color: var(--ink);
+}
+.steps li.done::before {
+  background: var(--green);
+}
+.steps li.now {
+  color: var(--ink);
+  font-weight: 650;
+}
+.steps li.now::before {
+  background: var(--accent);
+}
+@media (max-width: 640px) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---------- trip timeline ---------- */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.timeline li {
+  position: relative;
+  padding: 0 0 14px 22px;
+  font-size: 0.9rem;
+}
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.timeline li::after {
+  content: '';
+  position: absolute;
+  left: 7.5px;
+  top: 17px;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+.timeline li:last-child::after {
+  display: none;
+}
+.timeline time {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ---------- pickup and delivery codes shown to customers ---------- */
+.code-box {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  background: var(--navy);
+  color: #fff;
+}
+.code-box small {
+  color: var(--navy-text);
+  font-size: 0.78rem;
+}
+.code-box b {
+  font: 700 1.8rem/1 var(--mono);
+  letter-spacing: 0.3em;
+}
