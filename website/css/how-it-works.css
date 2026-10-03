@@ -1,0 +1,86 @@
+/* HOW IT WORKS */
+.how-wrap {
+  position: relative;
+}
+.how-line {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.how-line svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.how-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 3.2rem 1.5rem;
+}
+@media (max-width: 900px) {
+  .how-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .how-line {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  .how-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.step {
+  position: relative;
+  display: grid;
+  gap: 0.7rem;
+  justify-items: start;
+}
+.step .node {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  color: var(--navy);
+  position: relative;
+  transition:
+    background 0.5s,
+    color 0.5s,
+    border-color 0.5s,
+    transform 0.5s;
+  box-shadow: var(--shadow-1);
+}
+.step .node [data-lucide] {
+  width: 26px;
+  height: 26px;
+}
+.step .num {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font: 700 0.72rem/24px var(--mono);
+  text-align: center;
+}
+.step.on .node {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+  transform: scale(1.06);
+}
+.step h3 {
+  font-size: 1.08rem;
+}
+.step p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 18rem;
+}

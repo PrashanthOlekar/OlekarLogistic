@@ -1,0 +1,96 @@
+/* Small helper classes used in the markup instead of inline styles. */
+
+/* Hidden SVG sprite that holds the logo symbol */
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* Spacing and layout */
+.mt-sm {
+  margin-top: 0.75rem;
+}
+.mt-md {
+  margin-top: 1rem;
+}
+.mb-lg {
+  margin-bottom: 2rem;
+}
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+.stack-start {
+  justify-items: start;
+}
+.grow {
+  flex: 1;
+}
+.spread {
+  display: flex;
+  justify-content: space-between;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.clip {
+  overflow: hidden;
+}
+.flush {
+  margin: 0;
+}
+
+/* Text */
+.text-sm {
+  font-size: 0.85rem;
+}
+.text-center {
+  text-align: center;
+}
+.text-orange {
+  color: var(--orange);
+}
+.strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.faded {
+  opacity: 0.7;
+}
+
+/* Lucide icon sizes */
+.icon-14 {
+  width: 14px;
+  height: 14px;
+}
+.icon-16 {
+  width: 16px;
+  height: 16px;
+}
+.icon-26 {
+  width: 26px;
+  height: 26px;
+}
+.icon-filled {
+  fill: currentColor;
+}
+
+/* Reveal animation stagger: data-delay="0…5" */
+[data-delay='1'] {
+  --i: 1;
+}
+[data-delay='2'] {
+  --i: 2;
+}
+[data-delay='3'] {
+  --i: 3;
+}
+[data-delay='4'] {
+  --i: 4;
+}
+[data-delay='5'] {
+  --i: 5;
+}

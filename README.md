@@ -1,40 +1,53 @@
-# Olekar Logistics
+<p align="center"><img src="brand/procargo-logo.svg" alt="ProCargo" height="64"></p>
 
-**Moving India. Delivering Trust.**
+<p align="center"><b>Moving India. Delivering Trust.</b></p>
 
-A technology-enabled lorry booking marketplace connecting customers who need goods moved with verified lorry owners and drivers, starting in Karnataka.
+A technology-enabled lorry booking marketplace that connects customers who need goods moved with verified lorry owners and drivers, starting in Karnataka.
 
-![How Olekar Logistics works](docs/business-flow.svg)
+![How ProCargo works](docs/business-flow.svg)
 
 ## What's in this repository
 
-| Path | What it is |
+| Folder | What it is |
 | --- | --- |
-| [`frontend/`](frontend) | **Olekar Portal**: React + TypeScript pages for customers, lorry owners, drivers and the admin team. Every action saves to SQL Server through the API. |
-| [`backend/Olekar.Api/`](backend/Olekar.Api) | **ASP.NET Core 8 Web API** with Entity Framework Core on SQL Server: OTP sign-in, pricing, bookings, trips, documents, payouts, admin. |
-| [`database/OlekarLogistics_schema.sql`](database/OlekarLogistics_schema.sql) | Creates the `OlekarLogistics` database: 30 tables, keys, indexes and starting data. |
-| [`docs/business-flow.svg`](docs/business-flow.svg) | The business, start to end (the picture above). |
-| [`docs/TECHNICAL-BLUEPRINT.md`](docs/TECHNICAL-BLUEPRINT.md) | Architecture, database design, API list, security and roadmap. |
-| [`index.html`](index.html) | The animated marketing website prototype (sample data, no database). |
+| [`website/`](website) | The animated **marketing website**: plain HTML, with CSS and JavaScript split into one file per section. Its "Book a truck" and "Login" buttons open the portal. |
+| [`frontend/`](frontend) | The **ProCargo Portal**: React + TypeScript pages for customers, lorry owners, drivers and the operations team. Everything they do is saved to SQL Server through the API. |
+| [`backend/ProCargo.Api/`](backend/ProCargo.Api) | The **ASP.NET Core 8 Web API** with Entity Framework Core on SQL Server: OTP sign-in, pricing, bookings, trips, documents, invoices and payouts. |
+| [`database/ProCargo.sql`](database/ProCargo.sql) | Creates the `ProCargo` database: 30 tables in 8 modules, keys, indexes, two views and starting data. |
+| [`brand/`](brand) | The ProCargo logo as SVG and PNG, for light and dark backgrounds. |
+| [`docs/`](docs) | The business flow (the picture above) and the [technical blueprint](docs/TECHNICAL-BLUEPRINT.md). |
+
+## How the code is organised
+
+Every file holds one thing, so you can find code by its name:
+
+- **Database:** `ProCargo.sql` has a table of contents at the top. Each table lists its columns with a comment, then its keys and checks.
+- **API:** one C# class per file. `Endpoints/` has one file per area (bookings, owner, driver, admin…), and every URL points to a named method such as `CreateBookingAsync`. Status words like `InTransit` live in `Domain/Statuses.cs`.
+- **Portal:** one React component per file. Pages are grouped by role in `src/pages/`. Shared pieces are in `src/components/`, and styles are in `src/styles/`, split by area. There are no inline styles.
+- **Website:** `index.html` holds the markup only. Styles are in `css/` and scripts in `js/`, one file per page section. `js/config.js` holds the portal address.
+
+The [technical blueprint](docs/TECHNICAL-BLUEPRINT.md#code-layout-as-built) has the full folder map.
 
 ## Run it on your computer
 
-You need: **SQL Server** (Express is free), **.NET 8 SDK**, **Node.js 20+**.
+You need **SQL Server** (Express is free), the **.NET 8 SDK** and **Node.js 20+**. VS Code and SQL Server Management Studio are recommended.
 
 ### 1. Create the database
 
-Open `database/OlekarLogistics_schema.sql` in SQL Server Management Studio (or Azure Data Studio) and run it. It creates the `OlekarLogistics` database with every table.
+Open `database/ProCargo.sql` in SQL Server Management Studio and press **Execute**. It creates the `ProCargo` database with every table and the starting rate card.
 
 ### 2. Start the API
 
 ```bash
-cd backend/Olekar.Api
-# If your SQL Server is not the default local instance, set the connection string first:
-dotnet user-secrets set "ConnectionStrings:Olekar" "Server=.\SQLEXPRESS;Database=OlekarLogistics;Trusted_Connection=True;TrustServerCertificate=True"
+cd backend/ProCargo.Api
+
+# Only if your SQL Server is not the default instance (for example SQL Server Express):
+dotnet user-secrets set "ConnectionStrings:ProCargo" "Server=.\SQLEXPRESS;Database=ProCargo;Trusted_Connection=True;TrustServerCertificate=True"
+
 dotnet run
 ```
 
-The API starts on **http://localhost:5080**. Open http://localhost:5080/swagger to see and try every endpoint. On first start it creates an admin user with mobile **9999999999** (change it in `appsettings.json` → `Seed:AdminMobile` before the first run).
+The API starts on **http://localhost:5080**. Open http://localhost:5080/swagger to see and try every endpoint. On first start it creates an admin user with mobile **9999999999**. To use another number, change `Seed:AdminMobile` in `appsettings.json` before the first run.
 
 ### 3. Start the portal
 
@@ -44,9 +57,13 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:5173**. The portal forwards `/api` calls to the API.
+Open **http://localhost:5173**. The portal forwards every `/api` call to the API. Run `npm run format` to tidy the code with Prettier after making changes.
 
-### 4. Try the whole business in 10 minutes
+### 4. Open the website
+
+Open `website/index.html` in your browser, or serve the folder with any static web server. If the portal runs somewhere other than `http://localhost:5173`, change `PORTAL_URL` in `website/js/config.js`.
+
+### 5. Try the whole business in 10 minutes
 
 In development, the sign-in code is shown on screen (no SMS needed), and payments run in **test mode**.
 
@@ -55,23 +72,23 @@ In development, the sign-in code is shown on screen (no SMS needed), and payment
 3. **Customer:** Register → *I need transport* → book Bengaluru → Hubballi → pay (test mode).
 4. **Admin** (mobile 9999999999): *Approvals* → approve the owner, driver and vehicle.
 5. **Owner:** *Loads & overview* → *Take this load* → pick the truck and driver.
-6. **Customer:** open the booking to see the truck, driver and the pickup / delivery codes.
+6. **Customer:** open the booking to see the truck, the driver, and the pickup and delivery codes.
 7. **Driver:** *My trips* → on the way → reached pickup → enter the pickup code → start → reached destination → upload POD → enter the delivery code.
-8. **Admin:** *Trips & POD* → approve POD (invoice issued) → *Owner payouts* → record the bank UTR.
+8. **Admin:** *Trips & POD* → approve POD (the GST invoice is issued) → *Owner payouts* → record the bank UTR.
 
-Every step is stored in SQL Server: `Bookings`, `Quotes`, `Payments`, `Trips`, `TripEvents`, `Documents`, `Invoices`, `Settlements`, `AuditLogs`.
+Every step is stored in SQL Server: `Bookings`, `Quotes`, `Payments`, `Trips`, `TripEvents`, `Documents`, `Invoices`, `Settlements` and `AuditLogs`.
 
 ## Before going live
 
 | Item | Where |
 | --- | --- |
-| Set a strong JWT secret (32+ characters) | `Jwt:Key` via user-secrets or the `Jwt__Key` environment variable, never in Git |
-| Connect SMS for OTPs (MSG91 / Twilio India, DLT registered) | `AuthEndpoints.cs`, the `TODO production` line; set `Otp:ShowCodeInDevelopment` to `false` |
-| Connect a payment gateway (Razorpay / Cashfree) | Replace the test payment in `CustomerEndpoints.cs` → `/pay`; set `Payments:Mode` |
-| Move uploads to Azure Blob Storage | `FileStorage` in `Services/CoreServices.cs` |
-| Store encryption keys in Azure Key Vault | Data Protection setup in `Program.cs` |
-| Real road distances | `PricingService.RoadKm` (Google / Azure Maps) |
-| Confirm rates, 7% commission, GST and TDS with your CA | `VehicleTypes` and `Settings` tables |
+| Set a strong JWT secret (32+ characters) | `Jwt:Key` through user-secrets or the `Jwt__Key` environment variable, never in Git |
+| Send OTPs by SMS (MSG91 or Twilio India, DLT registered) | `Endpoints/AuthEndpoints.cs`, the `TODO before launch` line; then set `Otp:ShowCodeInDevelopment` to `false` |
+| Connect a payment gateway (Razorpay or Cashfree) | `Endpoints/BookingEndpoints.cs` → `PayAsync`; set `Payments:Mode` |
+| Move uploads to Azure Blob Storage | `Services/FileStorage.cs` |
+| Keep encryption keys in Azure Key Vault | `Configuration/ServiceRegistration.cs` → Data Protection |
+| Use real road distances (Google or Azure Maps) | `Services/PricingService.cs` → `EstimateRoadKm` |
+| Confirm rates, the 7% commission, GST and TDS with your CA | The `VehicleTypes` and `Settings` tables |
 
 ## Notes
 

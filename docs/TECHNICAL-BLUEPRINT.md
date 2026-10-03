@@ -1,6 +1,6 @@
-# Olekar Logistics – Technical Blueprint
+# ProCargo – Technical Blueprint
 
-Prepared 1 Oct 2026 for Prashanth Olekar. Also available as a live, editable doc in Claude.
+Prepared 1 Oct 2026 for Prashanth Olekar; updated 3 Oct 2026 for the ProCargo brand. Also available as a live, editable doc in Claude.
 
 ## Contents
 
@@ -9,11 +9,12 @@ Prepared 1 Oct 2026 for Prashanth Olekar. Also available as a live, editable doc
 3. [Database design (SQL Server)](#database-design-sql-server)
 4. [Backend: ASP.NET Core Web API](#backend-aspnet-core-web-api)
 5. [Frontend: React + Vite + TypeScript](#frontend-react--vite--typescript)
-6. [Key flow: booking to owner payout](#key-flow-booking-to-owner-payout)
-7. [Security and compliance](#security-and-compliance)
-8. [Build roadmap](#build-roadmap)
+6. [Code layout (as built)](#code-layout-as-built)
+7. [Key flow: booking to owner payout](#key-flow-booking-to-owner-payout)
+8. [Security and compliance](#security-and-compliance)
+9. [Build roadmap](#build-roadmap)
 
-![How Olekar Logistics works](business-flow.svg)
+![How ProCargo works](business-flow.svg)
 
 ## What has been built so far
 
@@ -23,13 +24,14 @@ You now have a clickable prototype of the whole platform: a motion homepage plus
 | --- | --- | --- |
 | 1 | Studied allcargo.com for layout and tone | Freight-site structure, reworked with far more motion |
 | 2 | Built the first "Truckload" landing page | Moving lorry hero, fleet cards, scroll-driven route, fare estimator |
-| 3 | Rebuilt it as Olekar Logistics from your full brief | One page, about 180 KB, with 15 homepage sections and 6 app views |
+| 3 | Rebuilt it as Olekar Logistics (now ProCargo) from your full brief | One page, about 180 KB, with 15 homepage sections and 6 app views |
 | 4 | Added working interactions on sample data | Live quote, accept booking, vehicle status, driver OTP steps, admin approvals, POD approval, settlements |
 | 5 | Tested in a headless browser | No script errors; no sideways scroll at phone width |
-| 6 | Designed the SQL Server database | 30 tables in [`database/OlekarLogistics_schema.sql`](../database/OlekarLogistics_schema.sql) |
+| 6 | Designed the SQL Server database | 30 tables in [`database/ProCargo.sql`](../database/ProCargo.sql) |
 | 7 | Published to this GitHub repository | `index.html`, SQL script and this blueprint |
 | 8 | Built the working portal and API | React pages for all four roles on an ASP.NET Core 8 API that saves everything to SQL Server |
 | 9 | Drew the business flow | [`business-flow.svg`](business-flow.svg), from sign-up to owner payout |
+| 10 | Renamed the brand to ProCargo and tidied every file | New logo, `ProCargo` database, one C# class per file, React components in their own files, CSS split by area, no inline styles |
 
 **Technology in the prototype:** plain HTML, CSS and JavaScript, with GSAP for scroll animation, Lucide for icons, and Google Fonts (Archivo, Instrument Sans, JetBrains Mono, Noto Sans Kannada). The truck, highway, maps and phones are drawn in code, so there are no image files.
 
@@ -69,11 +71,11 @@ Host everything in Azure's Central India region (Pune) so data stays in India an
 
 ## Database design (SQL Server)
 
-The database has 30 tables in 8 modules, all in one SQL Server database named `OlekarLogistics`. The runnable script [`database/OlekarLogistics_schema.sql`](../database/OlekarLogistics_schema.sql) creates every table, key, index and the starting vehicle rate card.
+The database has 30 tables in 8 modules, all in one SQL Server database named `ProCargo`. The runnable script [`database/ProCargo.sql`](../database/ProCargo.sql) creates every table, key, index and the starting vehicle rate card.
 
 **Conventions used everywhere**
 
-- Primary keys are `BIGINT IDENTITY` named `<Table>Id`. Public numbers such as `OLK-24790` are separate columns, so internal ids are never shown to users.
+- Primary keys are `BIGINT IDENTITY` named `<Table>Id`. Public numbers such as `PC-24790` are separate columns, so internal ids are never shown to users.
 - Money is `DECIMAL(12,2)` in rupees. Times are `DATETIME2(0)` in UTC and converted to IST in the app.
 - Statuses are short `VARCHAR` codes with a `CHECK` constraint, for example `InTransit`. This makes them readable in reports and safe from typos.
 - Every table has `CreatedAt`, and editable tables add `UpdatedAt` and a `RowVersion` column so two admins can't overwrite each other.
@@ -147,16 +149,16 @@ Build one ASP.NET Core 8 Web API in C#, using Entity Framework Core to talk to S
 **Solution layout**
 
 ```
-Olekar.sln
+ProCargo.sln
 ├─ src/
-│  ├─ Olekar.Api/              Controllers, auth setup, Swagger, SignalR hub, Program.cs
-│  ├─ Olekar.Application/      Business rules: QuoteService, TripService, SettlementService, validators (FluentValidation)
-│  ├─ Olekar.Domain/           Entities (Booking, Trip…), status enums, rules such as "POD before settlement"
-│  ├─ Olekar.Infrastructure/   EF Core DbContext + migrations, Blob storage, SMS, WhatsApp, payment gateway, maps
-│  └─ Olekar.Worker/           Background jobs (Hangfire or Azure Functions)
+│  ├─ ProCargo.Api/              Controllers, auth setup, Swagger, SignalR hub, Program.cs
+│  ├─ ProCargo.Application/      Business rules: QuoteService, TripService, SettlementService, validators (FluentValidation)
+│  ├─ ProCargo.Domain/           Entities (Booking, Trip…), status enums, rules such as "POD before settlement"
+│  ├─ ProCargo.Infrastructure/   EF Core DbContext + migrations, Blob storage, SMS, WhatsApp, payment gateway, maps
+│  └─ ProCargo.Worker/           Background jobs (Hangfire or Azure Functions)
 └─ tests/
-   ├─ Olekar.UnitTests/
-   └─ Olekar.IntegrationTests/
+   ├─ ProCargo.UnitTests/
+   └─ ProCargo.IntegrationTests/
 ```
 
 **Main API endpoints** (all under `/api/v1`, JSON in and out)
@@ -240,6 +242,46 @@ web-dashboard/src/
 
 **How the prototype maps across:** each sidebar screen in the prototype (`index.html`) becomes one feature page. The sample arrays (`CUST`, `OWNER`, `ADM`) become API calls. The prototype's `quote()` function moves to the server, so customers can't change prices in the browser. The drawn trucks and scenes can be kept as SVG components or swapped for real photos.
 
+## Code layout (as built)
+
+Every file holds one thing, and each folder has one job, so you can find code by its name.
+
+```
+database/ProCargo.sql                  Creates the ProCargo database: sequences, 30 tables, views, starting data
+
+backend/ProCargo.Api/
+├─ Program.cs                          Start-up, about 20 lines: services, middleware, endpoints
+├─ Configuration/                      ServiceRegistration (database, auth, CORS, Swagger), JwtOptions
+├─ Common/                             ApiException, Guard, IndianTime, MobileNumber, ClaimsPrincipal helpers
+├─ Contracts/                          Request bodies the portal sends (one file per area)
+├─ Data/
+│  ├─ ProCargoDbContext.cs             Table names, generated numbers, relationships
+│  ├─ DatabaseSeeder.cs                Creates the first admin
+│  └─ Entities/                        One class per table: Booking.cs, Trip.cs, Vehicle.cs …
+├─ Domain/                             Roles, status codes, document types
+├─ Endpoints/                          One file per area, each handler a named method
+│  ├─ AuthEndpoints.cs, BookingEndpoints.cs, OwnerEndpoints.cs, DriverEndpoints.cs, DocumentEndpoints.cs …
+│  └─ Admin/                           Dashboard, Approvals, Bookings & trips, Money, Users
+├─ Middleware/                         Friendly error replies; blocks signed-out or blocked accounts
+└─ Services/                           Pricing, OTP, trips, invoices, file storage, encryption, audit log
+
+frontend/src/                          The portal (React + TypeScript)
+├─ main.tsx, App.tsx, routes.tsx       Start-up, page switching, the list of pages per role
+├─ lib/                                api, session, router, formats, status labels, document names
+├─ hooks/                              useLoad (fetch data), useAction (button actions)
+├─ state/                              AuthContext (who is signed in), ToastContext (pop-up messages)
+├─ components/                         Button, Field, Dialog, Pill, PageHead, UploadDialog … one per file
+├─ layout/                             AppShell (sidebar), AuthLayout, navigation menus
+├─ pages/                              auth/, customer/, owner/, driver/, admin/, shared/
+└─ styles/                             tokens, base, layout, buttons, forms, feedback, data, charts, pages
+
+website/                               The marketing site (plain HTML, CSS, JavaScript)
+├─ index.html                          Page markup only
+├─ css/                                One stylesheet per section: hero, services, vehicles, tracking …
+├─ js/                                 config (portal address), data, i18n, one script per section, main.js last
+└─ assets/                             Logo files
+```
+
 ## Key flow: booking to owner payout
 
 A trip takes 8 steps, and the owner is paid only after the admin approves the proof of delivery.
@@ -300,7 +342,7 @@ Build the money path first and launch on one lane, Bengaluru to Hubballi, before
 **Your next steps**
 
 - [x] Push the prototype, SQL script and blueprint to GitHub
-- [ ] Run `database/OlekarLogistics_schema.sql`, start the API and portal, and walk through the flow in the README
+- [ ] Run `database/ProCargo.sql`, start the API and portal, and walk through the flow in the README
 - [ ] Open accounts with a payment gateway and a DLT-registered SMS provider (both need business KYC and take 1–3 weeks)
 - [ ] Confirm rates, commission and GST treatment with your CA
 - [ ] Line up 10–20 lorry owners on the Bengaluru–Hubballi lane for the pilot

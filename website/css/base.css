@@ -1,0 +1,260 @@
+/* Colours, fonts, page defaults and buttons. */
+
+/* Layout: cinematic navy highway hero -> alternating white / deep-navy story sections.
+   Single committed look: white + soft grey grounds, midnight navy for dark sections, one orange accent. */
+:root {
+  --navy: #0a1a3a;
+  --navy-2: #10244d;
+  --navy-3: #1a3466;
+  --navy-line: #243f77;
+  --orange: #ff7a1a;
+  --orange-d: #e0600a;
+  --orange-soft: #fff1e6;
+  --bg: #f4f6fa;
+  --white: #ffffff;
+  --ink: #0b1530;
+  --muted: #5b6886;
+  --line: #e3e8f1;
+  --line-2: #cfd7e6;
+  --green: #15935f;
+  --green-soft: #e4f5ec;
+  --red: #cf3f3f;
+  --red-soft: #fce9e9;
+  --amber: #c98a06;
+  --amber-soft: #fff5da;
+  --blue: #2d6be0;
+  --blue-soft: #e7effd;
+  --on-dark: #ffffff;
+  --on-dark-2: #aebbd6;
+  --display: 'Archivo', 'Arial Narrow', system-ui, sans-serif;
+  --body: 'Instrument Sans', 'Noto Sans Kannada', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --r-sm: 10px;
+  --r: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --shadow-1: 0 1px 2px rgba(10, 26, 58, 0.06), 0 4px 14px rgba(10, 26, 58, 0.06);
+  --shadow-2: 0 2px 4px rgba(10, 26, 58, 0.06), 0 18px 44px rgba(10, 26, 58, 0.14);
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1240px;
+  color-scheme: light;
+}
+html:lang(kn) body {
+  --body: 'Noto Sans Kannada', 'Instrument Sans', system-ui, sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a {
+  color: inherit;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+img,
+svg {
+  max-width: 100%;
+}
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--display);
+  font-stretch: 112%;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  margin: 0;
+  text-wrap: balance;
+}
+html:lang(kn) h1,
+html:lang(kn) h2,
+html:lang(kn) h3 {
+  font-family: 'Noto Sans Kannada', var(--display);
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+h2 {
+  font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+  font-weight: 800;
+}
+h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+p {
+  margin: 0;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font: 600 0.74rem/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--orange-d);
+}
+.eyebrow::before {
+  content: '';
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+}
+.dark .eyebrow {
+  color: var(--orange);
+}
+.lede {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 36rem;
+}
+.dark .lede {
+  color: var(--on-dark-2);
+}
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+.muted {
+  color: var(--muted);
+}
+.mono {
+  font-family: var(--mono);
+}
+[data-lucide] {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.9;
+}
+.sample-note {
+  font: 500 0.72rem/1.4 var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border: 1px dashed var(--line-2);
+  border-radius: 99px;
+}
+.dark .sample-note {
+  color: var(--on-dark-2);
+  border-color: var(--navy-line);
+}
+
+/* buttons */
+.btn {
+  --bh: 48px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  height: var(--bh);
+  padding: 0 1.35rem;
+  border-radius: 999px;
+  border: 0;
+  font: 600 0.98rem/1 var(--body);
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.25s,
+    background 0.25s,
+    color 0.25s;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: var(--orange);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(255, 122, 26, 0.35);
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.6s;
+  z-index: -1;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 122, 26, 0.45);
+}
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+.btn-dark {
+  background: var(--navy);
+  color: #fff;
+}
+.btn-dark:hover {
+  background: var(--navy-3);
+  transform: translateY(-2px);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--line-2);
+}
+.btn-outline:hover {
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  transform: translateY(-2px);
+}
+.dark .btn-outline,
+.btn-outline.on-dark {
+  color: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.35);
+}
+.dark .btn-outline:hover,
+.btn-outline.on-dark:hover {
+  box-shadow: inset 0 0 0 1.5px #fff;
+}
+.btn-sm {
+  --bh: 36px;
+  padding: 0 0.95rem;
+  font-size: 0.86rem;
+}
+.btn-lg {
+  --bh: 56px;
+  padding: 0 1.7rem;
+  font-size: 1.05rem;
+}
+.btn .arr {
+  transition: transform 0.25s;
+}
+.btn:hover .arr {
+  transform: translateX(4px);
+}
+.btn-block {
+  width: 100%;
+}
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 6px;
+}

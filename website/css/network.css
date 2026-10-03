@@ -1,0 +1,52 @@
+/* NETWORK */
+.net-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+@media (max-width: 960px) {
+  .net-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.net-map {
+  position: relative;
+  min-width: 0;
+}
+.net-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.state-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+}
+.state-list button {
+  border: 1px solid var(--navy-line);
+  background: transparent;
+  color: #dfe6f5;
+  padding: 0.5rem 0.85rem;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.state-list button:hover,
+.state-list button[aria-pressed='true'] {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+.arc {
+  stroke-dasharray: 6 8;
+  animation: dash 1.4s linear infinite;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}

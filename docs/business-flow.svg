@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 860" width="1560" height="860" font-family="Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-label="How Olekar Logistics works, from sign-up to payout">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 860" width="1560" height="860" font-family="Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-label="How ProCargo works, from sign-up to payout">
 <defs>
 <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5b6886"/></marker>
 </defs>
 <rect width="1560" height="860" fill="#ffffff"/>
-<text x="40" y="52" font-size="28" font-weight="800" fill="#0b1530">How Olekar Logistics works</text>
+<text x="40" y="52" font-size="28" font-weight="800" fill="#0b1530">How ProCargo works</text>
 <text x="40" y="82" font-size="15" fill="#5b6886">From an owner signing up to the owner getting paid. Follow the arrows left to right; each lane is one party.</text>
 <circle cx="209.0" cy="128" r="11" fill="#ff7a1a"/>
 <text x="209.0" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1</text>
@@ -37,7 +37,7 @@
 <text x="42" y="217.0" font-size="16" font-weight="700" fill="#2257c9">Customer</text>
 <rect x="20" y="274" width="1520" height="124" fill="#f1f3f8"/>
 <rect x="20" y="274" width="6" height="124" fill="#0a1a3a"/>
-<text x="42" y="341.0" font-size="16" font-weight="700" fill="#0a1a3a">Olekar platform</text>
+<text x="42" y="341.0" font-size="16" font-weight="700" fill="#0a1a3a">ProCargo platform</text>
 <line x1="20" x2="1540" y1="274" y2="274" stroke="#ffffff" stroke-width="2"/>
 <rect x="20" y="398" width="1520" height="124" fill="#eef8f3"/>
 <rect x="20" y="398" width="6" height="124" fill="#12805a"/>
@@ -143,11 +143,11 @@
 <rect x="1381.0" y="662.0" width="134" height="92" rx="10" fill="#fff7f0" stroke="#c24a08" stroke-width="2"/>
 <text x="1393.0" y="688.0" font-size="13.5" font-weight="700" fill="#0b1530">Splits payment</text>
 <text x="1393.0" y="710.0" font-size="12" fill="#3d4863">Owner: freight − 7%</text>
-<text x="1393.0" y="727.0" font-size="12" fill="#3d4863">Olekar keeps 7%</text>
+<text x="1393.0" y="727.0" font-size="12" fill="#3d4863">ProCargo keeps 7%</text>
 <rect x="1381.0" y="414.0" width="134" height="92" rx="10" fill="#fff" stroke="#12805a" stroke-width="1.4"/>
 <text x="1393.0" y="440.0" font-size="13.5" font-weight="700" fill="#0b1530">Gets paid</text>
 <text x="1393.0" y="462.0" font-size="12" fill="#3d4863">Bank transfer,</text>
 <text x="1393.0" y="479.0" font-size="12" fill="#3d4863">UTR recorded</text>
-<text x="40" y="810" font-size="14" fill="#0b1530"><tspan font-weight="700">Money rule: </tspan>the customer pays freight + GST up front; the owner is paid freight minus Olekar's 7% commission only after the delivery proof (POD) is approved. Cancelled before loading = full refund.</text>
+<text x="40" y="810" font-size="14" fill="#0b1530"><tspan font-weight="700">Money rule: </tspan>the customer pays freight + GST up front; the owner is paid freight minus ProCargo's 7% commission only after the delivery proof (POD) is approved. Cancelled before loading = full refund.</text>
 <text x="40" y="834" font-size="12.5" fill="#5b6886">Solid arrow: next step. Dashed arrow: a condition. Rates, the 7% commission and GST treatment are placeholders to confirm with your CA.</text>
 </svg>
