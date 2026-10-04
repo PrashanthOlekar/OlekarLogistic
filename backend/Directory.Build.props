@@ -8,6 +8,6 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <!-- Missing XML comments are not errors; the comments are there for Swagger and readers. -->
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <NoWarn>$(NoWarn);CS1591;CS1573</NoWarn>
   </PropertyGroup>
 </Project>

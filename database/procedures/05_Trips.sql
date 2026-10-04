@@ -397,6 +397,20 @@ END
 GO
 
 
+CREATE OR ALTER PROCEDURE dbo.usp_Trip_HasPod
+    @TripId BIGINT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT CAST(CASE WHEN EXISTS (
+        SELECT 1 FROM dbo.Documents
+        WHERE EntityType = 'Trip' AND EntityId = @TripId AND DocType = 'POD'
+    ) THEN 1 ELSE 0 END AS BIT) AS HasPod;
+END
+GO
+
+
 /* ---------------------------------------------------------------- POD approval and invoice */
 
 -- What the invoice needs: the trip, the customer's GSTIN, both states and the accepted quote.

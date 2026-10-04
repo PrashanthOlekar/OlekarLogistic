@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- SQL Server through Dapper and stored procedures, JWT, encryption, file storage, SMS. -->
+  <PropertyGroup>
+    <RootNamespace>ProCargo.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProCargo.Application\ProCargo.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Data Protection, options validation and hosting abstractions come with the ASP.NET Core shared framework. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ProCargo.UnitTests" />
+    <InternalsVisibleTo Include="ProCargo.IntegrationTests" />
+  </ItemGroup>
+
+</Project>
