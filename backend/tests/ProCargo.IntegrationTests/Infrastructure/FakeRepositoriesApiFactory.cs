@@ -19,6 +19,11 @@ public sealed class FakeRepositoriesApiFactory : WebApplicationFactory<Program>
     public FakeRepositoriesApiFactory()
     {
         TestSettings.Apply();
+
+        // Every user is active unless a test says otherwise. This is set up here, not in ConfigureWebHost,
+        // because the host is built lazily: a default added there would override a test's own setup.
+        Users.GetByIdAsync(Arg.Any<long>(), Arg.Any<CancellationToken>())
+            .Returns(call => new User { UserId = call.Arg<long>(), Status = UserStatus.Active, Role = Roles.Customer, FullName = "Test" });
     }
 
     public IUserRepository Users { get; } = Substitute.For<IUserRepository>();
@@ -34,10 +39,6 @@ public sealed class FakeRepositoriesApiFactory : WebApplicationFactory<Program>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Development");
-
-        // Every user is active unless a test says otherwise.
-        Users.GetByIdAsync(Arg.Any<long>(), Arg.Any<CancellationToken>())
-            .Returns(call => new User { UserId = call.Arg<long>(), Status = UserStatus.Active, Role = Roles.Customer, FullName = "Test" });
 
         builder.ConfigureServices(services =>
         {
