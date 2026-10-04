@@ -1,6 +1,6 @@
 # ProCargo – Technical Blueprint
 
-Prepared 1 Oct 2026 for Prashanth Olekar; updated 3 Oct 2026 for the ProCargo brand. Also available as a live, editable doc in Claude.
+Prepared 1 Oct 2026 for Prashanth Olekar; updated 3 Oct 2026 for the ProCargo brand and 4 Oct 2026 for the Clean Architecture refactor. Also available as a live, editable doc in Claude.
 
 ## Contents
 
@@ -32,6 +32,7 @@ You now have a clickable prototype of the whole platform: a motion homepage plus
 | 8 | Built the working portal and API | React pages for all four roles on an ASP.NET Core 8 API that saves everything to SQL Server |
 | 9 | Drew the business flow | [`business-flow.svg`](business-flow.svg), from sign-up to owner payout |
 | 10 | Renamed the brand to ProCargo and tidied every file | New logo, `ProCargo` database, one C# class per file, React components in their own files, CSS split by area, no inline styles |
+| 11 | Refactored to production architecture ([plan](REFACTORING-PLAN.md)) | .NET 10 Clean Architecture, Dapper + stored procedures, `/api/v1` REST controllers, refresh tokens, ProblemDetails, server-side paging; portal on React Router + Axios; unit, integration and browser tests in CI; Docker |
 
 **Technology in the prototype:** plain HTML, CSS and JavaScript, with GSAP for scroll animation, Lucide for icons, and Google Fonts (Archivo, Instrument Sans, JetBrains Mono, Noto Sans Kannada). The truck, highway, maps and phones are drawn in code, so there are no image files.
 
@@ -46,7 +47,7 @@ flowchart TB
     web["Public website<br/>Next.js · SEO · English and Kannada"]
     dash["Web dashboards<br/>React + Vite · customer, owner, admin"]
     drv["Driver app<br/>React Native · GPS, camera, OTP"]
-    api["ASP.NET Core 8 Web API<br/>REST /api/v1 · JWT login with OTP · SignalR live tracking · pricing"]
+    api["ASP.NET Core Web API (.NET 10)<br/>REST /api/v1 · JWT login with OTP · SignalR live tracking · pricing"]
     subgraph azure["Azure, Central India region"]
         sql["Azure SQL<br/>SQL Server DB"]
         blob["Blob Storage<br/>Files and PODs"]
@@ -144,58 +145,31 @@ erDiagram
 
 ## Backend: ASP.NET Core Web API
 
-Build one ASP.NET Core 8 Web API in C#, using Entity Framework Core to talk to SQL Server. Start as one well-organised app, a modular monolith, rather than many microservices. It is cheaper to run and easier for a small team.
+One ASP.NET Core Web API on **.NET 10 (C# 14)**, organised as **Clean Architecture**: a modular monolith with four projects whose references point inwards only. Data access is **Dapper calling SQL Server stored procedures**, so every query, filter, sort and page is in reviewed SQL, and the API's database login needs only `EXECUTE` permission.
 
 **Solution layout**
 
 ```
-ProCargo.sln
+backend/ProCargo.sln
 ├─ src/
-│  ├─ ProCargo.Api/              Controllers, auth setup, Swagger, SignalR hub, Program.cs
-│  ├─ ProCargo.Application/      Business rules: QuoteService, TripService, SettlementService, validators (FluentValidation)
-│  ├─ ProCargo.Domain/           Entities (Booking, Trip…), status enums, rules such as "POD before settlement"
-│  ├─ ProCargo.Infrastructure/   EF Core DbContext + migrations, Blob storage, SMS, WhatsApp, payment gateway, maps
-│  └─ ProCargo.Worker/           Background jobs (Hangfire or Azure Functions)
+│  ├─ ProCargo.Domain/           Entities, status constants, pricing, GST split, invoice numbers, trip steps. No references.
+│  ├─ ProCargo.Application/      Use cases per feature (BookingService, TripService …), DTOs, FluentValidation validators,
+│  │                             and the interfaces it needs: repositories, ITokenService, IFileStorage, ISmsSender. → Domain
+│  ├─ ProCargo.Infrastructure/   Dapper repositories over stored procedures, SqlConnectionFactory, SQL error translation,
+│  │                             JWT, Data Protection encryption, local file storage, SMS. → Application
+│  └─ ProCargo.API/              Thin controllers, auth policies, ProblemDetails, OpenAPI + Swagger UI, CORS, rate limiting,
+│                                security headers. → Application, Infrastructure (composition only)
 └─ tests/
-   ├─ ProCargo.UnitTests/
-   └─ ProCargo.IntegrationTests/
+   ├─ ProCargo.UnitTests/        Domain rules, validators, services with NSubstitute fakes
+   └─ ProCargo.IntegrationTests/ The real API with fake repositories (401/403/404/409/400), and full journeys on SQL Server
 ```
 
-**Main API endpoints** (all under `/api/v1`, JSON in and out)
-
-| Area | Endpoint | Who | What it does |
-| --- | --- | --- | --- |
-| Auth | `POST /auth/otp/send` | Anyone | Sends a 6-digit login OTP by SMS |
-| Auth | `POST /auth/otp/verify` | Anyone | Checks the OTP, returns access token (15 min) + refresh token (30 days) |
-| Auth | `POST /auth/refresh` | Signed in | New access token |
-| Quotes | `POST /quotes/estimate` | Anyone | Instant price from route, vehicle type and weight; no login needed |
-| Bookings | `POST /bookings` | Customer | Creates a booking and its quote |
-| Bookings | `POST /bookings/{id}/accept-quote` | Customer | Accepts the quote and opens a payment order |
-| Bookings | `GET /bookings?status=` | Customer, Admin | Lists bookings |
-| Payments | `POST /payments/webhook` | Payment gateway | Confirms payment; booking moves to Confirmed |
-| Owners | `POST /owners/register` | Owner | Profile, KYC and bank details |
-| Owners | `GET /owners/me/load-offers` | Owner | Available loads |
-| Owners | `POST /load-offers/{id}/accept` | Owner | Takes a load and picks vehicle and driver |
-| Vehicles | `POST /vehicles`, `PATCH /vehicles/{id}/availability` | Owner | Adds a vehicle; sets Available, Busy or Maintenance |
-| Documents | `POST /documents/upload-url` | Owner, Driver | Returns a short-lived Blob upload link |
-| Documents | `POST /documents/{id}/review` | Admin | Verify or reject with a reason |
-| Drivers | `POST /drivers/register` | Driver | Licence, ID, photo, emergency contact |
-| Trips | `GET /drivers/me/trips` | Driver | Assigned trips |
-| Trips | `POST /trips/{id}/events` | Driver | ReachedPickup, TripStarted, ReachedDestination… |
-| Trips | `POST /trips/{id}/verify-otp` | Driver | Pickup or delivery OTP check |
-| Trips | `POST /trips/{id}/locations` | Driver app | Batch of GPS points |
-| Trips | `GET /trips/{id}/tracking` | Customer, Owner, Admin | Current position, ETA, timeline |
-| Admin | `POST /admin/approvals/{type}/{id}` | Admin | Approve or reject an owner, driver or vehicle |
-| Admin | `POST /admin/bookings/{id}/assign` | Admin | Assigns vehicle and driver manually |
-| Admin | `POST /admin/trips/{id}/approve-pod` | Admin | Approves POD and unlocks the settlement |
-| Admin | `POST /admin/settlements/{id}/release` | Admin | Sends the owner payout |
-| Admin | `POST /admin/users/{id}/block` | Admin | Blocks a suspicious account |
-| Admin | `GET /admin/analytics/summary` | Admin | Dashboard numbers and charts |
-| Support | `POST /tickets`, `POST /tickets/{id}/messages` | Everyone | Complaints and replies |
+**Endpoints:** every route is under `/api/v1`. The full list, with roles and status codes, is in the [API reference](API.md).
 
 **Cross-cutting pieces**
 
-- **Login:** mobile number + OTP for everyone, plus password for admins with two-factor. JWT tokens carry the user's role, and each endpoint checks it with `[Authorize(Roles = "Admin")]`.
+- **Login:** mobile number + OTP for everyone. A 30-minute JWT access token carries the user's id and role; a 14-day refresh token (stored hashed, rotated on every use, revoked on logout or when the user is blocked) renews it. Controllers check named policies such as `CustomerOnly` or `OwnerOrAdmin`, every endpoint needs a signed-in user unless marked public, and services check ownership (a customer only sees their own bookings).
+- **Errors:** one global exception handler turns validation, business-rule, not-found, conflict and SQL errors into RFC 7807 ProblemDetails, without internal details.
 - **Live tracking:** a SignalR hub pushes new positions and status changes to the open customer, owner and admin screens, so nobody has to refresh.
 - **Files:** the app uploads straight to a private Azure Blob container using a SAS link that lasts 10 minutes. The API stores only the path in `Documents`, and hands out short read links when an admin reviews.
 - **Payments:** create the order on the gateway (Razorpay, Cashfree or PayU), let the customer pay in the gateway's checkout, then trust only the signed webhook, never the browser, to mark it paid. Owner payouts go through the same gateway's payout API.
@@ -223,21 +197,21 @@ Split the prototype into two web apps and one mobile app that share one API. The
 - **Language:** `react-i18next` with `en.json` and `kn.json` files, so every label can be translated rather than only headings.
 - **Maps:** Google Maps JS or Azure Maps for the live tracking map, with SignalR for live truck positions.
 
-**Dashboard project layout**
+**Portal project layout (as built)**
 
 ```
-web-dashboard/src/
-├─ api/          client.ts (axios + token refresh), bookings.ts, trips.ts, owners.ts, admin.ts
-├─ components/   Button, Card, StatusPill, DataTable, QuoteCard, TripCard, FileUpload, OtpInput, Chart
-├─ features/
-│  ├─ customer/  NewBooking, ActiveTrips, PastTrips, Invoices, Payments, Documents, Support
-│  ├─ owner/     AvailableLoads, AssignedTrips, Vehicles, Drivers, Payouts, Documents, Performance
-│  ├─ admin/     Overview, Approvals, Bookings, Quotes, Trips, Settlements, Documents, Complaints, Analytics
-│  └─ register/  OwnerRegistration, DriverRegistration, VerificationStatus
+frontend/src/
+├─ api/          apiClient.ts (Axios, VITE_API_BASE_URL, token refresh, ProblemDetails errors) + one module per API area
+├─ auth/         AuthContext, AuthProvider, useAuth, ProtectedRoute, RoleProtectedRoute, PublicOnlyRoute, tokenStorage
+├─ routes/       AppRoutes.tsx (React Router: every page and the roles allowed), navigation.ts (menus, home pages)
 ├─ layouts/      AppShell (sidebar + top bar), AuthLayout
-├─ i18n/         en.json, kn.json
-├─ routes.tsx    role-protected routes
-└─ main.tsx
+├─ pages/        auth/, customer/, owner/, driver/, admin/, shared/ – one page per route
+├─ features/     bookings/, trips/, fleet/, admin/, auth/ – dialogs, cards and step logic used by the pages
+├─ components/   Button, Field, Dialog, Pill, Pagination, UploadDialog, Toast …
+├─ hooks/        useLoad, usePagedLoad, useAction
+├─ services/     referenceData (cached), location
+├─ types/        API request and response shapes
+└─ utils/        format, status, documents
 ```
 
 **How the prototype maps across:** each sidebar screen in the prototype (`index.html`) becomes one feature page. The sample arrays (`CUST`, `OWNER`, `ADM`) become API calls. The prototype's `quote()` function moves to the server, so customers can't change prices in the browser. The drawn trucks and scenes can be kept as SVG components or swapped for real photos.
@@ -247,39 +221,42 @@ web-dashboard/src/
 Every file holds one thing, and each folder has one job, so you can find code by its name.
 
 ```
-database/ProCargo.sql                  Creates the ProCargo database: sequences, 30 tables, views, starting data
+database/
+├─ ProCargo.sql                        Creates the ProCargo database: sequences, 30 tables, views, starting data
+├─ procedures/                         Every stored procedure the API calls, by area; CREATE OR ALTER, safe to re-run
+│  ├─ 01_ReferenceData.sql … 06_DocumentsAndMoney.sql
+├─ install-all.sql                     Runs both (SQLCMD mode)
+└─ docker-init.sh                      Used by docker-compose: install or update
 
-backend/ProCargo.Api/
-├─ Program.cs                          Start-up, about 20 lines: services, middleware, endpoints
-├─ Configuration/                      ServiceRegistration (database, auth, CORS, Swagger), JwtOptions
-├─ Common/                             ApiException, Guard, IndianTime, MobileNumber, ClaimsPrincipal helpers
-├─ Contracts/                          Request bodies the portal sends (one file per area)
-├─ Data/
-│  ├─ ProCargoDbContext.cs             Table names, generated numbers, relationships
-│  ├─ DatabaseSeeder.cs                Creates the first admin
-│  └─ Entities/                        One class per table: Booking.cs, Trip.cs, Vehicle.cs …
-├─ Domain/                             Roles, status codes, document types
-├─ Endpoints/                          One file per area, each handler a named method
-│  ├─ AuthEndpoints.cs, BookingEndpoints.cs, OwnerEndpoints.cs, DriverEndpoints.cs, DocumentEndpoints.cs …
-│  └─ Admin/                           Dashboard, Approvals, Bookings & trips, Money, Users
-├─ Middleware/                         Friendly error replies; blocks signed-out or blocked accounts
-└─ Services/                           Pricing, OTP, trips, invoices, file storage, encryption, audit log
+backend/
+├─ src/ProCargo.Domain/                Constants/ (roles, statuses, document types), Entities/, Pricing/, Invoicing/, Trips/, Common/
+├─ src/ProCargo.Application/
+│  ├─ Abstractions/                    Persistence/ (19 repository interfaces), Security/, Storage/, Messaging/, ICurrentUser
+│  ├─ Common/                          Exceptions (400/403/404/409/429/501), Paging (PagedResult, ListQuery)
+│  └─ Features/<Area>/                 I<Area>Service + service, request/response records, validators
+├─ src/ProCargo.Infrastructure/
+│  ├─ Data/                            SqlConnectionFactory, StoredProcedures (names), StoredProcedureExecutor, SqlErrorTranslator
+│  ├─ Repositories/                    One Dapper repository per interface; CommandType.StoredProcedure only
+│  ├─ Security/                        JwtTokenService, PersonalDataProtector
+│  └─ Storage/, Messaging/
+├─ src/ProCargo.API/
+│  ├─ Program.cs                       About 20 lines: one call per concern
+│  ├─ Controllers/                     One controller per resource, each action one service call
+│  ├─ Extensions/                      Services and the request pipeline, one file per concern
+│  ├─ ErrorHandling/, Middleware/      GlobalExceptionHandler; security headers; blocked-account check
+│  └─ Configuration/                   Strongly typed settings (CORS, rate limits, reverse proxy, seed)
+└─ tests/                              ProCargo.UnitTests, ProCargo.IntegrationTests
 
-frontend/src/                          The portal (React + TypeScript)
-├─ main.tsx, App.tsx, routes.tsx       Start-up, page switching, the list of pages per role
-├─ lib/                                api, session, router, formats, status labels, document names
-├─ hooks/                              useLoad (fetch data), useAction (button actions)
-├─ state/                              AuthContext (who is signed in), ToastContext (pop-up messages)
-├─ components/                         Button, Field, Dialog, Pill, PageHead, UploadDialog … one per file
-├─ layout/                             AppShell (sidebar), AuthLayout, navigation menus
-├─ pages/                              auth/, customer/, owner/, driver/, admin/, shared/
-└─ styles/                             tokens, base, layout, buttons, forms, feedback, data, charts, pages
+frontend/                              The portal: see the layout in the Frontend section; e2e/smoke.mjs runs the whole journey
 
 website/                               The marketing site (plain HTML, CSS, JavaScript)
 ├─ index.html                          Page markup only
 ├─ css/                                One stylesheet per section: hero, services, vehicles, tracking …
 ├─ js/                                 config (portal address), data, i18n, one script per section, main.js last
 └─ assets/                             Logo files
+
+docker-compose.yml                     SQL Server, database install, API and portal (nginx)
+.github/workflows/ci.yml               Build and test everything on every push
 ```
 
 ## Key flow: booking to owner payout
@@ -342,7 +319,7 @@ Build the money path first and launch on one lane, Bengaluru to Hubballi, before
 **Your next steps**
 
 - [x] Push the prototype, SQL script and blueprint to GitHub
-- [ ] Run `database/ProCargo.sql`, start the API and portal, and walk through the flow in the README
+- [ ] Run `database/install-all.sql` (or `docker compose up`), start the API and portal, and walk through the flow in the README
 - [ ] Open accounts with a payment gateway and a DLT-registered SMS provider (both need business KYC and take 1–3 weeks)
 - [ ] Confirm rates, commission and GST treatment with your CA
 - [ ] Line up 10–20 lorry owners on the Bengaluru–Hubballi lane for the pilot
