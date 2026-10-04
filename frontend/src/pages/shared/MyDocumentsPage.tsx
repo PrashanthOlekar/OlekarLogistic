@@ -1,39 +1,29 @@
 /** KYC documents for the signed-in owner or driver. */
 import { useState } from 'react';
-import { Alert, Button, EmptyCard, Loading, PageHead, Pill, UploadDialog } from '../../components';
+import { authApi } from '../../api/authApi';
+import { documentsApi } from '../../api/documentsApi';
+import { useSignedInUser } from '../../auth';
+import { Alert, Button, EmptyCard, Loading, PageHead, Pill, UploadDialog, useToast } from '../../components';
 import { useLoad } from '../../hooks/useLoad';
-import { api, openDocument } from '../../lib/api';
-import { OPTIONAL_KYC_DOCUMENTS, REQUIRED_KYC_DOCUMENTS, documentName } from '../../lib/documents';
-import { date, dateTime } from '../../lib/format';
-import { useAuth } from '../../state/AuthContext';
-import { useToast } from '../../state/ToastContext';
-
-interface MyDocument {
-  id: number;
-  docType: string;
-  fileName: string;
-  status: string;
-  rejectionReason?: string;
-  expiryDate?: string;
-  uploadedAt: string;
-}
-
-interface Profile {
-  detail?: { kycStatus?: string; rejectionReason?: string };
-}
+import { MAX_PAGE_SIZE, type DocumentEntityType } from '../../types';
+import { OPTIONAL_KYC_DOCUMENTS, REQUIRED_KYC_DOCUMENTS, documentName } from '../../utils/documents';
+import { date, dateTime } from '../../utils/format';
 
 export function MyDocumentsPage() {
-  const { user } = useAuth();
+  const user = useSignedInUser();
   const toast = useToast();
-  const documents = useLoad(() => api<MyDocument[]>('/documents/mine'));
-  const profile = useLoad(() => api<Profile>('/auth/me'));
+  // A person has a handful of KYC documents, so one large page shows them all
+  // (and lets the "still needed" check below see every upload).
+  const documents = useLoad(() => documentsApi.list({ pageSize: MAX_PAGE_SIZE }));
+  const profile = useLoad(() => authApi.getProfile());
   const [uploading, setUploading] = useState(false);
 
-  const role = user!.role;
+  const role = user.role;
+  const items = documents.data?.items;
   const required = REQUIRED_KYC_DOCUMENTS[role] ?? [];
   const missing = required.filter(
     (type) =>
-      !documents.data?.some((document) => document.docType === type && document.status !== 'Rejected'),
+      !items?.some((document) => document.docType === type && document.status !== 'Rejected'),
   );
 
   const handleUploaded = () => {
@@ -59,13 +49,13 @@ export function MyDocumentsPage() {
 
       <Loading state={documents} />
 
-      {documents.data?.length === 0 && (
+      {items?.length === 0 && (
         <EmptyCard title="Nothing uploaded yet">
           Start with {required.map(documentName).join(', ')}.
         </EmptyCard>
       )}
 
-      {!!documents.data?.length && (
+      {!!items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -78,7 +68,7 @@ export function MyDocumentsPage() {
               </tr>
             </thead>
             <tbody>
-              {documents.data.map((document) => (
+              {items.map((document) => (
                 <tr key={document.id}>
                   <td>
                     <b>{documentName(document.docType)}</b>
@@ -88,7 +78,7 @@ export function MyDocumentsPage() {
                       type="button"
                       className="btn btn-ghost btn-sm"
                       onClick={() =>
-                        openDocument(document.id).catch((error) => toast(error.message, 'error'))
+                        documentsApi.open(document.id).catch((error) => toast(error.message, 'error'))
                       }
                     >
                       {document.fileName}
@@ -112,7 +102,7 @@ export function MyDocumentsPage() {
       {uploading && (
         <UploadDialog
           title="Upload a document"
-          entityType={role}
+          entityType={role as DocumentEntityType}
           docTypes={[...required, ...(OPTIONAL_KYC_DOCUMENTS[role] ?? [])]}
           onClose={() => setUploading(false)}
           onDone={handleUploaded}
@@ -124,7 +114,7 @@ export function MyDocumentsPage() {
 
 interface KycStatusAlertProps {
   kycStatus?: string;
-  rejectionReason?: string;
+  rejectionReason?: string | null;
   missing: string[];
 }
 

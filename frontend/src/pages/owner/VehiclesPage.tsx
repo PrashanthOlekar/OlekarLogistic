@@ -1,34 +1,32 @@
 import { useState } from 'react';
-import { Alert, Button, EmptyCard, Loading, PageHead, UploadDialog } from '../../components';
+import { driversApi } from '../../api/driversApi';
+import { vehiclesApi } from '../../api/vehiclesApi';
+import { Alert, Button, EmptyCard, Loading, PageHead, Pagination, UploadDialog, useToast } from '../../components';
+import { AddVehicleDialog } from '../../features/fleet/AddVehicleDialog';
+import { VehicleCard } from '../../features/fleet/VehicleCard';
 import { useAction } from '../../hooks/useAction';
 import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { VEHICLE_DOCUMENTS } from '../../lib/documents';
-import { useToast } from '../../state/ToastContext';
-import { AddVehicleDialog } from './AddVehicleDialog';
-import { VehicleCard } from './VehicleCard';
-import type { OwnerDriver, OwnerVehicle } from './types';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { MAX_PAGE_SIZE, type VehicleListItem } from '../../types';
+import { VEHICLE_DOCUMENTS } from '../../utils/documents';
 
 export function VehiclesPage() {
   const toast = useToast();
-  const vehicles = useLoad(() => api<OwnerVehicle[]>('/owner/vehicles'));
-  const drivers = useLoad(() => api<OwnerDriver[]>('/owner/drivers'));
+  const vehicles = usePagedLoad((page) => vehiclesApi.list(page));
+  const drivers = useLoad(() => driversApi.list({ pageSize: MAX_PAGE_SIZE }));
   const [adding, setAdding] = useState(false);
-  const [uploadFor, setUploadFor] = useState<OwnerVehicle | null>(null);
+  const [uploadFor, setUploadFor] = useState<VehicleListItem | null>(null);
   const update = useAction();
 
-  const setAvailability = (vehicle: OwnerVehicle, status: string) =>
+  const setAvailability = (vehicle: VehicleListItem, status: string) =>
     update.run(async () => {
-      await api(`/owner/vehicles/${vehicle.id}/availability`, { method: 'PATCH', body: { status } });
+      await vehiclesApi.update(vehicle.id, { availabilityStatus: status });
       vehicles.reload();
     });
 
-  const setRegularDriver = (vehicle: OwnerVehicle, driverId: number) =>
+  const setRegularDriver = (vehicle: VehicleListItem, driverId: number) =>
     update.run(async () => {
-      await api(`/owner/vehicles/${vehicle.id}/driver`, {
-        method: 'PATCH',
-        body: { driverId: driverId || null },
-      });
+      await vehiclesApi.update(vehicle.id, driverId ? { currentDriverId: driverId } : { removeDriver: true });
       vehicles.reload();
     });
 
@@ -61,22 +59,23 @@ export function VehiclesPage() {
 
       <Loading state={vehicles} />
 
-      {vehicles.data?.length === 0 && (
+      {vehicles.items?.length === 0 && (
         <EmptyCard title="No vehicles yet">Add your first lorry to start receiving loads.</EmptyCard>
       )}
 
       <div className="grid g2">
-        {vehicles.data?.map((vehicle) => (
+        {vehicles.items?.map((vehicle) => (
           <VehicleCard
             key={vehicle.id}
             vehicle={vehicle}
-            drivers={drivers.data ?? []}
+            drivers={drivers.data?.items ?? []}
             onAvailabilityChange={(status) => setAvailability(vehicle, status)}
             onDriverChange={(driverId) => setRegularDriver(vehicle, driverId)}
             onUpload={() => setUploadFor(vehicle)}
           />
         ))}
       </div>
+      <Pagination page={vehicles.data} onPageChange={vehicles.setPageNumber} standalone />
 
       {adding && <AddVehicleDialog onClose={() => setAdding(false)} onAdded={handleAdded} />}
 

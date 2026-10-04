@@ -9,6 +9,7 @@ backend/ProCargo.Api/App_Data/
 node_modules/
 frontend/dist/
 .env.local
+*.local
 
 # OS
 .DS_Store

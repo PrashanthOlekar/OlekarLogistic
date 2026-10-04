@@ -1,26 +1,33 @@
 import { useState } from 'react';
-import { Alert, Button, Loading, MoneyRow, MoneyRows, PageHead, Pill } from '../../components';
-import { useAction } from '../../hooks/useAction';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date, dateTime, inr, kg } from '../../lib/format';
-import { useToast } from '../../state/ToastContext';
+import { useParams } from 'react-router';
+import { bookingsApi } from '../../api/bookingsApi';
+import { Alert, Button, EmptyCard, Loading, MoneyRow, MoneyRows, PageHead, Pill, useToast } from '../../components';
+import { CancelBookingDialog, PayDialog } from '../../features/bookings/BookingDialogs';
 import {
   CANCELLABLE_BOOKING,
   CANCELLABLE_TRIP,
   EVENT_TEXT,
   PROGRESS_STEPS,
   progressStepClass,
-} from './bookingProgress';
-import { CancelBookingDialog, PayDialog } from './BookingDialogs';
-import type { Stop } from '../../lib/types';
-import type { BookingDetail, BookingInvoice, BookingTrip } from './types';
+} from '../../features/bookings/bookingProgress';
+import { useAction } from '../../hooks/useAction';
+import { useLoad } from '../../hooks/useLoad';
+import type { BookingDetail, BookingInvoice, BookingTrip, Stop } from '../../types';
+import { date, dateTime, inr, kg } from '../../utils/format';
 
 const SUPPORT_PHONE = '+91 00000 00000';
 
-export function BookingDetailPage({ id }: { id: string }) {
+export function BookingDetailPage() {
+  const id = Number(useParams().id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return <EmptyCard title="Booking not found">Check the link and try again.</EmptyCard>;
+  }
+  return <BookingDetailView key={id} id={id} />;
+}
+
+function BookingDetailView({ id }: { id: number }) {
   const toast = useToast();
-  const booking = useLoad(() => api<BookingDetail>(`/bookings/${id}`), [id]);
+  const booking = useLoad(() => bookingsApi.get(id), [id]);
   const requote = useAction();
   const [paying, setPaying] = useState(false);
   const [cancelling, setCancelling] = useState(false);
@@ -32,7 +39,7 @@ export function BookingDetailPage({ id }: { id: string }) {
 
   const getFreshQuote = () =>
     requote.run(async () => {
-      await api(`/bookings/${id}/requote`, { method: 'POST' });
+      await bookingsApi.requote(id);
       toast('Fresh quote ready.');
       booking.reload();
     });

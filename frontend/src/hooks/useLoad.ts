@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { ApiError } from '../lib/api';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { toApiError } from '../api/errors';
 
 export interface LoadState<T> {
   data: T | null;
@@ -10,25 +10,35 @@ export interface LoadState<T> {
 
 /**
  * Loads data when the component appears and whenever `deps` change.
+ * Answers that arrive after a newer request has started are ignored.
  *
- *   const bookings = useLoad(() => api<BookingRow[]>('/bookings'));
- *   bookings.data, bookings.loading, bookings.error, bookings.reload()
+ *   const booking = useLoad(() => bookingsApi.get(id), [id]);
+ *   booking.data, booking.loading, booking.error, booking.reload()
  */
 export function useLoad<T>(load: () => Promise<T>, deps: unknown[] = []): LoadState<T> {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const latestRequest = useRef(0);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const reload = useCallback(async () => {
+    const request = ++latestRequest.current;
     setLoading(true);
     try {
-      setData(await load());
-      setError(null);
+      const result = await load();
+      if (request === latestRequest.current) {
+        setData(result);
+        setError(null);
+      }
     } catch (caught) {
-      setError(caught instanceof ApiError ? caught.message : 'Something went wrong.');
+      if (request === latestRequest.current) {
+        setError(toApiError(caught).message);
+      }
     } finally {
-      setLoading(false);
+      if (request === latestRequest.current) {
+        setLoading(false);
+      }
     }
   }, deps);
 

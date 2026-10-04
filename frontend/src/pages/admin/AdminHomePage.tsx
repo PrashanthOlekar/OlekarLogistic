@@ -1,13 +1,13 @@
+import { Link } from 'react-router';
+import { dashboardsApi } from '../../api/adminApi';
 import { Button, Loading, PageHead, Stat } from '../../components';
+import { BarList, DailyColumns } from '../../features/admin/Charts';
 import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { inr } from '../../lib/format';
-import { Link } from '../../lib/router';
-import { BarList, DailyColumns } from './Charts';
-import type { AdminSummary } from './types';
+import type { AdminDashboard } from '../../types';
+import { inr } from '../../utils/format';
 
 export function AdminHomePage() {
-  const summary = useLoad(() => api<AdminSummary>('/admin/summary'));
+  const summary = useLoad(() => dashboardsApi.getAdmin());
   const s = summary.data;
 
   return (
@@ -83,7 +83,7 @@ export function AdminHomePage() {
   );
 }
 
-function FleetStat({ vehicles }: { vehicles: AdminSummary['vehicles'] }) {
+function FleetStat({ vehicles }: { vehicles: AdminDashboard['vehicles'] }) {
   const total = vehicles.reduce((sum, group) => sum + group.count, 0);
   const breakdown = vehicles.map((group) => `${group.count} ${group.status.toLowerCase()}`).join(' · ');
   return <Stat label="Approved vehicles" value={total} note={breakdown || 'None yet'} />;

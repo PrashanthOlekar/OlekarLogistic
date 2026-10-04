@@ -1,20 +1,18 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { useAuth } from '../../auth';
 import { Alert, Button, Field } from '../../components';
-import { useAction } from '../../hooks/useAction';
-import { AuthLayout } from '../../layout/AuthLayout';
-import { api } from '../../lib/api';
-import { today } from '../../lib/format';
-import { Link, navigate } from '../../lib/router';
-import type { SignInResult } from '../../lib/types';
-import { useAuth } from '../../state/AuthContext';
-import { OtpStep } from './OtpStep';
+import { OtpStep } from '../../features/auth/OtpStep';
 import {
   ACCOUNT_KINDS,
   FIRST_PAGE,
-  buildRegistrationBody,
+  register as registerAccount,
   type AccountKind,
   type RegistrationForm,
-} from './registration';
+} from '../../features/auth/registration';
+import { useAction } from '../../hooks/useAction';
+import { AuthLayout } from '../../layouts/AuthLayout';
+import { today } from '../../utils/format';
 
 /** Returns an onChange handler that stores the input's value under `key`. */
 type Bind = (key: string) => {
@@ -24,6 +22,7 @@ type Bind = (key: string) => {
 
 export function RegisterPage() {
   const { signIn } = useAuth();
+  const navigate = useNavigate();
   const [kind, setKind] = useState<AccountKind>('customer');
   const [mobile, setMobile] = useState('');
   const [code, setCode] = useState('');
@@ -38,10 +37,9 @@ export function RegisterPage() {
   const submit = (event: FormEvent) => {
     event.preventDefault();
     register.run(async () => {
-      const body = buildRegistrationBody(kind, form, mobile, code);
-      const result = await api<SignInResult>(`/auth/register/${kind}`, { body });
-      signIn(result.token, result.user);
-      navigate(FIRST_PAGE[kind], true);
+      const result = await registerAccount(kind, form, mobile, code);
+      signIn(result);
+      navigate(FIRST_PAGE[kind], { replace: true });
     });
   };
 

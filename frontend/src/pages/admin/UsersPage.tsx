@@ -1,37 +1,29 @@
 import { useState, type FormEvent } from 'react';
-import { Alert, Button, EmptyCard, Loading, PageHead, Pill } from '../../components';
+import { usersApi } from '../../api/adminApi';
+import { Alert, Button, EmptyCard, Loading, PageHead, Pagination, Pill, useToast } from '../../components';
 import { useAction } from '../../hooks/useAction';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date, dateTime } from '../../lib/format';
-import { useToast } from '../../state/ToastContext';
-import type { AdminUser } from './types';
-
-const ROLES = ['Customer', 'Owner', 'Driver', 'Admin'];
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { ROLES, type Role, type UserListItem } from '../../types';
+import { date, dateTime } from '../../utils/format';
 
 export function UsersPage() {
   const toast = useToast();
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState<Role | ''>('');
   const [searchText, setSearchText] = useState('');
   const [query, setQuery] = useState('');
   const block = useAction();
 
-  const users = useLoad(() => {
-    const params = new URLSearchParams();
-    if (role) params.set('role', role);
-    if (query) params.set('q', query);
-    return api<AdminUser[]>(`/admin/users?${params}`);
-  }, [role, query]);
+  const users = usePagedLoad((page) => usersApi.list({ ...page, role, search: query }), [role, query]);
 
   const search = (event: FormEvent) => {
     event.preventDefault();
-    setQuery(searchText);
+    setQuery(searchText.trim());
   };
 
-  const toggleBlocked = (user: AdminUser) =>
+  const toggleBlocked = (user: UserListItem) =>
     block.run(async () => {
       const isBlocked = user.status === 'Blocked';
-      await api(`/admin/users/${user.id}/block`, { body: { block: !isBlocked } });
+      await usersApi.setStatus(user.id, isBlocked ? 'Active' : 'Blocked');
       toast(isBlocked ? `${user.fullName} unblocked.` : `${user.fullName} blocked. They are signed out now.`);
       users.reload();
     });
@@ -54,7 +46,7 @@ export function UsersPage() {
             className="input input-narrow"
             aria-label="Role"
             value={role}
-            onChange={(event) => setRole(event.target.value)}
+            onChange={(event) => setRole(event.target.value as Role | '')}
           >
             <option value="">All roles</option>
             {ROLES.map((option) => (
@@ -72,9 +64,9 @@ export function UsersPage() {
 
       <Loading state={users} />
 
-      {users.data?.length === 0 && <EmptyCard title="No users match" />}
+      {users.items?.length === 0 && <EmptyCard title="No users match" />}
 
-      {!!users.data?.length && (
+      {!!users.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -89,7 +81,7 @@ export function UsersPage() {
               </tr>
             </thead>
             <tbody>
-              {users.data.map((user) => (
+              {users.items.map((user) => (
                 <tr key={user.id}>
                   <td>
                     <b>{user.fullName}</b>
@@ -118,6 +110,7 @@ export function UsersPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={users.data} onPageChange={users.setPageNumber} />
         </div>
       )}
     </>

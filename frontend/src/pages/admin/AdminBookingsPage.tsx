@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Button, EmptyCard, Loading, PageHead, Pill, RouteLabel } from '../../components';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date, inr, kg } from '../../lib/format';
-import { useToast } from '../../state/ToastContext';
-import { AssignTruckDialog } from './AssignTruckDialog';
-import { StatusFilter, withStatus } from './StatusFilter';
-import type { AdminBooking } from './types';
+import { bookingsApi } from '../../api/bookingsApi';
+import { Button, EmptyCard, Loading, PageHead, Pagination, Pill, RouteLabel, useToast } from '../../components';
+import { SearchBox } from '../../features/admin/SearchBox';
+import { StatusFilter } from '../../features/admin/StatusFilter';
+import { AssignTruckDialog } from '../../features/fleet/AssignTruckDialog';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import type { BookingListItem } from '../../types';
+import { date, inr, kg } from '../../utils/format';
 
 const FILTERS: [string, string][] = [
   ['', 'All'],
@@ -20,8 +20,9 @@ const FILTERS: [string, string][] = [
 export function AdminBookingsPage() {
   const toast = useToast();
   const [status, setStatus] = useState('');
-  const bookings = useLoad(() => api<AdminBooking[]>(withStatus('/admin/bookings', status)), [status]);
-  const [assigning, setAssigning] = useState<AdminBooking | null>(null);
+  const [search, setSearch] = useState('');
+  const bookings = usePagedLoad((page) => bookingsApi.list({ ...page, status, search }), [status, search]);
+  const [assigning, setAssigning] = useState<BookingListItem | null>(null);
 
   const handleAssigned = (tripNumber: string) => {
     toast(`Assigned. Trip ${tripNumber} created.`);
@@ -35,14 +36,15 @@ export function AdminBookingsPage() {
         title="Bookings"
         sub="Paid bookings are offered to owners automatically. Assign one yourself if no owner takes it."
       >
+        <SearchBox placeholder="Booking no., customer or mobile" onSearch={setSearch} />
         <StatusFilter options={FILTERS} value={status} onChange={setStatus} />
       </PageHead>
 
       <Loading state={bookings} />
 
-      {bookings.data?.length === 0 && <EmptyCard title="No bookings" />}
+      {bookings.items?.length === 0 && <EmptyCard title="No bookings" />}
 
-      {!!bookings.data?.length && (
+      {!!bookings.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -58,7 +60,7 @@ export function AdminBookingsPage() {
               </tr>
             </thead>
             <tbody>
-              {bookings.data.map((booking) => (
+              {bookings.items.map((booking) => (
                 <tr key={booking.id}>
                   <td className="mono">{booking.bookingNumber}</td>
                   <td>
@@ -89,6 +91,7 @@ export function AdminBookingsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={bookings.data} onPageChange={bookings.setPageNumber} />
         </div>
       )}
 

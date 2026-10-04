@@ -1,4 +1,4 @@
-import { describeStatus } from '../lib/status';
+import { describeStatus } from '../utils/status';
 
 /** A coloured status label, e.g. <Pill status="InTransit" /> → "In transit". */
 export function Pill({ status, label }: { status: string; label?: string }) {

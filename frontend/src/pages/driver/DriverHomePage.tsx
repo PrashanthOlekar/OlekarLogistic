@@ -1,20 +1,22 @@
 import { useState } from 'react';
-import { EmptyCard, Loading, PageHead, Pill, RouteLabel } from '../../components';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date } from '../../lib/format';
-import { TripRunner } from './TripRunner';
-import { FINISHED_STATUSES } from './tripSteps';
-import type { DriverTripRow } from './types';
+import { tripsApi } from '../../api/tripsApi';
+import { EmptyCard, Loading, PageHead, Pagination, Pill, RouteLabel } from '../../components';
+import { TripRunner } from '../../features/trips/TripRunner';
+import { FINISHED_STATUSES } from '../../features/trips/tripSteps';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { date } from '../../utils/format';
+
+/** The trip in progress is listed first (sort ActiveFirst), then the newest. */
+const TRIPS_PER_PAGE = 10;
 
 export function DriverHomePage() {
-  const trips = useLoad(() => api<DriverTripRow[]>('/driver/trips'));
+  const trips = usePagedLoad((page) => tripsApi.list({ ...page, sort: 'ActiveFirst' }), [], TRIPS_PER_PAGE);
   const [chosenTripId, setChosenTripId] = useState<number | null>(null);
 
   // Show the trip the driver picked, else the one in progress, else the latest
   // (so a delivery that has just finished stays on screen).
-  const activeTrip = trips.data?.find((trip) => !FINISHED_STATUSES.includes(trip.status));
-  const shownTripId = chosenTripId ?? activeTrip?.id ?? trips.data?.[0]?.id ?? null;
+  const activeTrip = trips.items?.find((trip) => !FINISHED_STATUSES.includes(trip.status));
+  const shownTripId = chosenTripId ?? activeTrip?.id ?? trips.items?.[0]?.id ?? null;
 
   return (
     <>
@@ -25,7 +27,7 @@ export function DriverHomePage() {
 
       <Loading state={trips} />
 
-      {trips.data?.length === 0 && (
+      {trips.items?.length === 0 && (
         <EmptyCard title="No trips assigned yet">
           When your owner takes a load for you, it appears here.
         </EmptyCard>
@@ -36,11 +38,11 @@ export function DriverHomePage() {
           {shownTripId && <TripRunner tripId={shownTripId} onChanged={trips.reload} />}
         </div>
 
-        {!!trips.data?.length && (
+        {!!trips.items?.length && (
           <div className="card">
             <h2 className="card-title">All trips</h2>
             <div className="stack compact">
-              {trips.data.map((trip) => (
+              {trips.items.map((trip) => (
                 <button
                   key={trip.id}
                   type="button"
@@ -58,6 +60,7 @@ export function DriverHomePage() {
                 </button>
               ))}
             </div>
+            <Pagination page={trips.data} onPageChange={trips.setPageNumber} />
           </div>
         )}
       </div>

@@ -1,11 +1,21 @@
 import { useState } from 'react';
-import { Alert, Button, DocumentChips, EmptyCard, Loading, PageHead, ReasonDialog } from '../../components';
+import { approvalsApi } from '../../api/adminApi';
+import { driversApi, ownersApi } from '../../api/driversApi';
+import { vehiclesApi } from '../../api/vehiclesApi';
+import {
+  Alert,
+  Button,
+  DocumentChips,
+  EmptyCard,
+  Loading,
+  PageHead,
+  ReasonDialog,
+  useToast,
+} from '../../components';
 import { useAction } from '../../hooks/useAction';
 import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date, kg } from '../../lib/format';
-import { useToast } from '../../state/ToastContext';
-import type { PendingApprovals } from './types';
+import type { VerificationRequest } from '../../types';
+import { date, kg } from '../../utils/format';
 
 type Tab = 'owners' | 'drivers' | 'vehicles';
 type ApplicantKind = 'owner' | 'driver' | 'vehicle';
@@ -16,6 +26,13 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'vehicles', label: 'Vehicles' },
 ];
 
+/** The verification endpoint for each kind of applicant. */
+const VERIFY: Record<ApplicantKind, (id: number, request: VerificationRequest) => Promise<void>> = {
+  owner: ownersApi.setVerification,
+  driver: driversApi.setVerification,
+  vehicle: vehiclesApi.setVerification,
+};
+
 interface Rejecting {
   kind: ApplicantKind;
   id: number;
@@ -24,14 +41,14 @@ interface Rejecting {
 
 export function ApprovalsPage() {
   const toast = useToast();
-  const approvals = useLoad(() => api<PendingApprovals>('/admin/approvals'));
+  const approvals = useLoad(() => approvalsApi.getPending());
   const [tab, setTab] = useState<Tab>('owners');
   const [rejecting, setRejecting] = useState<Rejecting | null>(null);
   const review = useAction();
 
   const decide = (kind: ApplicantKind, id: number, approve: boolean, reason?: string) =>
     review.run(async () => {
-      await api(`/admin/approvals/${kind}/${id}`, { body: { approve, reason } });
+      await VERIFY[kind](id, { approve, reason });
       toast(approve ? 'Approved.' : 'Rejected and the applicant has been told why.');
       setRejecting(null);
       approvals.reload();

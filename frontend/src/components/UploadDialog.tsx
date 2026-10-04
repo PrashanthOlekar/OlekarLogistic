@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { api } from '../lib/api';
-import { DOCUMENTS_WITH_EXPIRY, documentName } from '../lib/documents';
+import { documentsApi } from '../api/documentsApi';
 import { useAction } from '../hooks/useAction';
+import type { DocumentEntityType } from '../types';
+import { DOCUMENTS_WITH_EXPIRY, documentName } from '../utils/documents';
 import { Alert } from './Alert';
 import { Button } from './Button';
 import { Dialog } from './Dialog';
@@ -9,8 +10,8 @@ import { Field } from './Field';
 
 interface UploadDialogProps {
   title: string;
-  /** Owner, Driver, Customer or Vehicle. */
-  entityType: string;
+  /** KYC documents belong to the signed-in owner or driver; vehicle documents need the vehicle id. */
+  entityType: DocumentEntityType;
   /** Only needed for vehicles. */
   entityId?: number;
   docTypes: string[];
@@ -18,7 +19,7 @@ interface UploadDialogProps {
   onDone: () => void;
 }
 
-/** Upload form for KYC and vehicle documents (POST /api/documents). */
+/** Upload form for KYC and vehicle documents (POST /documents). */
 export function UploadDialog({ title, entityType, entityId, docTypes, onClose, onDone }: UploadDialogProps) {
   const [docType, setDocType] = useState(docTypes[0]);
   const [documentNumber, setDocumentNumber] = useState('');
@@ -32,21 +33,14 @@ export function UploadDialog({ title, entityType, entityId, docTypes, onClose, o
 
   const submit = () =>
     upload.run(async () => {
-      const form = new FormData();
-      form.set('entityType', entityType);
-      if (entityId) {
-        form.set('entityId', String(entityId));
-      }
-      form.set('docType', docType);
-      if (documentNumber && !isAadhaar) {
-        form.set('documentNumber', documentNumber);
-      }
-      if (expiryDate) {
-        form.set('expiryDate', expiryDate);
-      }
-      form.set('file', file!);
-
-      await api('/documents', { form });
+      await documentsApi.upload({
+        entityType,
+        entityId,
+        docType,
+        documentNumber: isAadhaar ? undefined : documentNumber.trim() || undefined,
+        expiryDate: expiryDate || undefined,
+        file: file!,
+      });
       onDone();
     });
 

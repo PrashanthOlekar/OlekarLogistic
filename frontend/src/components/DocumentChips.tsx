@@ -1,7 +1,7 @@
-import { openDocument } from '../lib/api';
-import { documentName } from '../lib/documents';
-import type { DocumentChip } from '../lib/types';
-import { useToast } from '../state/ToastContext';
+import { documentsApi } from '../api/documentsApi';
+import type { DocumentChip } from '../types';
+import { documentName } from '../utils/documents';
+import { useToast } from './Toast';
 
 const CHIP_COLOUR: Record<string, string> = { Verified: 'green', Rejected: 'red' };
 
@@ -26,7 +26,7 @@ export function DocumentChips({
           key={document.id}
           type="button"
           className={`pill ${showStatusMark ? 'grey' : (CHIP_COLOUR[document.status] ?? 'grey')}`}
-          onClick={() => openDocument(document.id).catch((error) => toast(error.message, 'error'))}
+          onClick={() => documentsApi.open(document.id).catch((error) => toast(error.message, 'error'))}
         >
           {documentName(document.docType)}
           {showStatusMark && `: ${statusMark(document.status)}`}

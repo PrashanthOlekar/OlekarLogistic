@@ -1,12 +1,13 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useNavigate } from 'react-router';
+import { bookingsApi } from '../../api/bookingsApi';
+import { toApiError } from '../../api/errors';
+import { referenceDataApi } from '../../api/referenceDataApi';
 import { Alert, Button, Field, MoneyRow, MoneyRows, PageHead } from '../../components';
 import { useAction } from '../../hooks/useAction';
-import { api } from '../../lib/api';
-import { inr, kg, plural, today } from '../../lib/format';
-import { getMeta } from '../../lib/meta';
-import { navigate } from '../../lib/router';
-import type { Meta } from '../../lib/types';
-import type { PriceEstimate } from './types';
+import { getReferenceData } from '../../services/referenceData';
+import type { PriceEstimate, ReferenceData } from '../../types';
+import { inr, kg, plural, today } from '../../utils/format';
 
 const PICKUP_SLOTS = ['Morning (6–10 am)', 'Midday (10 am–2 pm)', 'Afternoon (2–6 pm)', 'Night (after 8 pm)'];
 
@@ -36,7 +37,8 @@ type BookingForm = typeof EMPTY_BOOKING;
 type InputEvent = ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
 
 export function NewBookingPage() {
-  const [meta, setMeta] = useState<Meta | null>(null);
+  const navigate = useNavigate();
+  const [meta, setMeta] = useState<ReferenceData | null>(null);
   const [form, setForm] = useState<BookingForm>(EMPTY_BOOKING);
   const [estimate, setEstimate] = useState<PriceEstimate | null>(null);
   const [estimateError, setEstimateError] = useState<string | null>(null);
@@ -57,12 +59,12 @@ export function NewBookingPage() {
 
   // Load the lists and pre-fill a common route: Bengaluru → Hubballi in a 14 ft truck.
   useEffect(() => {
-    getMeta()
+    getReferenceData()
       .then((loaded) => {
         setMeta(loaded);
         setForm((current) => ({ ...current, ...defaultChoices(loaded) }));
       })
-      .catch((error) => setEstimateError(error.message));
+      .catch((error) => setEstimateError(toApiError(error).message));
   }, []);
 
   // Live price: the server re-quotes whenever the route, vehicle or weight changes.
@@ -72,23 +74,40 @@ export function NewBookingPage() {
       return;
     }
 
+    // Cancel the previous request when the form changes again, so an old price never wins.
+    const controller = new AbortController();
     const timer = setTimeout(() => {
-      api<PriceEstimate>('/quotes/estimate', { body: { pickupCityId, dropCityId, vehicleTypeId, weightKg } })
+      referenceDataApi
+        .estimatePrice({ pickupCityId, dropCityId, vehicleTypeId, weightKg }, controller.signal)
         .then((result) => {
           setEstimate(result);
           setEstimateError(null);
         })
-        .catch((error) => setEstimateError(error.message));
+        .catch((error) => {
+          if (!controller.signal.aborted) {
+            setEstimateError(toApiError(error).message);
+          }
+        });
     }, ESTIMATE_DELAY_MS);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
   }, [form.pickupCityId, form.dropCityId, form.vehicleTypeId, form.weightKg]);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
     save.run(async () => {
-      const body = { ...form, goodsValue: form.goodsValue ? Number(form.goodsValue) : null };
-      const created = await api<{ id: number }>('/bookings', { body });
+      const created = await bookingsApi.create({
+        ...form,
+        goodsValue: form.goodsValue ? Number(form.goodsValue) : null,
+        pickupContactName: form.pickupContactName || null,
+        pickupContactPhone: form.pickupContactPhone || null,
+        dropContactName: form.dropContactName || null,
+        dropContactPhone: form.dropContactPhone || null,
+        specialInstructions: form.specialInstructions || null,
+      });
       navigate(`/customer/bookings/${created.id}`);
     });
   };
@@ -280,7 +299,7 @@ export function NewBookingPage() {
 }
 
 /** The starting route and vehicle shown when the page opens. */
-function defaultChoices(meta: Meta): Partial<BookingForm> {
+function defaultChoices(meta: ReferenceData): Partial<BookingForm> {
   const cityId = (name: string, fallbackIndex: number) =>
     meta.cities.find((city) => city.name === name)?.id ?? meta.cities[fallbackIndex]?.id ?? 0;
 

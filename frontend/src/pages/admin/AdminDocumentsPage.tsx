@@ -1,13 +1,22 @@
 import { useState } from 'react';
-import { Alert, Button, EmptyCard, Loading, PageHead, Pill, ReasonDialog } from '../../components';
+import { documentsApi } from '../../api/documentsApi';
+import {
+  Alert,
+  Button,
+  EmptyCard,
+  Loading,
+  PageHead,
+  Pagination,
+  Pill,
+  ReasonDialog,
+  useToast,
+} from '../../components';
+import { StatusFilter } from '../../features/admin/StatusFilter';
 import { useAction } from '../../hooks/useAction';
-import { useLoad } from '../../hooks/useLoad';
-import { api, openDocument } from '../../lib/api';
-import { documentName } from '../../lib/documents';
-import { date, dateTime } from '../../lib/format';
-import { useToast } from '../../state/ToastContext';
-import { StatusFilter, withStatus } from './StatusFilter';
-import type { AdminDocument } from './types';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import type { DocumentListItem } from '../../types';
+import { documentName } from '../../utils/documents';
+import { date, dateTime } from '../../utils/format';
 
 const FILTERS: [string, string][] = [
   ['Pending', 'Pending'],
@@ -19,19 +28,19 @@ const FILTERS: [string, string][] = [
 export function AdminDocumentsPage() {
   const toast = useToast();
   const [status, setStatus] = useState('Pending');
-  const documents = useLoad(() => api<AdminDocument[]>(withStatus('/admin/documents', status)), [status]);
-  const [rejecting, setRejecting] = useState<AdminDocument | null>(null);
+  const documents = usePagedLoad((page) => documentsApi.list({ ...page, status }), [status]);
+  const [rejecting, setRejecting] = useState<DocumentListItem | null>(null);
   const review = useAction();
 
   const decide = (id: number, approve: boolean, reason?: string) =>
     review.run(async () => {
-      await api(`/admin/documents/${id}/review`, { body: { approve, reason } });
+      await documentsApi.review(id, { approve, reason });
       setRejecting(null);
       toast(approve ? 'Document verified.' : 'Document rejected.');
       documents.reload();
     });
 
-  const open = (id: number) => openDocument(id).catch((error) => toast(error.message, 'error'));
+  const open = (id: number) => documentsApi.open(id).catch((error) => toast(error.message, 'error'));
 
   return (
     <>
@@ -47,9 +56,9 @@ export function AdminDocumentsPage() {
 
       <Loading state={documents} />
 
-      {documents.data?.length === 0 && <EmptyCard title="Nothing here" />}
+      {documents.items?.length === 0 && <EmptyCard title="Nothing here" />}
 
-      {!!documents.data?.length && (
+      {!!documents.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -64,7 +73,7 @@ export function AdminDocumentsPage() {
               </tr>
             </thead>
             <tbody>
-              {documents.data.map((document) => (
+              {documents.items.map((document) => (
                 <tr key={document.id}>
                   <td>
                     <button type="button" className="btn btn-ghost btn-sm" onClick={() => open(document.id)}>
@@ -101,6 +110,7 @@ export function AdminDocumentsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={documents.data} onPageChange={documents.setPageNumber} />
         </div>
       )}
 

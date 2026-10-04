@@ -1,12 +1,23 @@
 import { useState } from 'react';
-import { Alert, Button, EmptyCard, Loading, PageHead, Pill, RouteLabel } from '../../components';
+import { documentsApi } from '../../api/documentsApi';
+import { tripsApi } from '../../api/tripsApi';
+import {
+  Alert,
+  Button,
+  EmptyCard,
+  Loading,
+  PageHead,
+  Pagination,
+  Pill,
+  RouteLabel,
+  useToast,
+} from '../../components';
+import { SearchBox } from '../../features/admin/SearchBox';
+import { StatusFilter } from '../../features/admin/StatusFilter';
 import { useAction } from '../../hooks/useAction';
-import { useLoad } from '../../hooks/useLoad';
-import { api, openDocument } from '../../lib/api';
-import { dateTime } from '../../lib/format';
-import { useToast } from '../../state/ToastContext';
-import { StatusFilter, withStatus } from './StatusFilter';
-import type { AdminTrip } from './types';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import type { TripListItem } from '../../types';
+import { dateTime } from '../../utils/format';
 
 const FILTERS: [string, string][] = [
   ['', 'All'],
@@ -18,19 +29,23 @@ const FILTERS: [string, string][] = [
 export function AdminTripsPage() {
   const toast = useToast();
   const [status, setStatus] = useState('');
-  const trips = useLoad(() => api<AdminTrip[]>(withStatus('/admin/trips', status)), [status]);
+  const [search, setSearch] = useState('');
+  const trips = usePagedLoad(
+    (page) => tripsApi.list({ ...page, status, search, sort: 'Newest' }),
+    [status, search],
+  );
   const approve = useAction();
 
   /** Approving the POD completes the trip, issues the invoice and unlocks the owner's payout. */
-  const approvePod = (trip: AdminTrip) =>
+  const approvePod = (trip: TripListItem) =>
     approve.run(async () => {
-      await api(`/admin/trips/${trip.id}/approve-pod`, { method: 'POST' });
+      await tripsApi.approvePod(trip.id);
       toast(`POD approved. Invoice issued and ${trip.owner}'s payout is ready to send.`);
       trips.reload();
     });
 
   const viewPod = (documentId: number) =>
-    openDocument(documentId).catch((error) => toast(error.message, 'error'));
+    documentsApi.open(documentId).catch((error) => toast(error.message, 'error'));
 
   return (
     <>
@@ -38,6 +53,7 @@ export function AdminTripsPage() {
         title="Trips & POD"
         sub="Open the delivery receipt and approve it to close the trip, issue the invoice and unlock the owner's payout."
       >
+        <SearchBox placeholder="Trip, booking or vehicle no." onSearch={setSearch} />
         <StatusFilter options={FILTERS} value={status} onChange={setStatus} />
       </PageHead>
 
@@ -49,9 +65,9 @@ export function AdminTripsPage() {
 
       <Loading state={trips} />
 
-      {trips.data?.length === 0 && <EmptyCard title="No trips" />}
+      {trips.items?.length === 0 && <EmptyCard title="No trips" />}
 
-      {!!trips.data?.length && (
+      {!!trips.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -66,7 +82,7 @@ export function AdminTripsPage() {
               </tr>
             </thead>
             <tbody>
-              {trips.data.map((trip) => (
+              {trips.items.map((trip) => (
                 <tr key={trip.id}>
                   <td className="mono">
                     {trip.tripNumber}
@@ -108,6 +124,7 @@ export function AdminTripsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={trips.data} onPageChange={trips.setPageNumber} />
         </div>
       )}
     </>

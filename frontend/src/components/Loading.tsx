@@ -24,3 +24,12 @@ export function Loading({ state }: LoadingProps) {
 
   return null;
 }
+
+/** Shown while a saved sign-in is being renewed, before any page can render. */
+export function FullPageLoading() {
+  return (
+    <div className="empty full-page" role="status">
+      <span className="spin" /> Loading…
+    </div>
+  );
+}

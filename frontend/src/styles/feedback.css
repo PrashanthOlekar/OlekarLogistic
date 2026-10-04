@@ -147,3 +147,9 @@ button.pill {
   align-items: center;
   gap: 12px;
 }
+
+/* ---------- start-up: the saved sign-in is being renewed ---------- */
+.empty.full-page {
+  min-height: 100vh;
+  align-content: center;
+}

@@ -1,11 +1,10 @@
-import { EmptyCard, Loading, PageHead, Pill, RouteLabel } from '../../components';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date, inr } from '../../lib/format';
-import type { OwnerTrip } from './types';
+import { tripsApi } from '../../api/tripsApi';
+import { EmptyCard, Loading, PageHead, Pagination, Pill, RouteLabel } from '../../components';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { date, inr } from '../../utils/format';
 
 export function OwnerTripsPage() {
-  const trips = useLoad(() => api<OwnerTrip[]>('/owner/trips'));
+  const trips = usePagedLoad((page) => tripsApi.list({ ...page, sort: 'Newest' }));
 
   return (
     <>
@@ -13,11 +12,11 @@ export function OwnerTripsPage() {
 
       <Loading state={trips} />
 
-      {trips.data?.length === 0 && (
+      {trips.items?.length === 0 && (
         <EmptyCard title="No trips yet">Take a load from the overview page to start.</EmptyCard>
       )}
 
-      {!!trips.data?.length && (
+      {!!trips.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -32,7 +31,7 @@ export function OwnerTripsPage() {
               </tr>
             </thead>
             <tbody>
-              {trips.data.map((trip) => (
+              {trips.items.map((trip) => (
                 <tr key={trip.id}>
                   <td className="mono">{trip.tripNumber}</td>
                   <td>
@@ -49,6 +48,7 @@ export function OwnerTripsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={trips.data} onPageChange={trips.setPageNumber} />
         </div>
       )}
     </>

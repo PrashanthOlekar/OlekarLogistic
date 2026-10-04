@@ -1,12 +1,13 @@
-import { EmptyCard, Loading, PageHead, Pill } from '../../components';
+import { dashboardsApi } from '../../api/adminApi';
+import { settlementsApi } from '../../api/settlementsApi';
+import { EmptyCard, Loading, PageHead, Pagination, Pill } from '../../components';
 import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { dateTime, inr } from '../../lib/format';
-import type { OwnerPayout, OwnerSummary } from './types';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { dateTime, inr } from '../../utils/format';
 
 export function PayoutsPage() {
-  const payouts = useLoad(() => api<OwnerPayout[]>('/owner/settlements'));
-  const summary = useLoad(() => api<OwnerSummary>('/owner/summary'));
+  const payouts = usePagedLoad((page) => settlementsApi.list(page));
+  const summary = useLoad(() => dashboardsApi.getOwner());
 
   const bank = summary.data?.bank;
   const subtitle = bank
@@ -19,13 +20,13 @@ export function PayoutsPage() {
 
       <Loading state={payouts} />
 
-      {payouts.data?.length === 0 && (
+      {payouts.items?.length === 0 && (
         <EmptyCard title="No payouts yet">
           Your first payout appears here after your first delivery.
         </EmptyCard>
       )}
 
-      {!!payouts.data?.length && (
+      {!!payouts.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -40,7 +41,7 @@ export function PayoutsPage() {
               </tr>
             </thead>
             <tbody>
-              {payouts.data.map((payout) => (
+              {payouts.items.map((payout) => (
                 <tr key={payout.id}>
                   <td className="mono">{payout.trip}</td>
                   <td className="num">{inr(payout.grossAmount)}</td>
@@ -59,6 +60,7 @@ export function PayoutsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={payouts.data} onPageChange={payouts.setPageNumber} />
         </div>
       )}
     </>

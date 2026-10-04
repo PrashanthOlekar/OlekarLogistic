@@ -9,15 +9,16 @@ import {
   MoneyRow,
   MoneyRows,
   PageHead,
+  Pagination,
   Pill,
+  useToast,
 } from '../../components';
+import { settlementsApi } from '../../api/settlementsApi';
+import { StatusFilter } from '../../features/admin/StatusFilter';
 import { useAction } from '../../hooks/useAction';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { inr } from '../../lib/format';
-import { useToast } from '../../state/ToastContext';
-import { StatusFilter, withStatus } from './StatusFilter';
-import type { AdminSettlement } from './types';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import type { SettlementListItem } from '../../types';
+import { inr } from '../../utils/format';
 
 const FILTERS: [string, string][] = [
   ['Approved', 'Ready to pay'],
@@ -29,13 +30,10 @@ const FILTERS: [string, string][] = [
 export function SettlementsPage() {
   const toast = useToast();
   const [status, setStatus] = useState('Approved');
-  const settlements = useLoad(
-    () => api<AdminSettlement[]>(withStatus('/admin/settlements', status)),
-    [status],
-  );
-  const [releasing, setReleasing] = useState<AdminSettlement | null>(null);
+  const settlements = usePagedLoad((page) => settlementsApi.list({ ...page, status }), [status]);
+  const [releasing, setReleasing] = useState<SettlementListItem | null>(null);
 
-  const handleReleased = (settlement: AdminSettlement) => {
+  const handleReleased = (settlement: SettlementListItem) => {
     toast(`${inr(settlement.netAmount)} recorded as paid to ${settlement.owner}.`);
     setReleasing(null);
     settlements.reload();
@@ -52,9 +50,9 @@ export function SettlementsPage() {
 
       <Loading state={settlements} />
 
-      {settlements.data?.length === 0 && <EmptyCard title="Nothing here" />}
+      {settlements.items?.length === 0 && <EmptyCard title="Nothing here" />}
 
-      {!!settlements.data?.length && (
+      {!!settlements.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -70,7 +68,7 @@ export function SettlementsPage() {
               </tr>
             </thead>
             <tbody>
-              {settlements.data.map((settlement) => (
+              {settlements.items.map((settlement) => (
                 <tr key={settlement.id}>
                   <td className="mono">{settlement.trip}</td>
                   <td>{settlement.owner}</td>
@@ -95,6 +93,7 @@ export function SettlementsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={settlements.data} onPageChange={settlements.setPageNumber} />
         </div>
       )}
 
@@ -110,7 +109,7 @@ export function SettlementsPage() {
 }
 
 interface ReleasePayoutDialogProps {
-  settlement: AdminSettlement;
+  settlement: SettlementListItem;
   onClose: () => void;
   onReleased: () => void;
 }
@@ -122,7 +121,7 @@ function ReleasePayoutDialog({ settlement, onClose, onReleased }: ReleasePayoutD
 
   const submit = () =>
     release.run(async () => {
-      await api(`/admin/settlements/${settlement.id}/release`, { body: { utr } });
+      await settlementsApi.recordPayout(settlement.id, utr.trim());
       onReleased();
     });
 

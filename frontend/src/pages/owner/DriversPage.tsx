@@ -1,11 +1,10 @@
-import { EmptyCard, Loading, PageHead, Pill } from '../../components';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date } from '../../lib/format';
-import type { OwnerDriver } from './types';
+import { driversApi } from '../../api/driversApi';
+import { EmptyCard, Loading, PageHead, Pagination, Pill } from '../../components';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { date } from '../../utils/format';
 
 export function DriversPage() {
-  const drivers = useLoad(() => api<OwnerDriver[]>('/owner/drivers'));
+  const drivers = usePagedLoad((page) => driversApi.list(page));
 
   return (
     <>
@@ -16,14 +15,14 @@ export function DriversPage() {
 
       <Loading state={drivers} />
 
-      {drivers.data?.length === 0 && (
+      {drivers.items?.length === 0 && (
         <EmptyCard title="No drivers linked yet">
           Ask your driver to open the ProCargo portal, choose “I drive”, and enter your mobile number as their
           owner.
         </EmptyCard>
       )}
 
-      {!!drivers.data?.length && (
+      {!!drivers.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -37,7 +36,7 @@ export function DriversPage() {
               </tr>
             </thead>
             <tbody>
-              {drivers.data.map((driver) => (
+              {drivers.items.map((driver) => (
                 <tr key={driver.id}>
                   <td>
                     <b>{driver.name}</b>
@@ -57,6 +56,7 @@ export function DriversPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={drivers.data} onPageChange={drivers.setPageNumber} />
         </div>
       )}
     </>

@@ -1,25 +1,26 @@
 import { useState } from 'react';
-import { Alert, Button, Empty, Loading, PageHead, RouteLabel, Stat } from '../../components';
+import { Link } from 'react-router';
+import { dashboardsApi } from '../../api/adminApi';
+import { driversApi } from '../../api/driversApi';
+import { loadsApi } from '../../api/loadsApi';
+import { Alert, Button, Empty, Loading, PageHead, RouteLabel, Stat, useToast } from '../../components';
+import { TakeLoadDialog } from '../../features/fleet/TakeLoadDialog';
 import { useAction } from '../../hooks/useAction';
 import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date, inr, kg, plural } from '../../lib/format';
-import { Link } from '../../lib/router';
-import { useToast } from '../../state/ToastContext';
-import { TakeLoadDialog } from './TakeLoadDialog';
-import type { AvailableLoad, LoadsResult, OwnerDriver, OwnerSummary } from './types';
+import { MAX_PAGE_SIZE, type AvailableLoad } from '../../types';
+import { date, inr, kg, plural } from '../../utils/format';
 
 export function OwnerHomePage() {
   const toast = useToast();
-  const summary = useLoad(() => api<OwnerSummary>('/owner/summary'));
-  const loads = useLoad(() => api<LoadsResult>('/owner/loads'));
-  const drivers = useLoad(() => api<OwnerDriver[]>('/owner/drivers'));
+  const summary = useLoad(() => dashboardsApi.getOwner());
+  const loads = useLoad(() => loadsApi.listAvailable());
+  const drivers = useLoad(() => driversApi.list({ pageSize: MAX_PAGE_SIZE, dutyStatus: 'Available' }));
   const [taking, setTaking] = useState<AvailableLoad | null>(null);
   const decline = useAction();
 
   const declineLoad = (load: AvailableLoad) =>
     decline.run(async () => {
-      await api(`/owner/loads/${load.id}/decline`, { method: 'POST' });
+      await loadsApi.decline(load.id);
       loads.reload();
     });
 
@@ -95,7 +96,7 @@ export function OwnerHomePage() {
       {taking && (
         <TakeLoadDialog
           load={taking}
-          drivers={drivers.data ?? []}
+          drivers={drivers.data?.items ?? []}
           onClose={() => setTaking(null)}
           onTaken={handleTaken}
         />
@@ -104,7 +105,7 @@ export function OwnerHomePage() {
   );
 }
 
-function KycAlert({ kycStatus, rejectionReason }: { kycStatus: string; rejectionReason?: string }) {
+function KycAlert({ kycStatus, rejectionReason }: { kycStatus: string; rejectionReason?: string | null }) {
   const documentsLink = <Link to="/owner/documents">KYC documents</Link>;
 
   if (kycStatus === 'Rejected') {

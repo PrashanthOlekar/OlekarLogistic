@@ -1,21 +1,25 @@
-import { EmptyCard, Loading, PageHead, Pill } from '../../components';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { dateTime, inr } from '../../lib/format';
-import type { AdminPayment } from './types';
+import { useState } from 'react';
+import { paymentsApi } from '../../api/adminApi';
+import { EmptyCard, Loading, PageHead, Pagination, Pill } from '../../components';
+import { SearchBox } from '../../features/admin/SearchBox';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { dateTime, inr } from '../../utils/format';
 
 export function PaymentsPage() {
-  const payments = useLoad(() => api<AdminPayment[]>('/admin/payments'));
+  const [search, setSearch] = useState('');
+  const payments = usePagedLoad((page) => paymentsApi.list({ ...page, search }), [search]);
 
   return (
     <>
-      <PageHead title="Payments" sub="Customer payments. Money is held until delivery is confirmed." />
+      <PageHead title="Payments" sub="Customer payments. Money is held until delivery is confirmed.">
+        <SearchBox placeholder="Booking no. or customer" onSearch={setSearch} />
+      </PageHead>
 
       <Loading state={payments} />
 
-      {payments.data?.length === 0 && <EmptyCard title="No payments yet" />}
+      {payments.items?.length === 0 && <EmptyCard title="No payments yet" />}
 
-      {!!payments.data?.length && (
+      {!!payments.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -30,7 +34,7 @@ export function PaymentsPage() {
               </tr>
             </thead>
             <tbody>
-              {payments.data.map((payment) => (
+              {payments.items.map((payment) => (
                 <tr key={payment.id}>
                   <td>{dateTime(payment.paidAt)}</td>
                   <td className="mono">{payment.bookingNumber}</td>
@@ -48,6 +52,7 @@ export function PaymentsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={payments.data} onPageChange={payments.setPageNumber} />
         </div>
       )}
     </>

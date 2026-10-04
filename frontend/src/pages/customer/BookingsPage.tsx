@@ -1,12 +1,12 @@
-import { EmptyCard, Loading, PageHead, Pill, RouteLabel } from '../../components';
-import { useLoad } from '../../hooks/useLoad';
-import { api } from '../../lib/api';
-import { date, inr, kg } from '../../lib/format';
-import { Link, navigate } from '../../lib/router';
-import type { BookingRow } from './types';
+import { Link, useNavigate } from 'react-router';
+import { bookingsApi } from '../../api/bookingsApi';
+import { EmptyCard, Loading, PageHead, Pagination, Pill, RouteLabel } from '../../components';
+import { usePagedLoad } from '../../hooks/usePagedLoad';
+import { date, inr, kg } from '../../utils/format';
 
 export function BookingsPage() {
-  const bookings = useLoad(() => api<BookingRow[]>('/bookings'));
+  const navigate = useNavigate();
+  const bookings = usePagedLoad((page) => bookingsApi.list({ ...page, sort: 'Newest' }));
 
   return (
     <>
@@ -18,11 +18,11 @@ export function BookingsPage() {
 
       <Loading state={bookings} />
 
-      {bookings.data?.length === 0 && (
+      {bookings.items?.length === 0 && (
         <EmptyCard title="No bookings yet">Book your first truck and it will appear here.</EmptyCard>
       )}
 
-      {!!bookings.data?.length && (
+      {!!bookings.items?.length && (
         <div className="card table-wrap">
           <table>
             <thead>
@@ -37,7 +37,7 @@ export function BookingsPage() {
               </tr>
             </thead>
             <tbody>
-              {bookings.data.map((booking) => (
+              {bookings.items.map((booking) => (
                 <tr
                   key={booking.id}
                   className="link"
@@ -62,6 +62,7 @@ export function BookingsPage() {
               ))}
             </tbody>
           </table>
+          <Pagination page={bookings.data} onPageChange={bookings.setPageNumber} />
         </div>
       )}
     </>

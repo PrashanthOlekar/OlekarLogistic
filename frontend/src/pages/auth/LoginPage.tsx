@@ -1,16 +1,23 @@
 import { useState, type FormEvent } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { authApi } from '../../api/authApi';
+import { useAuth } from '../../auth';
+import type { SessionEndReason } from '../../auth/sessionEvents';
 import { Alert, Button } from '../../components';
+import { OtpStep } from '../../features/auth/OtpStep';
 import { useAction } from '../../hooks/useAction';
-import { AuthLayout } from '../../layout/AuthLayout';
-import { HOME_PAGES } from '../../layout/navigation';
-import { api } from '../../lib/api';
-import { Link, navigate } from '../../lib/router';
-import type { SignInResult } from '../../lib/types';
-import { useAuth } from '../../state/AuthContext';
-import { OtpStep } from './OtpStep';
+import { AuthLayout } from '../../layouts/AuthLayout';
+import { HOME_PAGES } from '../../routes/navigation';
+
+const END_MESSAGES: Partial<Record<SessionEndReason, string>> = {
+  expired: 'Your session has ended. Please sign in again.',
+  'account-inactive': 'This account is not active. Contact ProCargo support.',
+};
 
 export function LoginPage() {
-  const { signIn } = useAuth();
+  const { signIn, endReason } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [mobile, setMobile] = useState('');
   const [code, setCode] = useState('');
   const login = useAction();
@@ -18,9 +25,10 @@ export function LoginPage() {
   const submit = (event: FormEvent) => {
     event.preventDefault();
     login.run(async () => {
-      const result = await api<SignInResult>('/auth/login', { body: { mobile, code } });
-      signIn(result.token, result.user);
-      navigate(HOME_PAGES[result.user.role], true);
+      const result = await authApi.login({ mobile, code });
+      signIn(result);
+      const from = (location.state as { from?: string } | null)?.from;
+      navigate(from ?? HOME_PAGES[result.user.role], { replace: true });
     });
   };
 
@@ -31,6 +39,8 @@ export function LoginPage() {
           <h1>Sign in</h1>
           <p className="muted">We'll send a one-time code to your mobile.</p>
         </div>
+
+        {endReason && END_MESSAGES[endReason] && <Alert kind="warn">{END_MESSAGES[endReason]}</Alert>}
 
         <OtpStep
           purpose="Login"
