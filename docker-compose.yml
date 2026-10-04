@@ -1,0 +1,63 @@
+# The whole of ProCargo on one machine: SQL Server, the API and the portal.
+#
+#   cp .env.example .env        # then set your own passwords and keys
+#   docker compose up --build
+#
+# Portal: http://localhost:8080   (it forwards /api to the API, so there is only one address)
+# API docs (Development only): http://localhost:5080/swagger
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SQL_SA_PASSWORD:?Set SQL_SA_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:1433:1433"
+    volumes:
+      - sql-data:/var/opt/mssql
+
+  # Runs once: creates the database, or updates the stored procedures if it already exists.
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      - sql
+    environment:
+      MSSQL_SA_PASSWORD: ${SQL_SA_PASSWORD}
+      SQL_HOST: sql
+    volumes:
+      - ./database:/database:ro
+    entrypoint: ["/bin/bash", "/database/docker-init.sh"]
+    restart: "no"
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: src/ProCargo.API/Dockerfile
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${PROCARGO_ENVIRONMENT:-Development}
+      Database__ConnectionString: "Server=sql;Database=ProCargo;User Id=sa;Password=${SQL_SA_PASSWORD};TrustServerCertificate=True"
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY in .env}
+      Cors__AllowedOrigins__0: http://localhost:8080
+      Seed__AdminMobile: ${ADMIN_MOBILE:-9999999999}
+      # nginx (the portal container) is on the Docker network; trust its X-Forwarded-For.
+      ReverseProxy__KnownNetworks__0: 172.16.0.0/12
+    ports:
+      - "127.0.0.1:5080:8080"
+    volumes:
+      # Uploaded files and the keys that encrypt PAN, bank account numbers and trip codes.
+      # Back this up: without the keys, encrypted data can't be read.
+      - api-data:/app/App_Data
+
+  portal:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "8080:8080"
+
+volumes:
+  sql-data:
+  api-data:

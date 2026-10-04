@@ -1,6 +1,7 @@
 // ProCargo API — start-up.
 // Each concern is registered in its own file under Extensions/:
-//   services: ApiServiceExtensions, AuthenticationExtensions, CorsExtensions, RateLimitingExtensions, OpenApiExtensions
+//   services: ApiServiceExtensions, AuthenticationExtensions, CorsExtensions, RateLimitingExtensions, OpenApiExtensions,
+//             ForwardedHeadersExtensions
 //   pipeline: WebApplicationExtensions
 
 using ProCargo.API.Extensions;
@@ -17,6 +18,7 @@ builder.Services.AddProCargoAuthentication();
 builder.Services.AddProCargoCors(builder.Configuration);
 builder.Services.AddProCargoRateLimiting(builder.Configuration);
 builder.Services.AddProCargoOpenApi();
+builder.Services.AddProCargoForwardedHeaders(builder.Configuration);
 
 WebApplication app = builder.Build();
 

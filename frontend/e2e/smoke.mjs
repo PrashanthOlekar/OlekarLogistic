@@ -35,6 +35,9 @@ const plate = `KA${String(10 + (Number(run) % 89))}E${String(1000 + (Number(run)
 
 let step = 'start';
 const problems = [];
+/** Recent failed requests and console errors, shown if a step fails. */
+const recent = [];
+const pages = [];
 
 function log(message) {
   step = message;
@@ -52,8 +55,15 @@ async function newRolePage(browser) {
   page.on('response', (response) => {
     if (response.status() >= 500) {
       problems.push(`${response.status()} from ${response.request().method()} ${response.url()}`);
+    } else if (response.status() >= 400) {
+      recent.push(`${response.status()} ${response.request().method()} ${response.url()}`);
     }
   });
+  page.on('requestfailed', (request) => recent.push(`failed ${request.method()} ${request.url()}: ${request.failure()?.errorText}`));
+  page.on('console', (message) => {
+    if (message.type() === 'error') recent.push(`console: ${message.text()}`);
+  });
+  pages.push(page);
   return page;
 }
 
@@ -285,6 +295,9 @@ async function main() {
     await owner.getByLabel('6-digit code').fill('000000');
     await owner.getByRole('button', { name: 'Sign in' }).click();
     await owner.getByRole('alert').waitFor();
+  } catch (error) {
+    error.pagesSeen = await describePages();
+    throw error;
   } finally {
     await browser.close();
   }
@@ -295,8 +308,23 @@ async function main() {
   console.log('✔ Portal smoke test passed');
 }
 
-main().catch((error) => {
-  const detail = [error.message.split('\n')[0], ...problems].join(' | ');
+/** What each open page shows: its address and any alert or error text. */
+async function describePages() {
+  // Called before the browser closes.
+  const descriptions = [];
+  for (const page of pages) {
+    try {
+      const alerts = await page.locator('.alert, .err').allInnerTexts();
+      descriptions.push(`${page.url()} ${alerts.length ? `alerts: ${alerts.join(' / ')}` : ''}`);
+    } catch {
+      /* page already closed */
+    }
+  }
+  return descriptions;
+}
+
+main().catch(async (error) => {
+  const detail = [error.message.split('\n')[0], ...problems, ...recent.slice(-8), ...(error.pagesSeen ?? [])].join(' | ');
   console.error(error);
   console.log(`::error title=Portal smoke test failed at "${step}"::${detail.replace(/\r?\n/g, ' ')}`);
   process.exit(1);

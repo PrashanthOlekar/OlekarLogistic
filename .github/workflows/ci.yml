@@ -186,3 +186,15 @@ jobs:
         working-directory: backend
         run: |
           grep -E "fail:|Exception" -A3 api.log | head -40 | tr '\n' ' ' | sed 's/^/::error title=API log::/' || true
+
+  # The images docker-compose.yml builds.
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build the API image
+        run: docker build -f backend/src/ProCargo.API/Dockerfile -t procargo-api backend
+      - name: Build the portal image
+        run: docker build -t procargo-portal frontend
+      - name: Check the compose file
+        run: cp .env.example .env && docker compose config --quiet

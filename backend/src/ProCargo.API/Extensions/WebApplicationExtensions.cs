@@ -11,6 +11,7 @@ public static class WebApplicationExtensions
     /// <summary>The request pipeline, in order.</summary>
     public static WebApplication UseProCargoPipeline(this WebApplication app)
     {
+        app.UseForwardedHeaders();
         app.UseExceptionHandler();
         app.UseStatusCodePages();
         app.UseMiddleware<SecurityHeadersMiddleware>();
