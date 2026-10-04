@@ -15,7 +15,8 @@ public static class ApiServiceExtensions
     public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
     {
         services
-            .AddControllers()
+            // Required fields are checked by the FluentValidation validators, which give friendlier messages.
+            .AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
             .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter()));
 
         services.AddProblemDetails(options => options.CustomizeProblemDetails = context =>
