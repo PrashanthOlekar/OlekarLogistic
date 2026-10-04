@@ -4,6 +4,7 @@ obj/
 *.user
 .vs/
 backend/ProCargo.Api/App_Data/
+App_Data/
 
 # Node
 node_modules/

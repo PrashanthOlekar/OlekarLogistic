@@ -107,3 +107,82 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm run build
+
+  # The whole business through the built portal, the real API and SQL Server (Playwright, Chromium).
+  e2e:
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    env:
+      SA_PASSWORD: 'Ci_Passw0rd!2026'
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Start SQL Server and install the database
+        run: |
+          docker run -d --name sql -e ACCEPT_EULA=Y -e "MSSQL_SA_PASSWORD=$SA_PASSWORD" \
+            -p 1433:1433 -v "$GITHUB_WORKSPACE/database:/database:ro" \
+            mcr.microsoft.com/mssql/server:2022-latest
+          for i in $(seq 1 60); do
+            docker exec sql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$SA_PASSWORD" -C -Q "SELECT 1" >/dev/null 2>&1 && break
+            sleep 2
+          done
+          docker exec -w /database sql /opt/mssql-tools18/bin/sqlcmd \
+            -S localhost -U sa -P "$SA_PASSWORD" -C -I -b -i install-all.sql
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: backend/global.json
+
+      - name: Start the API (Development, so sign-in codes are returned)
+        working-directory: backend
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          Database__ConnectionString: "Server=localhost,1433;Database=ProCargo;User Id=sa;Password=${{ env.SA_PASSWORD }};TrustServerCertificate=True"
+          Jwt__SigningKey: ci-e2e-signing-key-0123456789abcdef0123456789
+          Cors__AllowedOrigins__0: http://localhost:4173
+          RateLimiting__AuthPermitsPerMinute: '200'
+          RateLimiting__RequestsPerMinute: '5000'
+        run: |
+          dotnet build src/ProCargo.API -c Release
+          nohup dotnet run --project src/ProCargo.API -c Release --no-build --urls http://localhost:5080 > api.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:5080/health >/dev/null && echo "API is up" && exit 0
+            sleep 2
+          done
+          cat api.log; exit 1
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Build and serve the portal
+        working-directory: frontend
+        env:
+          VITE_API_BASE_URL: http://localhost:5080/api/v1
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          nohup npx vite preview --port 4173 --strictPort > preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:4173/ >/dev/null && exit 0; sleep 1; done
+          cat preview.log; exit 1
+
+      - name: Install Playwright
+        working-directory: frontend
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.0
+          npx playwright install --with-deps chromium
+
+      - name: Portal smoke test
+        working-directory: frontend
+        env:
+          PORTAL_URL: http://localhost:4173
+          API_URL: http://localhost:5080/api/v1
+        run: node e2e/smoke.mjs
+
+      - name: Report API errors
+        if: failure()
+        working-directory: backend
+        run: |
+          grep -E "fail:|Exception" -A3 api.log | head -40 | tr '\n' ' ' | sed 's/^/::error title=API log::/' || true

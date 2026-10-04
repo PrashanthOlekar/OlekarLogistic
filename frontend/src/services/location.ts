@@ -24,7 +24,7 @@ export function getCurrentPosition(): Promise<Position> {
   });
 }
 
-export function directionsUrl(address: string, city?: string): string {
+export function directionsUrl(address: string, city?: string | null): string {
   const destination = encodeURIComponent(`${address}, ${city ?? ''}`);
   return `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
 }
