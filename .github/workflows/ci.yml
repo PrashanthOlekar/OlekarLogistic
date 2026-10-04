@@ -2,12 +2,14 @@
 #   database  – installs the tables and stored procedures on a real SQL Server
 #   backend   – builds the .NET 10 solution and runs the unit, integration and SQL Server tests
 #   frontend  – type-checks and builds the React portal
+#   e2e       – runs the whole business through the built portal, the API and SQL Server in Chromium
+#   docker    – builds the API and portal images used by docker-compose.yml
 name: CI
 
 on:
   push:
     branches: [main, 'refactor/**']
-    paths: ['backend/**', 'database/**', 'frontend/**', '.github/workflows/ci.yml']
+    paths: ['backend/**', 'database/**', 'frontend/**', 'docker-compose.yml', '.env.example', '.github/workflows/ci.yml']
   pull_request:
   workflow_dispatch:
 
