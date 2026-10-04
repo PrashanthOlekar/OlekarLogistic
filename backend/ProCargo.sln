@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F4652941-29CA-50B1-8883-5697070D7C51}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProCargo.API", "src\ProCargo.API\ProCargo.API.csproj", "{411C2C0A-520B-5596-8AAD-C906E238C565}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProCargo.Application", "src\ProCargo.Application\ProCargo.Application.csproj", "{61859BCF-AADD-599E-8CDC-610BDF0602AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProCargo.Domain", "src\ProCargo.Domain\ProCargo.Domain.csproj", "{F458507F-7B77-51DA-9915-520EEB8A236E}"
@@ -19,6 +21,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{411C2C0A-520B-5596-8AAD-C906E238C565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{411C2C0A-520B-5596-8AAD-C906E238C565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{411C2C0A-520B-5596-8AAD-C906E238C565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{411C2C0A-520B-5596-8AAD-C906E238C565}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61859BCF-AADD-599E-8CDC-610BDF0602AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61859BCF-AADD-599E-8CDC-610BDF0602AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61859BCF-AADD-599E-8CDC-610BDF0602AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,6 +42,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{411C2C0A-520B-5596-8AAD-C906E238C565} = {F4652941-29CA-50B1-8883-5697070D7C51}
 		{61859BCF-AADD-599E-8CDC-610BDF0602AF} = {F4652941-29CA-50B1-8883-5697070D7C51}
 		{F458507F-7B77-51DA-9915-520EEB8A236E} = {F4652941-29CA-50B1-8883-5697070D7C51}
 		{94E2CD25-7741-5D86-96BC-FEFD0D7284B4} = {F4652941-29CA-50B1-8883-5697070D7C51}

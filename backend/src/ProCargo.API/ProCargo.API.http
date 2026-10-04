@@ -1,0 +1,56 @@
+# Ready-made requests for VS Code (REST Client extension) or Visual Studio.
+# 1. Run "Send code", copy devCode from the response into @code.
+# 2. Run "Sign in", copy accessToken into @token.
+
+@api = https://localhost:7001/api/v1
+@mobile = 9999999999
+@code = 000000
+@token = paste-access-token-here
+
+### Lists for the forms (no sign-in)
+GET {{api}}/reference-data
+
+### Price estimate (no sign-in)
+POST {{api}}/price-estimates
+Content-Type: application/json
+
+{ "pickupCityId": 1, "dropCityId": 6, "vehicleTypeId": 4, "weightKg": 3000 }
+
+### Send code
+POST {{api}}/auth/otp
+Content-Type: application/json
+
+{ "mobile": "{{mobile}}", "purpose": "Login" }
+
+### Sign in
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{ "mobile": "{{mobile}}", "code": "{{code}}" }
+
+### My profile
+GET {{api}}/auth/me
+Authorization: Bearer {{token}}
+
+### Admin dashboard
+GET {{api}}/dashboards/admin
+Authorization: Bearer {{token}}
+
+### Bookings (page 1, 20 per page)
+GET {{api}}/bookings?pageNumber=1&pageSize=20&status=Confirmed
+Authorization: Bearer {{token}}
+
+### Approvals queue
+GET {{api}}/approvals
+Authorization: Bearer {{token}}
+
+### Trips waiting for POD approval
+GET {{api}}/trips?status=Delivered
+Authorization: Bearer {{token}}
+
+### Users
+GET {{api}}/users?search=ravi&role=Owner
+Authorization: Bearer {{token}}
+
+### Health
+GET https://localhost:7001/health

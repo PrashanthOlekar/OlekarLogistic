@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- Thin controllers, authentication, Swagger, CORS, rate limiting and error handling. -->
+  <PropertyGroup>
+    <RootNamespace>ProCargo.API</RootNamespace>
+    <UserSecretsId>procargo-api</UserSecretsId>
+    <!-- XML comments on controllers become endpoint descriptions in the OpenAPI document. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProCargo.Application\ProCargo.Application.csproj" />
+    <ProjectReference Include="..\ProCargo.Infrastructure\ProCargo.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ProCargo.IntegrationTests" />
+  </ItemGroup>
+
+</Project>

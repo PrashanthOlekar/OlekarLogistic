@@ -1,6 +1,10 @@
 namespace ProCargo.Domain.Constants;
 
-/// <summary>Authorization policy names. Each one lists the roles it allows (see the API's AuthenticationExtensions).</summary>
+/// <summary>
+/// Authorization policy names. Each one allows the roles in its name
+/// (registered in the API's AuthenticationExtensions). Services then narrow
+/// the data to the caller's own records, e.g. an owner only sees their own trucks.
+/// </summary>
 public static class Policies
 {
     public const string CustomerOnly = nameof(CustomerOnly);
@@ -8,18 +12,15 @@ public static class Policies
     public const string DriverOnly = nameof(DriverOnly);
     public const string AdminOnly = nameof(AdminOnly);
 
-    /// <summary>Customers (their own bookings) and admins (all bookings).</summary>
-    public const string BookingReaders = nameof(BookingReaders);
+    /// <summary>Customers (their own bookings) and admins (all).</summary>
+    public const string CustomerOrAdmin = nameof(CustomerOrAdmin);
 
-    /// <summary>Owners (their own fleet) and admins (everyone's).</summary>
-    public const string FleetReaders = nameof(FleetReaders);
+    /// <summary>Owners (their own fleet, trips and payouts) and admins (all).</summary>
+    public const string OwnerOrAdmin = nameof(OwnerOrAdmin);
 
     /// <summary>Owners, drivers and admins: each sees the trips that concern them.</summary>
-    public const string TripReaders = nameof(TripReaders);
+    public const string OwnerDriverOrAdmin = nameof(OwnerDriverOrAdmin);
 
-    /// <summary>Owners take loads; admins assign trucks by hand.</summary>
-    public const string TripAssigners = nameof(TripAssigners);
-
-    /// <summary>Customers, owners and drivers upload their own documents.</summary>
-    public const string DocumentUploaders = nameof(DocumentUploaders);
+    /// <summary>Customers, owners and drivers: people who upload documents for their own profile.</summary>
+    public const string AccountHolder = nameof(AccountHolder);
 }
