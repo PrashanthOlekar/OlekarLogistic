@@ -67,6 +67,26 @@ jobs:
           PROCARGO_TEST_SQL: "Server=localhost,1433;Database=ProCargo;User Id=sa;Password=${{ env.SA_PASSWORD }};TrustServerCertificate=True"
         run: dotnet test ProCargo.sln --no-build -c Release --logger "trx;LogFileName=results.trx" --logger "console;verbosity=normal"
 
+      - name: Report failed tests as annotations
+        if: failure()
+        working-directory: backend
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          ns = {'t': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+          files = glob.glob('tests/**/TestResults/*.trx', recursive=True)
+          if not files:
+              print('::error title=No test results::dotnet test produced no .trx files (build or startup failure)')
+          for f in files:
+              root = ET.parse(f).getroot()
+              for r in root.iterfind('.//t:UnitTestResult', ns):
+                  if r.get('outcome') != 'Failed':
+                      continue
+                  msg = (r.findtext('.//t:Message', '', ns) + ' | ' + r.findtext('.//t:StackTrace', '', ns)[:500])
+                  msg = msg.replace('%', '%25').replace('\r', '').replace('\n', '%0A')
+                  print(f"::error title={r.get('testName')}::{msg[:1500]}")
+          PY
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v5
