@@ -1,0 +1,89 @@
+# Builds and tests ProCargo on every push and pull request:
+#   database  – installs the tables and stored procedures on a real SQL Server
+#   backend   – builds the .NET 10 solution and runs the unit, integration and SQL Server tests
+#   frontend  – type-checks and builds the React portal
+name: CI
+
+on:
+  push:
+    branches: [main, 'refactor/**']
+    paths: ['backend/**', 'database/**', 'frontend/**', '.github/workflows/ci.yml']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    env:
+      SA_PASSWORD: 'Ci_Passw0rd!2026'
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start SQL Server
+        run: |
+          docker run -d --name sql -e ACCEPT_EULA=Y -e "MSSQL_SA_PASSWORD=$SA_PASSWORD" \
+            -p 1433:1433 -v "$GITHUB_WORKSPACE/database:/database:ro" \
+            mcr.microsoft.com/mssql/server:2022-latest
+          for i in $(seq 1 60); do
+            if docker exec sql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$SA_PASSWORD" -C -Q "SELECT 1" >/dev/null 2>&1; then
+              echo "SQL Server is up"; exit 0
+            fi
+            sleep 2
+          done
+          docker logs sql; exit 1
+
+      - name: Install database (tables + stored procedures)
+        run: |
+          docker exec -w /database sql /opt/mssql-tools18/bin/sqlcmd \
+            -S localhost -U sa -P "$SA_PASSWORD" -C -I -b -i install-all.sql
+
+      - name: Re-run the procedures (they must be safe to run twice)
+        run: |
+          for f in database/procedures/*.sql; do
+            docker exec -w /database sql /opt/mssql-tools18/bin/sqlcmd \
+              -S localhost -U sa -P "$SA_PASSWORD" -C -I -b -i "procedures/$(basename "$f")"
+          done
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: backend/global.json
+
+      - name: Restore
+        working-directory: backend
+        run: dotnet restore ProCargo.sln
+
+      - name: Build
+        working-directory: backend
+        run: dotnet build ProCargo.sln --no-restore -c Release -warnaserror:false
+
+      - name: Test
+        working-directory: backend
+        env:
+          PROCARGO_TEST_SQL: "Server=localhost,1433;Database=ProCargo;User Id=sa;Password=${{ env.SA_PASSWORD }};TrustServerCertificate=True"
+        run: dotnet test ProCargo.sln --no-build -c Release --logger "trx;LogFileName=results.trx" --logger "console;verbosity=normal"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: backend/tests/**/TestResults/*.trx
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run build

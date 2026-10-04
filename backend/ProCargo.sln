@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F4652941-29CA-50B1-8883-5697070D7C51}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProCargo.Application", "src\ProCargo.Application\ProCargo.Application.csproj", "{61859BCF-AADD-599E-8CDC-610BDF0602AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProCargo.Domain", "src\ProCargo.Domain\ProCargo.Domain.csproj", "{F458507F-7B77-51DA-9915-520EEB8A236E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0DF2154F-44B9-5231-B200-5662C41C9773}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61859BCF-AADD-599E-8CDC-610BDF0602AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61859BCF-AADD-599E-8CDC-610BDF0602AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61859BCF-AADD-599E-8CDC-610BDF0602AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61859BCF-AADD-599E-8CDC-610BDF0602AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F458507F-7B77-51DA-9915-520EEB8A236E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F458507F-7B77-51DA-9915-520EEB8A236E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F458507F-7B77-51DA-9915-520EEB8A236E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F458507F-7B77-51DA-9915-520EEB8A236E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{61859BCF-AADD-599E-8CDC-610BDF0602AF} = {F4652941-29CA-50B1-8883-5697070D7C51}
+		{F458507F-7B77-51DA-9915-520EEB8A236E} = {F4652941-29CA-50B1-8883-5697070D7C51}
+	EndGlobalSection
+EndGlobal
