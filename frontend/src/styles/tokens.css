@@ -1,8 +1,9 @@
-/* Design tokens: colours, fonts, radii and shadows used everywhere else. */
+/* Design tokens: the same colours, fonts, radii and shadows as the marketing website. */
 :root {
   /* Surfaces and text */
   --bg: #f4f6fa;
   --surface: #ffffff;
+  --field: #f6f8fc;
   --ink: #0b1530;
   --muted: #5b6886;
   --faint: #8a95ad;
@@ -11,12 +12,16 @@
 
   /* Brand */
   --navy: #0a1a3a;
-  --navy-2: #13295a;
-  --navy-text: #9fb0d4;
-  --navy-text-strong: #c8d3ea;
+  --navy-2: #10244d;
+  --navy-3: #1a3466;
+  --navy-line: #243f77;
+  --navy-text: #aebbd6;
+  --navy-text-strong: #d4ddef;
   --accent: #ff7a1a;
-  --accent-strong: #c24a08; /* white text passes contrast on this */
+  --accent-hover: #ff8f3d;
+  --accent-strong: #c24a08; /* orange text and links on white (passes contrast) */
   --accent-soft: #fff1e6;
+  --accent-glow: 0 10px 28px rgba(255, 122, 26, 0.35);
 
   /* Status colours */
   --green: #12805a;
@@ -34,10 +39,19 @@
   --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
 
   /* Shape */
-  --r: 12px;
-  --r-lg: 16px;
-  --shadow: 0 1px 2px rgba(10, 26, 58, 0.05), 0 6px 20px rgba(10, 26, 58, 0.06);
-  --focus-ring: 0 0 0 4px rgba(255, 122, 26, 0.15);
+  --r-sm: 10px;
+  --r: 14px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --shadow: 0 1px 2px rgba(10, 26, 58, 0.06), 0 4px 14px rgba(10, 26, 58, 0.06);
+  --shadow-lift: 0 2px 4px rgba(10, 26, 58, 0.06), 0 18px 44px rgba(10, 26, 58, 0.14);
+  --focus-ring: 0 0 0 4px rgba(255, 122, 26, 0.18);
+
+  /* The navy hero background used by the page bands, the menu and sign-in */
+  --hero:
+    radial-gradient(120% 140% at 100% 0%, rgba(255, 122, 26, 0.22) 0%, rgba(255, 122, 26, 0) 45%),
+    radial-gradient(90% 120% at 0% 100%, rgba(45, 107, 224, 0.25) 0%, rgba(45, 107, 224, 0) 55%),
+    linear-gradient(160deg, #10244d 0%, #0a1a3a 55%, #071330 100%);
 
   color-scheme: light;
 }

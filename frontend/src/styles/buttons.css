@@ -4,19 +4,22 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 42px;
-  padding: 0 18px;
-  border-radius: 10px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
   border: 0;
-  font-weight: 650;
+  font-weight: 700;
   font-size: 0.94rem;
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
   transition:
     background 0.15s,
-    transform 0.1s,
+    transform 0.15s,
     box-shadow 0.15s;
+}
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
 }
 .btn:active {
   transform: translateY(1px);
@@ -26,20 +29,21 @@
   cursor: not-allowed;
 }
 
+/* Orange with navy text, like the website's "Book a Truck", but readable (7:1 contrast). */
 .btn-primary {
-  background: var(--accent-strong);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(194, 74, 8, 0.25);
+  background: var(--accent);
+  color: var(--navy);
+  box-shadow: var(--accent-glow);
 }
 .btn-primary:hover:not(:disabled) {
-  background: #a93f06;
+  background: var(--accent-hover);
 }
 .btn-dark {
   background: var(--navy);
   color: #fff;
 }
 .btn-dark:hover:not(:disabled) {
-  background: var(--navy-2);
+  background: var(--navy-3);
 }
 .btn-secondary {
   background: #fff;
@@ -74,15 +78,14 @@
 }
 
 .btn-sm {
-  height: 34px;
-  padding: 0 12px;
+  height: 36px;
+  padding: 0 14px;
   font-size: 0.85rem;
-  border-radius: 8px;
 }
 .btn-lg {
-  height: 52px;
-  padding: 0 22px;
-  font-size: 1.02rem;
+  height: 56px;
+  padding: 0 28px;
+  font-size: 1.05rem;
 }
 .btn-block {
   width: 100%;
@@ -106,16 +109,17 @@
 /* Segmented filter: <div class="seg"><button aria-pressed="true">… */
 .seg {
   display: inline-flex;
-  padding: 3px;
+  flex-wrap: wrap;
+  padding: 4px;
   background: var(--bg);
-  border-radius: 10px;
+  border-radius: 999px;
   gap: 2px;
 }
 .seg button {
   border: 0;
   background: transparent;
-  padding: 7px 12px;
-  border-radius: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
   font-size: 0.84rem;
   font-weight: 600;
   color: var(--muted);
@@ -148,4 +152,7 @@
 .tabs button[aria-selected='true'] {
   color: var(--ink);
   border-bottom-color: var(--accent);
+}
+.tabs button:hover {
+  color: var(--ink);
 }

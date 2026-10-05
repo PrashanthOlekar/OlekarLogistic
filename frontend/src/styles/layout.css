@@ -1,86 +1,115 @@
-/* Page frame: navy sidebar + content column, sign-in screen, grids and stacks. */
+/* Page frame: navy menu + content column, sign-in screen, the page title band, cards, grids and stacks. */
 
 /* ---------- app shell ---------- */
 .shell {
   display: grid;
-  grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-columns: 264px minmax(0, 1fr);
   min-height: 100%;
 }
 .side {
-  background: var(--navy);
+  background: var(--hero);
   color: #fff;
-  padding: 20px 14px;
+  padding: 22px 16px 18px;
   position: sticky;
   top: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow-y: auto;
 }
 .brand {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 4px 8px 18px;
+  gap: 8px;
+  padding: 2px 10px 22px;
   text-decoration: none;
   color: #fff;
 }
 .brand img {
+  align-self: flex-start;
   display: block;
   height: 34px;
   width: auto;
 }
 .brand small {
   color: var(--navy-text);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
+  font: 500 0.6rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
   text-transform: uppercase;
 }
 .side .role {
-  margin: 0 8px 10px;
-  font: 600 0.7rem/1 var(--mono);
-  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 10px 10px;
+  font: 600 0.68rem/1 var(--mono);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--navy-text);
+  color: var(--accent);
+}
+.side .role::before {
+  content: '';
+  width: 14px;
+  height: 2px;
+  background: currentColor;
 }
 .navlink {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 999px;
   color: var(--navy-text-strong);
   text-decoration: none;
   font-weight: 550;
-  font-size: 0.93rem;
+  font-size: 0.94rem;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.navlink .icon {
+  opacity: 0.8;
 }
 .navlink:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 .navlink[aria-current='page'] {
-  background: #fff;
+  background: var(--accent);
   color: var(--navy);
+  font-weight: 700;
+  box-shadow: var(--accent-glow);
+}
+.navlink[aria-current='page'] .icon {
+  opacity: 1;
 }
 .side-foot {
   margin-top: auto;
-  padding: 14px 8px 0;
+  padding: 16px 10px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.85rem;
   color: var(--navy-text-strong);
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 .side-foot button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
-  border-radius: 8px;
-  padding: 7px 10px;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-weight: 600;
   cursor: pointer;
 }
 .side-foot button:hover {
   border-color: #fff;
+  background: rgba(255, 255, 255, 0.06);
 }
 .side-user b {
   color: #fff;
@@ -90,9 +119,9 @@
   color: var(--navy-text);
 }
 .main {
-  padding: 28px clamp(16px, 3vw, 40px) 64px;
+  padding: 24px clamp(16px, 3vw, 40px) 72px;
   min-width: 0;
-  max-width: 1200px;
+  max-width: 1240px;
 }
 .topbar {
   display: none;
@@ -111,14 +140,14 @@
   .side {
     position: fixed;
     inset: 0 auto 0 0;
-    width: 260px;
+    width: 272px;
     z-index: 40;
     transform: translateX(-100%);
     transition: transform 0.25s;
   }
   .side.open {
     transform: none;
-    box-shadow: 0 0 0 100vmax rgba(10, 26, 58, 0.4);
+    box-shadow: 0 0 0 100vmax rgba(10, 26, 58, 0.45);
   }
   .topbar {
     display: flex;
@@ -132,95 +161,238 @@
     z-index: 30;
   }
   .topbar button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
     background: transparent;
     border: 0;
     color: #fff;
-    padding: 6px;
     cursor: pointer;
   }
   .main {
-    padding-top: 20px;
+    padding-top: 16px;
   }
 }
 
-/* ---------- sign-in and registration ---------- */
+/* ---------- sign-in and registration: the website's highway hero ---------- */
 .auth {
   min-height: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-}
-.auth-art {
-  background: var(--navy);
+  background: var(--hero);
   color: #fff;
-  padding: 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 32px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.auth-glow {
+  position: absolute;
+  right: -10%;
+  bottom: -30%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 122, 26, 0.32), rgba(255, 122, 26, 0));
+  pointer-events: none;
+}
+.auth-inner {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 32px clamp(16px, 4vw, 40px) 150px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 480px);
+  gap: 48px;
+  align-items: center;
+}
+.auth-art {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  align-self: stretch;
 }
 .auth-art img {
+  align-self: flex-start;
   display: block;
   height: 40px;
   width: auto;
 }
+.auth-copy {
+  display: grid;
+  gap: 22px;
+}
+.auth-copy .eyebrow {
+  color: var(--accent);
+}
 .auth-art h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-stretch: 118%;
-  max-width: 12ch;
+  font-size: clamp(2.6rem, 6.2vw, 5.4rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  color: #fff;
 }
 .auth-art h1 em {
   font-style: normal;
   color: var(--accent);
 }
 .auth-art p {
-  color: #b9c6e2;
-  max-width: 38ch;
+  color: var(--navy-text);
+  font-size: 1.08rem;
+  max-width: 40ch;
 }
-.auth-art .road {
+.auth-promises {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  font-size: 0.92rem;
+  color: var(--navy-text-strong);
+}
+.auth-promises li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.auth-promises li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(255, 122, 26, 0.2);
+}
+.auth-form {
+  display: grid;
+  align-items: center;
+}
+.auth-card {
+  background: #fff;
+  color: var(--ink);
+  border-radius: var(--r-xl);
+  padding: clamp(22px, 3vw, 36px);
+  box-shadow: 0 30px 80px rgba(3, 10, 30, 0.45);
+}
+.auth-card a {
+  color: var(--accent-strong);
+}
+.auth .road {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 120px;
+  height: 110px;
   background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0 60px, transparent 60px 120px) 0 60px / 100%
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.55) 0 64px, transparent 64px 128px) 0 54px / 100%
       4px no-repeat,
-    #081430;
-}
-.auth-form {
-  display: grid;
-  place-items: center;
-  padding: 40px 20px;
-}
-.auth-form .box {
-  width: 100%;
-  max-width: 440px;
+    linear-gradient(180deg, #0b1838, #061026);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-@media (max-width: 860px) {
-  .auth {
+@media (max-width: 960px) {
+  .auth-inner {
     grid-template-columns: 1fr;
+    gap: 28px;
+    padding-bottom: 130px;
   }
   .auth-art {
-    padding: 28px 20px 140px;
+    gap: 28px;
+  }
+  .auth-art p,
+  .auth-promises {
+    display: none;
   }
 }
 
-/* ---------- page header ---------- */
+/* ---------- page title band (like the website's hero, at page scale) ---------- */
 .page-head {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 12px 24px;
+  gap: 18px 28px;
   margin-bottom: 22px;
+  padding: clamp(22px, 3vw, 34px) clamp(20px, 3vw, 36px);
+  border-radius: var(--r-xl);
+  background: var(--hero);
+  color: #fff;
+  box-shadow: var(--shadow-lift);
+}
+.page-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 36px, transparent 36px 72px);
+  pointer-events: none;
+}
+.page-head-text {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.page-head .eyebrow {
+  color: var(--accent);
+}
+.page-head h1 {
+  color: #fff;
 }
 .page-head p {
-  color: var(--muted);
-  margin-top: 6px;
-  max-width: 60ch;
+  color: var(--navy-text);
+  max-width: 62ch;
+}
+.page-head-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+/* Controls that sit on the navy band */
+.page-head .btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.35);
+}
+.page-head .btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1.5px #fff;
+}
+.page-head .btn-ghost {
+  color: var(--navy-text-strong);
+}
+.page-head .seg {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+.page-head .seg button {
+  color: var(--navy-text-strong);
+}
+.page-head .seg button:hover {
+  color: #fff;
+}
+.page-head .seg button[aria-pressed='true'] {
+  background: #fff;
+  color: var(--navy);
+}
+.page-head .input {
+  background: #fff;
+  color: var(--ink);
+  border-color: transparent;
+}
+.page-head > .pill {
+  position: relative;
+  z-index: 1;
 }
 
 /* ---------- cards ---------- */
@@ -228,8 +400,9 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  padding: 20px;
+  padding: 22px;
   min-width: 0;
+  box-shadow: var(--shadow);
 }
 .card + .card {
   margin-top: 16px;
@@ -244,13 +417,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .card-title {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .card-compact {
-  padding: 12px;
+  padding: 14px;
 }
 .card-sticky {
   position: sticky;
@@ -276,7 +449,7 @@
   align-items: start;
 }
 .grid.tight {
-  gap: 8px;
+  gap: 10px;
 }
 
 @media (max-width: 1000px) {
@@ -315,10 +488,10 @@
 }
 .stack {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 .stack.loose {
-  gap: 20px;
+  gap: 22px;
 }
 .stack.tight {
   gap: 6px;
@@ -329,5 +502,5 @@
 .divider {
   height: 1px;
   background: var(--line);
-  margin: 16px 0;
+  margin: 18px 0;
 }

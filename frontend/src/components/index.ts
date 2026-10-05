@@ -5,6 +5,7 @@ export { Dialog } from './Dialog';
 export { DocumentChips } from './DocumentChips';
 export { Empty, EmptyCard } from './Empty';
 export { Field } from './Field';
+export { Icon, type IconName } from './Icon';
 export { FullPageLoading, Loading } from './Loading';
 export { Logo } from './Logo';
 export { MoneyRow, MoneyRows } from './MoneyRows';

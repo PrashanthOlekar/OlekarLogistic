@@ -1,8 +1,10 @@
+import type { IconName } from '../components/Icon';
 import type { Role } from '../types';
 
 export interface NavItem {
   to: string;
   label: string;
+  icon: IconName;
   /** Highlight only on this exact path (not its sub-pages). */
   exact?: boolean;
 }
@@ -10,30 +12,30 @@ export interface NavItem {
 /** Sidebar menu for each role. */
 export const NAVIGATION: Record<Role, NavItem[]> = {
   Customer: [
-    { to: '/customer/book', label: 'Book a truck' },
-    { to: '/customer/bookings', label: 'My bookings' },
+    { to: '/customer/book', label: 'Book a truck', icon: 'plus' },
+    { to: '/customer/bookings', label: 'My bookings', icon: 'list' },
   ],
   Owner: [
-    { to: '/owner', label: 'Loads & overview', exact: true },
-    { to: '/owner/vehicles', label: 'Vehicles' },
-    { to: '/owner/drivers', label: 'Drivers' },
-    { to: '/owner/trips', label: 'Trips' },
-    { to: '/owner/payouts', label: 'Payouts' },
-    { to: '/owner/documents', label: 'KYC documents' },
+    { to: '/owner', label: 'Loads & overview', icon: 'grid', exact: true },
+    { to: '/owner/vehicles', label: 'Vehicles', icon: 'truck' },
+    { to: '/owner/drivers', label: 'Drivers', icon: 'users' },
+    { to: '/owner/trips', label: 'Trips', icon: 'route' },
+    { to: '/owner/payouts', label: 'Payouts', icon: 'wallet' },
+    { to: '/owner/documents', label: 'KYC documents', icon: 'file' },
   ],
   Driver: [
-    { to: '/driver', label: 'My trips', exact: true },
-    { to: '/driver/documents', label: 'My documents' },
+    { to: '/driver', label: 'My trips', icon: 'route', exact: true },
+    { to: '/driver/documents', label: 'My documents', icon: 'file' },
   ],
   Admin: [
-    { to: '/admin', label: 'Dashboard', exact: true },
-    { to: '/admin/approvals', label: 'Approvals' },
-    { to: '/admin/documents', label: 'Documents' },
-    { to: '/admin/bookings', label: 'Bookings' },
-    { to: '/admin/trips', label: 'Trips & POD' },
-    { to: '/admin/payments', label: 'Payments' },
-    { to: '/admin/settlements', label: 'Owner payouts' },
-    { to: '/admin/users', label: 'Users' },
+    { to: '/admin', label: 'Dashboard', icon: 'grid', exact: true },
+    { to: '/admin/approvals', label: 'Approvals', icon: 'badge' },
+    { to: '/admin/documents', label: 'Documents', icon: 'file' },
+    { to: '/admin/bookings', label: 'Bookings', icon: 'list' },
+    { to: '/admin/trips', label: 'Trips & POD', icon: 'route' },
+    { to: '/admin/payments', label: 'Payments', icon: 'card' },
+    { to: '/admin/settlements', label: 'Owner payouts', icon: 'wallet' },
+    { to: '/admin/users', label: 'Users', icon: 'users' },
   ],
 };
 

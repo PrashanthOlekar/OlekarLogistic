@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../auth';
-import { Logo } from '../components';
+import { Icon, Logo } from '../components';
+import { PageEyebrowContext } from '../components/PageHead';
 import { NAVIGATION, ROLE_TITLES, isActive } from '../routes/navigation';
 
 /** Used as a layout route: the matched page renders in <Outlet />. */
@@ -27,7 +28,7 @@ export function AppShell() {
     <div className="shell">
       <div className="topbar">
         <button onClick={() => setMenuOpen(true)} aria-label="Open menu">
-          ☰
+          <Icon name="menu" />
         </button>
         <Logo />
       </div>
@@ -47,6 +48,7 @@ export function AppShell() {
             className="navlink"
             aria-current={isActive(item, path) ? 'page' : undefined}
           >
+            <Icon name={item.icon} />
             {item.label}
           </Link>
         ))}
@@ -56,12 +58,17 @@ export function AppShell() {
             <b>{user.fullName}</b>
             <span className="mono">{user.mobile}</span>
           </div>
-          <button onClick={handleSignOut}>Sign out</button>
+          <button onClick={handleSignOut}>
+            <Icon name="logout" size={16} />
+            Sign out
+          </button>
         </div>
       </nav>
 
       <main className="main">
-        <Outlet />
+        <PageEyebrowContext.Provider value={ROLE_TITLES[user.role]}>
+          <Outlet />
+        </PageEyebrowContext.Provider>
       </main>
     </div>
   );
