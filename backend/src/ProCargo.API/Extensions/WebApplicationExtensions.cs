@@ -56,7 +56,8 @@ public static class WebApplicationExtensions
 
         // An address that matches nothing is 404, not 401: without this the "signed in" fallback policy
         // would answer every unknown address with Unauthorized.
-        app.MapFallback(() => Results.Problem(
+        // "{*path}" also matches addresses that look like files (/favicon.ico), which the default pattern skips.
+        app.MapFallback("{*path}", () => Results.Problem(
                 statusCode: StatusCodes.Status404NotFound,
                 title: "Not found",
                 detail: "There is nothing at this address. See /swagger (Development) or docs/API.md for the routes.",
