@@ -1,1176 +1,368 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0A1A3A" />
-    <title>ProCargo — Book verified lorries across India</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ProCargo · Book verified lorries across Karnataka</title>
     <meta
       name="description"
-      content="ProCargo — book verified lorries across Karnataka and India. Moving India. Delivering Trust."
+      content="Book a verified lorry from Tata Ace to 40 ft trailer. See the price before you book, track every step with pickup and delivery codes, and get a GST invoice."
     />
+    <meta name="theme-color" content="#0a1a3a" />
     <link rel="icon" type="image/svg+xml" href="assets/procargo-mark.svg" />
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Kannada:wght@400..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,500..900&family=Overpass:wght@400;600;700;800&family=Noto+Sans+Kannada:wght@400;600;700&display=swap"
     />
-
-    <!-- Styles: one file per part of the page; helpers.css last so its small classes win -->
+    <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/nav.css" />
+    <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/hero.css" />
-    <link rel="stylesheet" href="css/sections.css" />
-    <link rel="stylesheet" href="css/live-route.css" />
-    <link rel="stylesheet" href="css/services.css" />
-    <link rel="stylesheet" href="css/vehicles.css" />
-    <link rel="stylesheet" href="css/how-it-works.css" />
-    <link rel="stylesheet" href="css/tracking.css" />
-    <link rel="stylesheet" href="css/trust-safety.css" />
-    <link rel="stylesheet" href="css/partner.css" />
-    <link rel="stylesheet" href="css/payments.css" />
-    <link rel="stylesheet" href="css/network.css" />
-    <link rel="stylesheet" href="css/testimonials.css" />
-    <link rel="stylesheet" href="css/app-promo.css" />
+    <link rel="stylesheet" href="css/quote.css" />
+    <link rel="stylesheet" href="css/fleet.css" />
+    <link rel="stylesheet" href="css/journey.css" />
+    <link rel="stylesheet" href="css/owners.css" />
+    <link rel="stylesheet" href="css/safety.css" />
     <link rel="stylesheet" href="css/footer.css" />
-    <link rel="stylesheet" href="css/widgets.css" />
-    <link rel="stylesheet" href="css/helpers.css" />
   </head>
   <body>
-    <svg class="sprite" width="0" height="0" aria-hidden="true">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <!-- ============ HEADER ============ -->
+    <header class="site-header">
+      <div class="wrap header-row">
+        <a class="logo" href="#top" aria-label="ProCargo home">
+          <img src="assets/procargo-logo-white.svg" alt="ProCargo" width="150" height="34" />
+        </a>
+        <nav class="site-nav" aria-label="Main">
+          <a href="#fleet" data-i18n="nav.vehicles">Vehicles</a>
+          <a href="#journey" data-i18n="nav.how">How it works</a>
+          <a href="#owners" data-i18n="nav.partner">Partner with us</a>
+        </nav>
+        <div class="header-actions">
+          <div class="lang" role="group" aria-label="Language">
+            <button type="button" data-lang="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang="kn" aria-pressed="false" lang="kn">ಕನ್ನಡ</button>
+          </div>
+          <a class="link-quiet" href="http://localhost:5173/login" data-portal="/login" data-i18n="nav.login">Login</a>
+          <a class="btn btn-orange" href="http://localhost:5173/customer/book" data-portal="/customer/book" data-i18n="cta.book"
+            >Book a truck</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ============ HERO: the night road out of Bengaluru ============ -->
+      <section class="hero" id="top">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="tagline" data-i18n="tagline">Moving India. Delivering Trust.</p>
+            <h1 class="hero-title">
+              <span class="line" data-i18n="hero.l1">Move anything.</span>
+              <span class="line" data-i18n="hero.l2">Anywhere.</span>
+              <span class="line" data-i18n="hero.l3">Across India.</span>
+            </h1>
+            <p class="hero-sub" data-i18n="hero.sub">
+              Reliable transportation powered by verified lorry owners, professional drivers and smart logistics
+              technology.
+            </p>
+            <div class="hero-ctas">
+              <a class="btn btn-orange btn-lg" href="http://localhost:5173/customer/book" data-portal="/customer/book" data-i18n="cta.book"
+                >Book a truck</a
+              >
+              <a class="btn btn-outline btn-lg" href="http://localhost:5173/register" data-portal="/register" data-i18n="cta.register"
+                >Register your vehicle</a
+              >
+            </div>
+            <ul class="hero-promises">
+              <li data-i18n="hero.p1">Verified owners &amp; drivers</li>
+              <li data-i18n="hero.p2">OTP at pickup &amp; delivery</li>
+              <li>GST invoice on every trip</li>
+            </ul>
+          </div>
+
+          <!-- Quote: shaped like the green direction signs on NH 48 -->
+          <form class="quote" id="quote" novalidate>
+            <div class="quote-sign">
+              <h2 data-i18n="q.title">Get an instant quote</h2>
+              <p class="quote-route" id="quoteRoute" aria-live="polite">Bengaluru to Hubballi</p>
+            </div>
+            <div class="quote-body">
+              <div class="quote-pair">
+                <label class="field">
+                  <span data-i18n="q.pick">Pickup location</span>
+                  <select id="qFrom" required></select>
+                </label>
+                <button class="swap" type="button" id="qSwap" aria-label="Swap pickup and delivery">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3" /></svg>
+                </button>
+                <label class="field">
+                  <span data-i18n="q.drop">Delivery location</span>
+                  <select id="qTo" required></select>
+                </label>
+              </div>
+              <div class="quote-pair">
+                <label class="field">
+                  <span data-i18n="q.vehicle">Vehicle type</span>
+                  <select id="qVehicle" required></select>
+                </label>
+                <label class="field">
+                  <span data-i18n="q.weight">Approx. weight</span>
+                  <span class="input-unit">
+                    <input id="qWeight" type="number" inputmode="numeric" min="1" step="50" value="3000" required />
+                    <span>kg</span>
+                  </span>
+                </label>
+              </div>
+              <button class="btn btn-orange btn-block" type="submit" data-i18n="q.cta">Get transport quote</button>
+
+              <div class="quote-result" id="quoteResult" hidden>
+                <div class="quote-total">
+                  <span>Total, with GST</span>
+                  <b id="qTotal">₹0</b>
+                </div>
+                <dl class="quote-lines">
+                  <div><dt>Distance</dt><dd id="qKm">0 km</dd></div>
+                  <div><dt>Vehicle</dt><dd id="qVehicleCost">₹0</dd></div>
+                  <div><dt id="qDriverLabel">Driver</dt><dd id="qDriverCost">₹0</dd></div>
+                  <div><dt id="qGstLabel">GST</dt><dd id="qGst">₹0</dd></div>
+                </dl>
+                <p class="quote-note" id="qNote"></p>
+                <a class="btn btn-navy btn-block" href="http://localhost:5173/customer/book" data-portal="/customer/book"
+                  >Book this truck</a
+                >
+              </div>
+              <p class="quote-error" id="quoteError" role="alert" hidden></p>
+            </div>
+          </form>
+        </div>
+
+        <!-- The road out of town: the lorry drives in once when the page opens -->
+        <div class="road road-hero" aria-hidden="true">
+          <div class="stone stone-hero">
+            <span>Hubballi</span>
+            <b>412</b>
+          </div>
+          <div class="lorry lorry-hero">
+            <svg class="lorry-art" viewBox="0 0 220 96"><use href="#lorry" /></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FLEET: which lorry fits the load ============ -->
+      <section class="fleet" id="fleet" aria-labelledby="fleetTitle">
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="fleetTitle" data-i18n="veh.h">Choose the right vehicle</h2>
+            <p>
+              Eleven classes, from a Tata Ace for a few cartons to a 40 ft trailer for machinery. Slide to your load
+              and the lorries that can carry it light up.
+            </p>
+          </div>
+
+          <div class="load-meter">
+            <label for="loadSlider">Your load</label>
+            <input id="loadSlider" type="range" min="0" max="1000" value="520" aria-describedby="loadValue" />
+            <output id="loadValue" for="loadSlider">3,000 kg</output>
+          </div>
+
+          <ol class="fleet-list" id="fleetList"></ol>
+        </div>
+      </section>
+
+      <!-- ============ JOURNEY: one booking, Bengaluru to Hubballi ============ -->
+      <section class="journey" id="journey" aria-labelledby="journeyTitle">
+        <div class="wrap">
+          <div class="section-head on-dark">
+            <h2 id="journeyTitle" data-i18n="how.h">From enquiry to delivery in eight steps.</h2>
+            <p>One real run on NH 48, 412 km from Bengaluru to Hubballi. Scroll and the lorry drives it.</p>
+          </div>
+
+          <div class="journey-grid">
+            <div class="journey-sign" aria-hidden="true">
+              <div class="sign-board">
+                <span class="sign-arrow">↑</span>
+                <span class="sign-place">Hubballi</span>
+                <b class="sign-km"><span id="kmLeft">412</span> km</b>
+              </div>
+              <p class="sign-step" id="signStep">Get a price</p>
+            </div>
+
+            <div class="journey-road" aria-hidden="true">
+              <div class="journey-lorry" id="journeyLorry">
+                <svg class="lorry-top" viewBox="0 0 60 150"><use href="#lorryTop" /></svg>
+              </div>
+            </div>
+
+            <ol class="journey-steps" id="journeySteps">
+              <li data-km="412">
+                <div class="stone"><span>Hubballi</span><b>412</b></div>
+                <div class="step-text">
+                  <h3>Get a price</h3>
+                  <p>Choose the route, the load and the lorry. The price is shown straight away and held for 30 minutes.</p>
+                </div>
+              </li>
+              <li data-km="380">
+                <div class="stone"><span>Hubballi</span><b>380</b></div>
+                <div class="step-text">
+                  <h3>Pay to confirm</h3>
+                  <p>Pay by UPI, card or net banking. The money is held and reaches the owner only after delivery.</p>
+                </div>
+              </li>
+              <li data-km="342">
+                <div class="stone"><span>Hubballi</span><b>342</b></div>
+                <div class="step-text">
+                  <h3>A verified owner takes the load</h3>
+                  <p>Your booking goes to owners whose checked, available lorries fit it. You see the truck and the driver's number.</p>
+                </div>
+              </li>
+              <li data-km="300">
+                <div class="stone"><span>Hubballi</span><b>300</b></div>
+                <div class="step-text">
+                  <h3>Hand over with a pickup code</h3>
+                  <p>Give the driver your 4-digit pickup code once the goods are loaded. No code, no departure.</p>
+                </div>
+              </li>
+              <li data-km="212">
+                <div class="stone"><span>Hubballi</span><b>212</b></div>
+                <div class="step-text">
+                  <h3>Follow every step</h3>
+                  <p>On the way, loaded, started, reached: each step the driver taps shows up on your booking.</p>
+                </div>
+              </li>
+              <li data-km="147">
+                <div class="stone"><span>Hubballi</span><b>147</b></div>
+                <div class="step-text">
+                  <h3>Deliver with a second code</h3>
+                  <p>The receiver gives the driver the delivery code, and the driver uploads a photo of the signed receipt.</p>
+                </div>
+              </li>
+              <li data-km="40">
+                <div class="stone"><span>Hubballi</span><b>40</b></div>
+                <div class="step-text">
+                  <h3>Get your GST invoice</h3>
+                  <p>Once our team checks the delivery receipt, the trip closes and your tax invoice is issued.</p>
+                </div>
+              </li>
+              <li data-km="0">
+                <div class="stone"><span>Hubballi</span><b>0</b></div>
+                <div class="step-text">
+                  <h3>The owner is paid</h3>
+                  <p>The owner receives the freight within 48 hours of the receipt being approved, minus a 7% commission.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ OWNERS ============ -->
+      <section class="owners" id="owners" aria-labelledby="ownersTitle">
+        <div class="wrap owners-grid">
+          <div>
+            <h2 id="ownersTitle" data-i18n="own.h">Have a lorry? Grow your business with us.</h2>
+            <p class="owners-lede">
+              Register once, get your papers checked, and paid loads that fit your trucks come to you. Your drivers
+              link to you with your mobile number.
+            </p>
+            <div class="hero-ctas">
+              <a class="btn btn-yellow btn-lg" href="http://localhost:5173/register" data-portal="/register" data-i18n="cta.register"
+                >Register your vehicle</a
+              >
+              <a class="btn btn-outline btn-lg" href="http://localhost:5173/login" data-portal="/login">Owner login</a>
+            </div>
+          </div>
+          <dl class="owner-facts">
+            <div>
+              <dt>Loads that fit</dt>
+              <dd>Only bookings your verified, available lorries can carry. Take one or pass, it's your call.</dd>
+            </div>
+            <div>
+              <dt>Paid in 48 hours</dt>
+              <dd>Freight reaches your bank within two days of the delivery receipt being approved.</dd>
+            </div>
+            <div>
+              <dt>7% commission</dt>
+              <dd>Shown on every payout, with freight, commission and TDS on separate lines.</dd>
+            </div>
+            <div>
+              <dt>Drivers on your account</dt>
+              <dd>Drivers register with your mobile number and run each trip from their phone.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ============ SAFETY ============ -->
+      <section class="safety" id="safety" aria-labelledby="safetyTitle">
+        <div class="wrap safety-grid">
+          <h2 id="safetyTitle" data-i18n="safe.h">Safe transport. Verified network.</h2>
+          <ul class="checks">
+            <li><b>Owners and drivers are checked</b> Aadhaar, PAN, licence and bank details are reviewed before the first trip. PAN and bank numbers are stored encrypted; we keep only the last 4 digits of Aadhaar.</li>
+            <li><b>Every lorry has its papers</b> RC, insurance, fitness, permit and PUC, each with its expiry date.</li>
+            <li><b>Two codes per trip</b> One to load, one to deliver. Only the customer sees them.</li>
+            <li><b>Photo proof of delivery</b> The signed receipt is uploaded from the drop point and checked by our team.</li>
+            <li><b>Money held until delivery</b> Cancel before loading and a paid booking is refunded in full.</li>
+            <li><b>A GST invoice every time</b> CGST and SGST, or IGST for inter-state trips, on one invoice.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============ FOOTER: the end of the road ============ -->
+    <footer class="site-footer">
+      <div class="road road-end" aria-hidden="true">
+        <div class="stone stone-end"><span>Hubballi</span><b>0</b></div>
+      </div>
+      <div class="wrap footer-row">
+        <img src="assets/procargo-logo-white.svg" alt="ProCargo" width="130" height="30" />
+        <nav aria-label="Footer">
+          <a href="#fleet" data-i18n="nav.vehicles">Vehicles</a>
+          <a href="#journey" data-i18n="nav.how">How it works</a>
+          <a href="#owners" data-i18n="nav.partner">Partner with us</a>
+          <a href="http://localhost:5173/login" data-portal="/login" data-i18n="nav.login">Login</a>
+        </nav>
+        <p>© 2026 ProCargo. Lorry bookings across Karnataka and beyond.</p>
+      </div>
+    </footer>
+
+    <!-- Drawings reused on the page: the ProCargo lorry from the side and from above -->
+    <svg width="0" height="0" class="defs" aria-hidden="true">
       <defs>
-        <!-- ProCargo mark: a "P" whose bowl is a forward arrow carrying a cargo box -->
-        <symbol id="logo" viewBox="0 0 64 64">
-          <rect width="64" height="64" rx="15" fill="#FF7A1A" />
-          <rect x="15" y="13" width="10" height="38" rx="2.5" fill="#0A1A3A" />
-          <path d="M25 13 H37 L50 25.5 L37 38 H25 V30 H33.5 L38 25.5 L33.5 21 H25 Z" fill="#FFFFFF" />
-          <rect x="27.5" y="22.5" width="6" height="6" rx="1" fill="#FF7A1A" />
+        <symbol id="lorry" viewBox="0 0 220 96">
+          <rect x="4" y="10" width="140" height="62" rx="4" fill="#ffffff" />
+          <rect x="4" y="10" width="140" height="10" rx="4" fill="#ff7a1a" />
+          <rect x="4" y="62" width="140" height="10" fill="#0a1a3a" />
+          <text x="74" y="49" text-anchor="middle" font-family="Anybody, sans-serif" font-weight="900" font-size="22" fill="#0a1a3a">ProCargo</text>
+          <path d="M148 26h36c6 0 10 3 13 8l13 20c2 3 3 6 3 9v9h-65z" fill="#ff7a1a" />
+          <path d="M156 32h26c3 0 5 1 7 4l9 14h-42z" fill="#13295a" />
+          <rect x="146" y="72" width="70" height="6" rx="2" fill="#0a1a3a" />
+          <rect x="2" y="72" width="146" height="6" rx="2" fill="#0a1a3a" />
+          <g class="wheel"><circle cx="34" cy="80" r="13" fill="#0a1a3a" /><circle cx="34" cy="80" r="5" fill="#d7dde8" /><rect x="33" y="70" width="2" height="20" fill="#d7dde8" /></g>
+          <g class="wheel"><circle cx="66" cy="80" r="13" fill="#0a1a3a" /><circle cx="66" cy="80" r="5" fill="#d7dde8" /><rect x="65" y="70" width="2" height="20" fill="#d7dde8" /></g>
+          <g class="wheel"><circle cx="182" cy="80" r="13" fill="#0a1a3a" /><circle cx="182" cy="80" r="5" fill="#d7dde8" /><rect x="181" y="70" width="2" height="20" fill="#d7dde8" /></g>
+          <circle cx="212" cy="62" r="3" fill="#f2b705" />
+        </symbol>
+        <symbol id="lorryTop" viewBox="0 0 60 150">
+          <rect x="6" y="2" width="48" height="104" rx="4" fill="#ffffff" />
+          <rect x="6" y="2" width="48" height="8" rx="3" fill="#ff7a1a" />
+          <rect x="10" y="112" width="40" height="34" rx="7" fill="#ff7a1a" />
+          <rect x="14" y="128" width="32" height="12" rx="3" fill="#13295a" />
+          <circle cx="16" cy="146" r="3" fill="#f2b705" />
+          <circle cx="44" cy="146" r="3" fill="#f2b705" />
         </symbol>
       </defs>
     </svg>
 
-    <nav class="nav" id="nav" aria-label="Main">
-      <div class="wrap">
-        <a class="brand" href="#top">
-          <svg class="brand-mark"><use href="#logo" /></svg>
-          <span class="brand-name"
-            >Pro<span class="brand-accent">Cargo</span
-            ><small data-i18n="tagline">Moving India. Delivering Trust.</small></span
-          >
-        </a>
-        <ul class="nav-links">
-          <li><a href="#services" data-i18n="nav.services">Services</a></li>
-          <li><a href="#vehicles" data-i18n="nav.vehicles">Vehicles</a></li>
-          <li><a href="#how" data-i18n="nav.how">How it works</a></li>
-          <li><a href="#tracking" data-i18n="nav.tracking">Tracking</a></li>
-          <li><a href="#partner" data-i18n="nav.partner">Partner with us</a></li>
-        </ul>
-        <div class="nav-right">
-          <div class="lang" role="group" aria-label="Language">
-            <button type="button" data-lang="en" aria-pressed="true">EN</button>
-            <button type="button" data-lang="kn" aria-pressed="false">ಕನ್ನಡ</button>
-          </div>
-          <div class="menu-wrap">
-            <button class="menu-btn" id="loginBtn" type="button" aria-expanded="false" aria-haspopup="true">
-              <i data-lucide="circle-user-round"></i><span data-i18n="nav.login">Login</span>
-            </button>
-            <div class="menu" id="loginMenu" hidden>
-              <a href="http://localhost:5173/customer/book" data-portal="/customer/book"
-                ><span class="ic"><i data-lucide="package"></i></span
-                ><span>Customer<small>Book, track, pay</small></span></a
-              >
-              <a href="http://localhost:5173/login" data-portal="/login"
-                ><span class="ic"><i data-lucide="truck"></i></span
-                ><span>Vehicle owner<small>Loads, fleet, payouts</small></span></a
-              >
-              <a href="http://localhost:5173/login" data-portal="/login"
-                ><span class="ic"><i data-lucide="car-front"></i></span
-                ><span>Driver<small>Today's trip</small></span></a
-              >
-              <a href="http://localhost:5173/login" data-portal="/login"
-                ><span class="ic"><i data-lucide="layout-dashboard"></i></span
-                ><span>Admin<small>Operations console</small></span></a
-              >
-            </div>
-          </div>
-          <a
-            class="btn btn-primary btn-sm"
-            href="http://localhost:5173/customer/book"
-            data-portal="/customer/book"
-            data-i18n="cta.book"
-            >Book a Truck</a
-          >
-          <button class="burger" id="burger" type="button" aria-label="Open menu">
-            <i data-lucide="menu"></i>
-          </button>
-        </div>
-      </div>
-    </nav>
-    <div class="mobile-menu" id="mobileMenu" hidden>
-      <a href="#services" data-i18n="nav.services">Services</a>
-      <a href="#vehicles" data-i18n="nav.vehicles">Vehicles</a>
-      <a href="#how" data-i18n="nav.how">How it works</a>
-      <a href="#tracking" data-i18n="nav.tracking">Tracking</a>
-      <a href="#partner" data-i18n="nav.partner">Partner with us</a>
-      <a href="http://localhost:5173/customer/book" data-portal="/customer/book" data-i18n="cta.book"
-        >Book a Truck</a
-      >
-    </div>
-
-    <main id="home">
-      <header class="hero" id="top">
-        <div class="hero-scene" aria-hidden="true">
-          <svg id="scene" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMax slice">
-            <defs>
-              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#081530" />
-                <stop offset=".55" stop-color="#1A3466" />
-                <stop offset=".78" stop-color="#7A4A63" />
-                <stop offset=".9" stop-color="#E9844A" />
-              </linearGradient>
-              <radialGradient id="sun" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="#FFD9A0" />
-                <stop offset=".35" stop-color="#FF9A4A" stop-opacity=".9" />
-                <stop offset="1" stop-color="#FF7A1A" stop-opacity="0" />
-              </radialGradient>
-              <linearGradient id="beam" x1="0" x2="1">
-                <stop offset="0" stop-color="#FFE7A0" stop-opacity=".55" />
-                <stop offset="1" stop-color="#FFE7A0" stop-opacity="0" />
-              </linearGradient>
-              <linearGradient id="roadg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#18223C" />
-                <stop offset="1" stop-color="#0A1022" />
-              </linearGradient>
-            </defs>
-            <rect width="1600" height="700" fill="url(#sky)" />
-            <circle cx="1180" cy="520" r="230" fill="url(#sun)" />
-            <circle cx="1180" cy="520" r="48" fill="#FFC98A" />
-            <g id="hillsFar">
-              <path
-                d="M0 560 L90 500 L170 520 L260 450 L360 505 L450 470 L560 520 L640 480 L760 440 L860 500 L960 460 L1060 520 L1160 470 L1260 500 L1380 430 L1480 490 L1600 460 V600 H0Z"
-                fill="#3E3A62"
-                opacity=".85"
-              />
-              <!-- wind farm on the ridge, a Chitradurga detail -->
-              <g fill="#C9CFE0" opacity=".8">
-                <g transform="translate(1270 438)">
-                  <rect x="-1.5" y="0" width="3" height="70" />
-                  <g class="blades">
-                    <path d="M0 0 L-2 -34 L2 -34Z M0 0 L30 16 L28 20Z M0 0 L-28 20 L-30 16Z" />
-                  </g>
-                </g>
-                <g transform="translate(1340 412)">
-                  <rect x="-1.5" y="0" width="3" height="80" />
-                  <g class="blades blades-slow">
-                    <path d="M0 0 L-2 -38 L2 -38Z M0 0 L33 18 L31 22Z M0 0 L-31 22 L-33 18Z" />
-                  </g>
-                </g>
-                <g transform="translate(1415 448)">
-                  <rect x="-1.2" y="0" width="2.4" height="60" />
-                  <g class="blades blades-fast">
-                    <path d="M0 0 L-2 -28 L2 -28Z M0 0 L25 13 L23 17Z M0 0 L-23 17 L-25 13Z" />
-                  </g>
-                </g>
-                <g transform="translate(780 432)">
-                  <rect x="-1.2" y="0" width="2.4" height="60" />
-                  <g class="blades blades-medium">
-                    <path d="M0 0 L-2 -28 L2 -28Z M0 0 L25 13 L23 17Z M0 0 L-23 17 L-25 13Z" />
-                  </g>
-                </g>
-              </g>
-            </g>
-            <g id="hillsNear">
-              <path
-                d="M0 600 L120 548 L230 575 L340 530 L470 572 L600 540 L720 580 L860 545 L1000 578 L1130 548 L1260 575 L1400 540 L1520 570 L1600 555 V620 H0Z"
-                fill="#1E1F3F"
-              />
-              <g fill="#141733">
-                <path
-                  d="M150 560 q10 -40 20 0z M175 562 q8 -30 16 0z M420 560 q12 -46 24 0z M700 566 q10 -38 20 0z M728 568 q7 -26 14 0z M1040 566 q12 -44 24 0z M1480 560 q10 -40 20 0z"
-                />
-              </g>
-            </g>
-            <rect y="590" width="1600" height="110" fill="url(#roadg)" />
-            <rect y="590" width="1600" height="4" fill="#2A3B63" />
-            <rect y="690" width="1600" height="3" fill="#E8C24A" opacity=".6" />
-            <g class="lane">
-              <path
-                d="M0 645 H1760"
-                stroke="#E9EEF7"
-                stroke-width="5"
-                stroke-dasharray="80 80"
-                opacity=".75"
-              />
-            </g>
-            <!-- NH milestone -->
-            <g transform="translate(1440 548)">
-              <rect x="0" y="12" width="44" height="42" rx="4" fill="#F2F2EE" />
-              <path d="M0 16 a22 18 0 0 1 44 0 v6 H0Z" fill="#F2B632" />
-              <text
-                x="22"
-                y="18"
-                text-anchor="middle"
-                font-family="JetBrains Mono,monospace"
-                font-size="8"
-                font-weight="700"
-                fill="#1a1a1a"
-              >
-                NH 48
-              </text>
-              <text
-                x="22"
-                y="36"
-                text-anchor="middle"
-                font-family="JetBrains Mono,monospace"
-                font-size="7.5"
-                font-weight="700"
-                fill="#1a1a1a"
-              >
-                PUNE
-              </text>
-              <text
-                x="22"
-                y="47"
-                text-anchor="middle"
-                font-family="JetBrains Mono,monospace"
-                font-size="8"
-                font-weight="700"
-                fill="#1a1a1a"
-              >
-                840
-              </text>
-            </g>
-            <g id="heroTruck" transform="translate(600 446)">
-              <polygon points="584,112 820,78 820,160" fill="url(#beam)" />
-              <rect x="0" y="0" width="420" height="150" rx="6" fill="#13295A" />
-              <g stroke="#1D3B78" stroke-width="3">
-                <path
-                  d="M30 6v138M60 6v138M90 6v138M120 6v138M150 6v138M180 6v138M210 6v138M240 6v138M270 6v138M300 6v138M330 6v138M360 6v138M390 6v138"
-                />
-              </g>
-              <rect
-                x="0"
-                y="0"
-                width="420"
-                height="150"
-                rx="6"
-                fill="none"
-                stroke="#0B1A3D"
-                stroke-width="3"
-              />
-              <rect x="16" y="30" width="330" height="86" rx="4" fill="#13295A" />
-              <text
-                x="28"
-                y="80"
-                font-family="Archivo,Arial Narrow,sans-serif"
-                font-stretch="125%"
-                font-weight="900"
-                font-size="38"
-                fill="#fff"
-                letter-spacing="-1"
-              >
-                PROCARGO
-              </text>
-              <text
-                x="30"
-                y="106"
-                font-family="JetBrains Mono,monospace"
-                font-weight="600"
-                font-size="16"
-                fill="#FF7A1A"
-                letter-spacing="7"
-              >
-                LOGISTICS
-              </text>
-              <rect x="0" y="124" width="420" height="8" fill="#FF7A1A" />
-              <text
-                x="6"
-                y="146"
-                font-family="JetBrains Mono,monospace"
-                font-size="7"
-                font-weight="700"
-                fill="#FFB27A"
-                letter-spacing="1"
-              >
-                HORN OK PLEASE
-              </text>
-              <rect x="-10" y="150" width="600" height="14" rx="3" fill="#070C1B" />
-              <path d="M432 20 H540 Q560 20 566 40 L582 100 V160 H432 Z" fill="#EEF1F7" />
-              <path d="M502 32 H540 Q552 32 556 46 L570 96 H502 Z" fill="#5F87C9" />
-              <path d="M506 36 H520 L530 92 H506Z" fill="#8FB0E4" opacity=".6" />
-              <rect x="446" y="34" width="44" height="40" rx="4" fill="#5F87C9" />
-              <path d="M494 30 V150" stroke="#C7CEDD" stroke-width="2" />
-              <rect x="432" y="104" width="150" height="10" fill="#FF7A1A" />
-              <rect x="474" y="84" width="14" height="4" rx="2" fill="#9AA6BF" />
-              <rect x="572" y="118" width="16" height="38" rx="3" fill="#2B3246" />
-              <rect x="574" y="106" width="12" height="10" rx="2" fill="#FFE7A0" />
-              <rect x="-14" y="140" width="10" height="26" fill="#0B1022" />
-              <g class="wheel">
-                <circle cx="70" cy="168" r="26" fill="#070B16" />
-                <circle cx="70" cy="168" r="13" fill="#9AA8C4" />
-                <path d="M70 155v26M57 168h26" stroke="#56627E" stroke-width="3" />
-              </g>
-              <g class="wheel">
-                <circle cx="130" cy="168" r="26" fill="#070B16" />
-                <circle cx="130" cy="168" r="13" fill="#9AA8C4" />
-                <path d="M130 155v26M117 168h26" stroke="#56627E" stroke-width="3" />
-              </g>
-              <g class="wheel">
-                <circle cx="512" cy="168" r="26" fill="#070B16" />
-                <circle cx="512" cy="168" r="13" fill="#9AA8C4" />
-                <path d="M512 155v26M499 168h26" stroke="#56627E" stroke-width="3" />
-              </g>
-            </g>
-            <g opacity=".8" fill="#0A1022">
-              <path d="M60 700 V640 q20 -60 40 0 V700Z M1560 700 V630 q24 -70 48 0 V700Z" />
-            </g>
-          </svg>
-        </div>
-        <div class="hero-veil" aria-hidden="true"></div>
-
-        <div class="wrap hero-inner">
-          <div>
-            <p class="tagline">
-              <span class="dot"></span><span data-i18n="tagline">Moving India. Delivering Trust.</span>
-            </p>
-            <h1 id="heroTitle">
-              <span class="ln"><span data-i18n="hero.l1">Move Anything.</span></span
-              ><span class="ln"><span data-i18n="hero.l2">Anywhere.</span></span
-              ><span class="ln"><span data-i18n="hero.l3">Across India.</span></span>
-            </h1>
-            <p class="lede" data-i18n="hero.sub">
-              Reliable transportation powered by verified lorry owners, professional drivers and smart
-              logistics technology.
-            </p>
-            <div class="hero-ctas">
-              <a
-                class="btn btn-primary btn-lg"
-                href="http://localhost:5173/customer/book"
-                data-portal="/customer/book"
-                ><span data-i18n="cta.book">Book a Truck</span><i class="arr" data-lucide="arrow-right"></i
-              ></a>
-              <a
-                class="btn btn-outline on-dark btn-lg"
-                href="http://localhost:5173/register"
-                data-portal="/register"
-                data-i18n="cta.register"
-                >Register Your Vehicle</a
-              >
-            </div>
-            <div class="hero-proof">
-              <div>
-                <i data-lucide="badge-check"></i
-                ><span data-i18n="hero.p1">Verified owners &amp; drivers</span>
-              </div>
-              <div>
-                <i data-lucide="key-round"></i><span data-i18n="hero.p2">OTP at pickup &amp; delivery</span>
-              </div>
-              <div><i data-lucide="locate-fixed"></i><span data-i18n="hero.p3">Live GPS tracking</span></div>
-            </div>
-          </div>
-
-          <form class="quick" id="quickForm" novalidate>
-            <div class="quick-head">
-              <h3 data-i18n="q.title">Get an instant quote</h3>
-              <span class="live-pill"><i></i><span id="trucksNear">142</span>&nbsp;trucks nearby</span>
-            </div>
-            <div class="route-inputs">
-              <label class="fld"
-                ><span data-i18n="q.pick">Pickup location</span>
-                <div class="inp">
-                  <i class="pin-a"></i
-                  ><input id="qPick" list="cities" value="Bengaluru" autocomplete="off" required /></div
-              ></label>
-              <label class="fld"
-                ><span data-i18n="q.drop">Delivery location</span>
-                <div class="inp">
-                  <i class="pin-b"></i
-                  ><input id="qDrop" list="cities" value="Hubballi" autocomplete="off" required /></div
-              ></label>
-            </div>
-            <div class="grid-2 mt-sm">
-              <label class="fld"
-                ><span data-i18n="q.goods">Goods type</span>
-                <div class="inp">
-                  <i data-lucide="package"></i
-                  ><select id="qGoods"></select></div
-              ></label>
-              <label class="fld"
-                ><span data-i18n="q.weight">Approx. weight</span>
-                <div class="inp">
-                  <i data-lucide="weight"></i
-                  ><select id="qWeight">
-                    <option>Up to 750 kg</option>
-                    <option>Up to 2,000 kg</option>
-                    <option selected>2 – 4 tonnes</option>
-                    <option>4 – 7 tonnes</option>
-                    <option>7 – 12 tonnes</option>
-                    <option>12 – 25 tonnes</option>
-                    <option>25+ tonnes</option>
-                  </select>
-                </div></label
-              >
-              <label class="fld"
-                ><span data-i18n="q.vehicle">Vehicle type</span>
-                <div class="inp">
-                  <i data-lucide="truck"></i
-                  ><select id="qVeh"></select></div
-              ></label>
-              <label class="fld"
-                ><span data-i18n="q.date">Pickup date</span>
-                <div class="inp"><i data-lucide="calendar"></i><input id="qDate" type="date" /></div
-              ></label>
-            </div>
-            <button class="btn btn-primary btn-lg btn-block" type="submit">
-              <span data-i18n="q.cta">Get Transport Quote</span><i class="arr" data-lucide="arrow-right"></i>
-            </button>
-            <div class="quick-foot">
-              <span><i data-lucide="shield-check"></i>No hidden charges</span
-              ><span><i data-lucide="clock"></i>Quote in 60 sec</span>
-            </div>
-          </form>
-        </div>
-        <div class="scroll-cue" aria-hidden="true"><i></i>Scroll</div>
-      </header>
-      <datalist id="cities"></datalist>
-
-      <!-- LIVE ROUTE -->
-      <section class="sec dark route-sec" id="live">
-        <div class="wrap">
-          <div class="sec-head row">
-            <div class="stack">
-              <span class="eyebrow">Live shipment</span>
-              <h2>Bengaluru to Mumbai, watched every kilometre.</h2>
-            </div>
-            <p class="lede">
-              Every trip on ProCargo runs on the same live view. You, your receiver and our operations desk
-              see one truth.
-            </p>
-          </div>
-          <div class="route-grid">
-            <div class="route-map rv">
-              <div class="grid-bg"></div>
-              <div class="route-hud">
-                <span class="hud-chip live">● LIVE</span><span class="hud-chip">PC-24817</span
-                ><span class="hud-chip" id="rSpeed">62 km/h</span>
-              </div>
-              <svg
-                viewBox="0 0 800 520"
-                aria-label="Route map from Bengaluru through Hubballi and Pune to Mumbai"
-              >
-                <path
-                  id="rPath"
-                  d="M640 450 C 600 400, 520 390, 470 330 S 390 250, 330 220 S 230 150, 190 118 S 130 80, 110 70"
-                  fill="none"
-                  stroke="rgba(255,255,255,.12)"
-                  stroke-width="10"
-                  stroke-linecap="round"
-                />
-                <path
-                  id="rDone"
-                  d="M640 450 C 600 400, 520 390, 470 330 S 390 250, 330 220 S 230 150, 190 118 S 130 80, 110 70"
-                  fill="none"
-                  stroke="#FF7A1A"
-                  stroke-width="5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M640 450 C 600 400, 520 390, 470 330 S 390 250, 330 220 S 230 150, 190 118 S 130 80, 110 70"
-                  fill="none"
-                  stroke="rgba(255,255,255,.5)"
-                  stroke-width="1.5"
-                  stroke-dasharray="2 10"
-                />
-                <g id="rCities" font-family="Instrument Sans,sans-serif"></g>
-                <g id="rTruck">
-                  <circle r="22" fill="rgba(255,122,26,.18)">
-                    <animate attributeName="r" values="16;28;16" dur="2s" repeatCount="indefinite" />
-                  </circle>
-                  <circle r="13" fill="#FF7A1A" stroke="#fff" stroke-width="3" />
-                  <path d="M-6 -3h7v6h-7z M1 -1h3l2 2v2h-5z" fill="#fff" />
-                </g>
-              </svg>
-            </div>
-            <div class="data-cards">
-              <div class="dcard rv" data-delay="0">
-                <span class="ic"><i data-lucide="route"></i></span>
-                <div><small>Distance</small><b class="tnum">984 km</b></div>
-              </div>
-              <div class="dcard rv" data-delay="1">
-                <span class="ic"><i data-lucide="clock-3"></i></span>
-                <div><small>Estimated delivery</small><b class="tnum" id="rEta">18 h 00 m</b></div>
-              </div>
-              <div class="dcard rv" data-delay="2">
-                <span class="ic"><i data-lucide="truck"></i></span>
-                <div><small>Vehicle type</small><b>14 FT · 4,000 kg</b></div>
-              </div>
-              <div class="dcard rv" data-delay="3">
-                <span class="ic"><i data-lucide="map-pin"></i></span>
-                <div class="grow">
-                  <small>Current location</small><b id="rLoc">Near Tumakuru</b>
-                  <div class="progress"><i id="rBar"></i></div>
-                </div>
-              </div>
-              <div class="dcard rv" data-delay="4">
-                <span class="ic"><i data-lucide="activity"></i></span>
-                <div><small>Trip status</small><b class="status-live" id="rStatus">In Transit</b></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SERVICES -->
-      <section class="sec" id="services">
-        <div class="wrap">
-          <div class="sec-head row">
-            <div class="stack">
-              <span class="eyebrow">Services</span>
-              <h2 data-i18n="svc.h">One platform for every kind of load.</h2>
-            </div>
-            <p class="lede">
-              From a single sofa across Bengaluru to 25 tonnes of steel to Pune. Tap a service to see what's
-              included.
-            </p>
-          </div>
-          <div class="svc-grid" id="svcGrid"></div>
-        </div>
-      </section>
-
-      <!-- VEHICLES -->
-      <section class="sec white veh-sec" id="vehicles">
-        <div class="wrap">
-          <div class="sec-head row">
-            <div class="stack">
-              <span class="eyebrow">Fleet</span>
-              <h2 data-i18n="veh.h">Choose the Right Vehicle</h2>
-            </div>
-            <p class="lede">
-              Eleven vehicle classes from verified owners. Capacities are typical payloads; the exact vehicle
-              is confirmed with your quote.
-            </p>
-          </div>
-        </div>
-        <div class="veh-pin" id="vehPin">
-          <div class="veh-track" id="vehTrack"></div>
-          <div class="veh-progress" aria-hidden="true"><i id="vehBar"></i></div>
-        </div>
-      </section>
-
-      <!-- HOW IT WORKS -->
-      <section class="sec" id="how">
-        <div class="wrap">
-          <div class="sec-head center">
-            <span class="eyebrow">How it works</span>
-            <h2 data-i18n="how.h">From enquiry to delivery in eight steps.</h2>
-            <p class="lede">Each stop lights up as the route reaches it.</p>
-          </div>
-          <div class="how-wrap" id="howWrap">
-            <div class="how-line" aria-hidden="true">
-              <svg id="howSvg">
-                <path id="howBase" fill="none" stroke="#CFD7E6" stroke-width="2.5" stroke-dasharray="6 8" />
-                <path id="howPath" fill="none" stroke="#FF7A1A" stroke-width="3" stroke-linecap="round" />
-              </svg>
-            </div>
-            <div class="how-grid" id="howGrid"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TRACKING -->
-      <section class="sec white" id="tracking">
-        <div class="wrap">
-          <div class="sec-head row">
-            <div class="stack">
-              <span class="eyebrow">Live tracking</span>
-              <h2 data-i18n="trk.h">Know where your goods are. Always.</h2>
-            </div>
-            <p class="lede">
-              A sample trip on NH 48. The truck, status and ETA below update live, the same way your customers
-              will see it.
-            </p>
-          </div>
-          <div class="track-grid">
-            <div class="map-card rv">
-              <svg
-                viewBox="0 0 800 520"
-                preserveAspectRatio="xMidYMid slice"
-                aria-label="Map showing Bengaluru, Tumakuru, Chitradurga, Davanagere and Hubballi"
-              >
-                <rect width="800" height="520" fill="#E9EEF5" />
-                <g stroke="#DCE3EE" stroke-width="1">
-                  <path
-                    d="M0 80 H800 M0 180 H800 M0 280 H800 M0 380 H800 M0 480 H800 M100 0 V520 M220 0 V520 M340 0 V520 M460 0 V520 M580 0 V520 M700 0 V520"
-                  />
-                </g>
-                <path
-                  d="M-20 300 C 120 280, 180 360, 300 340 S 520 380, 820 330"
-                  fill="none"
-                  stroke="#BFD4F2"
-                  stroke-width="14"
-                  opacity=".7"
-                />
-                <path
-                  d="M60 520 C 120 420, 90 320, 180 240 S 300 60, 420 -20"
-                  fill="none"
-                  stroke="#fff"
-                  stroke-width="6"
-                />
-                <path d="M-20 140 C 200 170, 420 120, 820 170" fill="none" stroke="#fff" stroke-width="5" />
-                <g fill="#D3E8D5" opacity=".9">
-                  <ellipse cx="560" cy="120" rx="90" ry="50" />
-                  <ellipse cx="160" cy="420" rx="70" ry="40" />
-                  <ellipse cx="690" cy="440" rx="80" ry="45" />
-                </g>
-                <path
-                  id="tPathBg"
-                  d="M680 470 C 640 440, 600 420, 560 380 S 500 300, 450 270 S 360 210, 320 180 S 220 110, 150 60"
-                  fill="none"
-                  stroke="#fff"
-                  stroke-width="14"
-                  stroke-linecap="round"
-                />
-                <path
-                  id="tPath"
-                  d="M680 470 C 640 440, 600 420, 560 380 S 500 300, 450 270 S 360 210, 320 180 S 220 110, 150 60"
-                  fill="none"
-                  stroke="#0A1A3A"
-                  stroke-width="6"
-                  stroke-linecap="round"
-                  stroke-dasharray="1 0"
-                />
-                <path
-                  id="tDone"
-                  d="M680 470 C 640 440, 600 420, 560 380 S 500 300, 450 270 S 360 210, 320 180 S 220 110, 150 60"
-                  fill="none"
-                  stroke="#FF7A1A"
-                  stroke-width="6"
-                  stroke-linecap="round"
-                />
-                <g id="tCities" font-family="Instrument Sans,sans-serif"></g>
-                <g id="tTruck">
-                  <circle r="26" fill="rgba(255,122,26,.2)">
-                    <animate attributeName="r" values="18;30;18" dur="2s" repeatCount="indefinite" />
-                  </circle>
-                  <rect
-                    x="-18"
-                    y="-11"
-                    width="36"
-                    height="22"
-                    rx="7"
-                    fill="#FF7A1A"
-                    stroke="#fff"
-                    stroke-width="3"
-                  />
-                  <path d="M-9 -4h10v8h-10z M1 -2h4l3 3v3h-7z" fill="#fff" />
-                </g>
-              </svg>
-              <div class="map-top">
-                <span class="glass"
-                  ><i class="icon-16 text-orange" data-lucide="navigation"></i>NH 48 ·
-                  <b id="tSpeed">58 km/h</b></span
-                >
-                <span class="glass"
-                  ><span class="live-pill"><i></i>LIVE</span><b>PC-24790</b></span
-                >
-              </div>
-              <div class="map-bottom">
-                <div class="eta-bar">
-                  <div class="row">
-                    <span>Bengaluru</span><b id="tPct" class="tnum">0%</b><span>Hubballi</span>
-                  </div>
-                  <div class="progress"><i id="tBar"></i></div>
-                </div>
-              </div>
-            </div>
-            <div class="side-card rv" data-delay="1">
-              <div class="driver">
-                <span class="avatar">RG</span>
-                <div class="grow">
-                  <b>Ramesh Gowda</b>
-                  <div class="muted text-sm">Driver · 4.8 ★ · 9 yrs experience</div>
-                </div>
-                <button
-                  class="icon-btn"
-                  type="button"
-                  aria-label="Call driver (demo)"
-                  data-toast="Calling is disabled in this demo"
-                >
-                  <i data-lucide="phone"></i>
-                </button>
-              </div>
-              <div class="kv">
-                <div><small>Vehicle number</small><b class="mono">KA 01 AB 4521</b></div>
-                <div><small>Truck type</small><b>17 FT · Closed</b></div>
-                <div><small>Current location</small><b id="tLoc">Bengaluru</b></div>
-                <div><small>Estimated arrival</small><b id="tEta" class="tnum">7 h 10 m</b></div>
-                <div><small>Distance remaining</small><b id="tRem" class="tnum">410 km</b></div>
-                <div><small>Goods</small><b>Garments · 3.2 t</b></div>
-              </div>
-              <ul class="timeline" id="tTimeline"></ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TRUST -->
-      <section class="sec dark" id="trust">
-        <div class="wrap">
-          <div class="sec-head row">
-            <div class="stack">
-              <span class="eyebrow">Trust</span>
-              <h2 data-i18n="trust.h">Transport You Can Trust</h2>
-            </div>
-            <div class="stack stack-start">
-              <p class="lede">
-                Numbers that grow every day as more owners, drivers and businesses join the network.
-              </p>
-              <span class="sample-note"
-                ><i class="icon-14" data-lucide="info"></i>Sample figures for the prototype</span
-              >
-            </div>
-          </div>
-          <div class="stats" id="stats">
-            <div class="stat rv" data-delay="0">
-              <b><span data-count="5000">0</span><em>+</em></b
-              ><span>Trips completed</span>
-            </div>
-            <div class="stat rv" data-delay="1">
-              <b><span data-count="1200">0</span><em>+</em></b
-              ><span>Verified vehicles</span>
-            </div>
-            <div class="stat rv" data-delay="2">
-              <b><span data-count="800">0</span><em>+</em></b
-              ><span>Professional drivers</span>
-            </div>
-            <div class="stat rv" data-delay="3">
-              <b><span data-count="50">0</span><em>+</em></b
-              ><span>Cities served</span>
-            </div>
-            <div class="stat rv" data-delay="4">
-              <b><span data-count="98">0</span><em>%</em></b
-              ><span>Successful deliveries</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SAFETY -->
-      <section class="sec white" id="safety">
-        <div class="wrap safe-grid">
-          <div class="shield-art rv" aria-hidden="true">
-            <svg viewBox="0 0 440 440">
-              <circle cx="220" cy="220" r="200" fill="none" stroke="#E3E8F1" stroke-width="1.5" />
-              <circle
-                cx="220"
-                cy="220"
-                r="150"
-                fill="none"
-                stroke="#E3E8F1"
-                stroke-width="1.5"
-                stroke-dasharray="4 8"
-              />
-              <g
-                class="orbit"
-                font-family="JetBrains Mono,monospace"
-                font-size="10"
-                font-weight="700"
-                text-anchor="middle"
-              >
-                <circle cx="220" cy="20" r="24" fill="#FFF1E6" />
-                <text x="220" y="24" fill="#E0600A">OTP</text>
-                <circle cx="420" cy="220" r="24" fill="#E4F5EC" />
-                <text x="420" y="224" fill="#15935F">GPS</text>
-                <circle cx="220" cy="420" r="24" fill="#E7EFFD" />
-                <text x="220" y="424" fill="#2D6BE0">POD</text>
-                <circle cx="20" cy="220" r="24" fill="#FFF5DA" />
-                <text x="20" y="224" fill="#C98A06">KYC</text>
-              </g>
-              <g class="orbit rev">
-                <circle cx="326" cy="114" r="8" fill="#FF7A1A" />
-                <circle cx="114" cy="326" r="8" fill="#0A1A3A" />
-              </g>
-              <path
-                d="M220 110 L300 140 V215 C300 270 264 305 220 325 C176 305 140 270 140 215 V140 Z"
-                fill="#0A1A3A"
-              />
-              <path d="M220 128 L284 152 V215 C284 260 255 290 220 306 Z" fill="#10244D" />
-              <path
-                d="M185 215 L210 240 L258 190"
-                fill="none"
-                stroke="#FF7A1A"
-                stroke-width="14"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-          <div>
-            <div class="sec-head mb-lg">
-              <span class="eyebrow">Safety</span>
-              <h2 data-i18n="safe.h">Safe Transport. Verified Network.</h2>
-              <p class="lede">Every trip is protected by checks before, during and after the journey.</p>
-            </div>
-            <div class="feat-list" id="featList"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PARTNER -->
-      <section class="sec dark partner" id="partner">
-        <div class="wrap partner-grid">
-          <div>
-            <span class="eyebrow">For owners &amp; drivers</span>
-            <h2 class="mt-md" data-i18n="own.h">Own a Truck? Grow Your Business With Us.</h2>
-            <p class="lede mt-md">
-              Connect with businesses looking for reliable transport and receive more trip opportunities.
-            </p>
-            <div class="benefits">
-              <div class="benefit rv" data-delay="0"><i data-lucide="boxes"></i><b>More loads</b></div>
-              <div class="benefit rv" data-delay="1">
-                <i data-lucide="wallet"></i><b>Transparent payments</b>
-              </div>
-              <div class="benefit rv" data-delay="2"><i data-lucide="history"></i><b>Trip history</b></div>
-              <div class="benefit rv" data-delay="3"><i data-lucide="file-check"></i><b>Digital POD</b></div>
-              <div class="benefit rv" data-delay="4"><i data-lucide="map"></i><b>Location tracking</b></div>
-              <div class="benefit rv" data-delay="5">
-                <i data-lucide="headphones"></i><b>Customer support</b>
-              </div>
-            </div>
-            <div class="button-row">
-              <a class="btn btn-primary btn-lg" href="http://localhost:5173/register" data-portal="/register"
-                ><span>Register as Vehicle Owner</span><i class="arr" data-lucide="arrow-right"></i
-              ></a>
-              <a class="btn btn-outline btn-lg" href="http://localhost:5173/register" data-portal="/register"
-                >Register as Driver</a
-              >
-            </div>
-          </div>
-          <div class="partner-art rv" aria-hidden="true">
-            <svg viewBox="0 0 500 400" preserveAspectRatio="xMidYMax slice">
-              <circle cx="380" cy="120" r="46" fill="#FFE2B0" opacity=".9" />
-              <path
-                d="M0 250 L80 210 L160 240 L260 190 L360 235 L440 205 L500 225 V400 H0Z"
-                fill="#5A2E4E"
-                opacity=".7"
-              />
-              <rect y="300" width="500" height="100" fill="#2A1E36" />
-              <path d="M0 340 H500" stroke="#F4D08C" stroke-width="4" stroke-dasharray="40 30" opacity=".6" />
-              <!-- parked truck -->
-              <g transform="translate(40 206)">
-                <rect x="0" y="0" width="220" height="90" rx="5" fill="#FF7A1A" />
-                <g stroke="#E0600A" stroke-width="2">
-                  <path
-                    d="M20 4v82M40 4v82M60 4v82M80 4v82M100 4v82M120 4v82M140 4v82M160 4v82M180 4v82M200 4v82"
-                  />
-                </g>
-                <rect x="18" y="26" width="150" height="40" rx="3" fill="#FF7A1A" />
-                <text
-                  x="26"
-                  y="54"
-                  font-family="Archivo,sans-serif"
-                  font-stretch="125%"
-                  font-weight="900"
-                  font-size="20"
-                  fill="#0A1A3A"
-                >
-                  PROCARGO
-                </text>
-                <path d="M228 14 H280 Q292 14 296 26 L306 60 V100 H228Z" fill="#F4F4F0" />
-                <path d="M262 22 H280 Q288 22 290 30 L298 58 H262Z" fill="#7D9BD0" />
-                <rect x="228" y="66" width="78" height="7" fill="#0A1A3A" />
-                <rect x="-6" y="90" width="316" height="10" fill="#140E1E" />
-                <circle cx="40" cy="104" r="16" fill="#0B0913" />
-                <circle cx="40" cy="104" r="7" fill="#9AA8C4" />
-                <circle cx="78" cy="104" r="16" fill="#0B0913" />
-                <circle cx="78" cy="104" r="7" fill="#9AA8C4" />
-                <circle cx="270" cy="104" r="16" fill="#0B0913" />
-                <circle cx="270" cy="104" r="7" fill="#9AA8C4" />
-              </g>
-              <!-- driver figure -->
-              <g transform="translate(380 214)">
-                <ellipse cx="20" cy="104" rx="30" ry="6" fill="#140E1E" opacity=".6" />
-                <path d="M6 58 h28 l4 44 h-12 l-2 -30 l-4 30 h-12 z" fill="#1E2A4A" />
-                <path d="M0 22 q20 -10 40 0 l4 40 h-48 z" fill="#E9EEF7" />
-                <path d="M16 22 l4 12 l4 -12" fill="none" stroke="#C7CEDD" stroke-width="2" />
-                <circle cx="20" cy="8" r="13" fill="#8A5A3C" />
-                <path d="M7 4 q13 -14 26 0 q-2 -8 -13 -9 q-11 1 -13 9z" fill="#1A1210" />
-                <path d="M14 13 q6 5 12 0" fill="none" stroke="#1A1210" stroke-width="2" />
-                <path
-                  d="M40 26 q14 10 8 30"
-                  fill="none"
-                  stroke="#E9EEF7"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                />
-                <rect x="42" y="50" width="16" height="26" rx="3" fill="#0A1A3A" />
-                <rect x="45" y="54" width="10" height="16" rx="1" fill="#6BE3A8" />
-              </g>
-            </svg>
-            <div class="float-card float-card-top-left">
-              <span class="ic"><i data-lucide="indian-rupee"></i></span>
-              <div><small class="muted">Payout settled</small><b>₹ 38,450</b></div>
-            </div>
-            <div class="float-card float-card-mid-right">
-              <span class="ic ic-orange"><i data-lucide="bell-ring"></i></span>
-              <div><small class="muted">New load · 6.5 t</small><b>Hubballi → Pune</b></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PAYMENT -->
-      <section class="sec" id="payments">
-        <div class="wrap">
-          <div class="sec-head row">
-            <div class="stack">
-              <span class="eyebrow">Payments</span>
-              <h2>Money moves only when goods do.</h2>
-            </div>
-            <p class="lede">
-              Customers pay into escrow. Owners are settled after the delivery proof is approved. Follow the
-              money through a trip.
-            </p>
-          </div>
-          <div class="pay-flow" id="payFlow">
-            <div class="pf">
-              <span class="money"></span><span class="n">01</span><b>Quotation</b>
-              <p>Upfront price with GST shown</p>
-            </div>
-            <div class="pf">
-              <span class="money"></span><span class="n">02</span><b>Customer payment</b>
-              <p>Held securely until delivery</p>
-            </div>
-            <div class="pf">
-              <span class="money"></span><span class="n">03</span><b>Trip completion</b>
-              <p>Delivery OTP confirms handover</p>
-            </div>
-            <div class="pf">
-              <span class="money"></span><span class="n">04</span><b>POD approval</b>
-              <p>Signed proof verified by ops</p>
-            </div>
-            <div class="pf">
-              <span class="money"></span><span class="n">05</span><b>Owner settlement</b>
-              <p>Paid to owner's bank account</p>
-            </div>
-            <div class="pf">
-              <span class="money"></span><span class="n">06</span><b>Platform commission</b>
-              <p>Small fee, shown on every invoice</p>
-            </div>
-          </div>
-          <div class="methods">
-            <span class="method"><i data-lucide="smartphone"></i>UPI</span>
-            <span class="method"><i data-lucide="credit-card"></i>Credit card</span>
-            <span class="method"><i data-lucide="credit-card"></i>Debit card</span>
-            <span class="method"><i data-lucide="landmark"></i>Net banking</span>
-            <span class="method"><i data-lucide="wallet"></i>Wallet</span>
-          </div>
-          <div class="secure">
-            <span><i data-lucide="lock"></i>256-bit encrypted checkout</span
-            ><span><i data-lucide="shield-check"></i>PCI-DSS compliant gateway</span
-            ><span><i data-lucide="receipt"></i>GST invoice for every trip</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- NETWORK -->
-      <section class="sec dark" id="network">
-        <div class="wrap net-grid">
-          <div>
-            <span class="eyebrow">Network</span>
-            <h2 class="mt-md">Karnataka first. South and West India next.</h2>
-            <p class="lede mt-md">
-              Our hub is Bengaluru, with lanes running to every major city in seven states. Pick a state to
-              see its lanes.
-            </p>
-            <div class="state-list" id="stateList"></div>
-          </div>
-          <div class="net-map rv">
-            <svg
-              id="netSvg"
-              viewBox="0 0 840 600"
-              aria-label="Map of peninsular India showing ProCargo lanes"
-            ></svg>
-          </div>
-        </div>
-      </section>
-
-      <!-- TESTIMONIALS -->
-      <section class="sec white clip" id="stories">
-        <div class="wrap">
-          <div class="sec-head row">
-            <div class="stack">
-              <span class="eyebrow">Stories</span>
-              <h2>Businesses, farmers and owners who move with us.</h2>
-            </div>
-            <div>
-              <span class="sample-note"
-                ><i class="icon-14" data-lucide="info"></i>Sample testimonials for layout. Replace with real
-                customer quotes before launch.</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="tst-mask"><div class="tst-row" id="tstRow"></div></div>
-      </section>
-
-      <!-- APP -->
-      <section class="sec dark clip" id="app">
-        <div class="wrap app-grid">
-          <div>
-            <span class="eyebrow">Mobile app</span>
-            <h2 class="mt-md" data-i18n="app.h">Your Transport Business in Your Pocket</h2>
-            <p class="lede mt-md">
-              Book, track and pay from your phone. Drivers get big, simple buttons built for the road.
-            </p>
-            <div class="screen-tabs" id="screenTabs"></div>
-            <div class="store-btns">
-              <button class="store" type="button" data-toast="Android app launching soon">
-                <i class="icon-26 icon-filled" data-lucide="play"></i
-                ><span><small>Download for</small><b>Android</b></span>
-              </button>
-              <span class="store soon"
-                ><i class="icon-26" data-lucide="apple"></i
-                ><span><small>Coming soon on</small><b>iOS</b></span></span
-              >
-            </div>
-          </div>
-          <div class="phones" id="phones"></div>
-        </div>
-      </section>
-
-      <section class="sec sec-compact">
-        <div class="wrap">
-          <div class="cta-band rv">
-            <div>
-              <h2>Ready to move your first load?</h2>
-              <p class="cta-text">Get a price in 60 seconds. No login needed to see your quote.</p>
-            </div>
-            <a
-              class="btn btn-dark btn-lg"
-              href="http://localhost:5173/customer/book"
-              data-portal="/customer/book"
-              ><span data-i18n="cta.book">Book a Truck</span><i class="arr" data-lucide="arrow-right"></i
-            ></a>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <div class="wrap">
-          <div class="foot-grid">
-            <div>
-              <a class="brand brand-light" href="#top"
-                ><svg class="brand-mark"><use href="#logo" /></svg
-                ><span class="brand-name"
-                  >Pro<span class="brand-accent">Cargo</span
-                  ><small>Moving India. Delivering Trust.</small></span
-                ></a
-              >
-              <p class="footer-about">
-                A technology-enabled transport marketplace connecting businesses with verified lorry owners
-                and drivers. Bengaluru, Karnataka.
-              </p>
-              <div class="socials">
-                <a href="https://www.whatsapp.com" aria-label="WhatsApp"
-                  ><i data-lucide="message-circle"></i
-                ></a>
-                <a href="https://www.instagram.com" aria-label="Instagram"><i data-lucide="instagram"></i></a>
-                <a href="https://www.facebook.com" aria-label="Facebook"><i data-lucide="facebook"></i></a>
-                <a href="https://www.linkedin.com" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
-                <a href="https://www.youtube.com" aria-label="YouTube"><i data-lucide="youtube"></i></a>
-              </div>
-            </div>
-            <div>
-              <h4>Company</h4>
-              <ul>
-                <li><a href="#top">About</a></li>
-                <li><a href="#how">How it works</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#vehicles">Vehicle types</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4>Partner with us</h4>
-              <ul>
-                <li>
-                  <a href="http://localhost:5173/register" data-portal="/register">Owner registration</a>
-                </li>
-                <li>
-                  <a href="http://localhost:5173/register" data-portal="/register">Driver registration</a>
-                </li>
-                <li><a href="http://localhost:5173/login" data-portal="/login">Owner dashboard</a></li>
-                <li><a href="http://localhost:5173/login" data-portal="/login">Driver app</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4>Support</h4>
-              <ul>
-                <li>
-                  <a href="http://localhost:5173/customer/book" data-portal="/customer/book">Contact</a>
-                </li>
-                <li><a href="#tracking">Track shipment</a></li>
-                <li><a href="#payments">Payments</a></li>
-                <li><a href="#safety">Safety</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4>Legal</h4>
-              <ul>
-                <li><a href="#top">Terms</a></li>
-                <li><a href="#top">Privacy policy</a></li>
-                <li><a href="#top">Refund policy</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="foot-bottom">
-            <span>© 2026 ProCargo. All rights reserved.</span
-            ><span class="mono">+91 00000 00000 · support@procargo.in</span>
-          </div>
-        </div>
-      </footer>
-    </main>
-
-    <div class="fab" id="fab">
-      <a class="wa" href="https://wa.me/910000000000" aria-label="WhatsApp us"
-        ><i data-lucide="message-circle"></i><span class="lbl">WhatsApp</span></a
-      >
-      <button class="call" type="button" aria-label="Call us" data-toast="Call us on +91 00000 00000">
-        <i data-lucide="phone"></i>
-      </button>
-      <a
-        class="book"
-        href="http://localhost:5173/customer/book"
-        data-portal="/customer/book"
-        aria-label="Book a truck"
-        ><i data-lucide="truck"></i><span class="lbl" data-i18n="cta.book">Book a Truck</span></a
-      >
-    </div>
-    <div class="toast" id="toast" role="status" aria-live="polite">
-      <i data-lucide="circle-check"></i><span id="toastText"></span>
-    </div>
-
-    <!-- Libraries: GSAP for scroll animation, Lucide for icons -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-
-    <!-- Site scripts, in load order (main.js starts everything) -->
     <script src="js/config.js"></script>
     <script src="js/data.js"></script>
     <script src="js/i18n.js"></script>
-    <script src="js/helpers.js"></script>
-    <script src="js/vehicle-art.js"></script>
-    <script src="js/phone-screens.js"></script>
-    <script src="js/network-map.js"></script>
-    <script src="js/live-demos.js"></script>
-    <script src="js/how-it-works.js"></script>
-    <script src="js/scroll-motion.js"></script>
-    <script src="js/nav.js"></script>
-    <script src="js/home.js"></script>
+    <script src="js/quote.js"></script>
+    <script src="js/fleet.js"></script>
+    <script src="js/journey.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

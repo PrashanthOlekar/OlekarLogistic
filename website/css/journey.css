@@ -1,0 +1,127 @@
+/* Journey: the signature moment. A vertical NH 48 runs down the section; the lorry drives along it
+   as you scroll, milestones light up as it passes, and the green sign counts down to Hubballi. */
+.journey {
+  background: var(--navy);
+  color: #fff;
+  padding: 110px 0 120px;
+}
+.journey-grid {
+  display: grid;
+  grid-template-columns: 230px 88px minmax(0, 1fr);
+  gap: 0 40px;
+  position: relative;
+}
+.journey-sign {
+  position: sticky;
+  top: 90px;
+  align-self: start;
+  display: grid;
+  gap: 14px;
+}
+.sign-board {
+  display: grid;
+  gap: 2px;
+  padding: 18px 20px;
+  background: var(--sign-green);
+  border: 4px solid #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 0 3px var(--sign-green), 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.sign-arrow {
+  font: 900 2rem/1 var(--display);
+}
+.sign-place {
+  font: 800 1.5rem/1.1 var(--text);
+}
+.sign-km {
+  font: 900 2.6rem/1 var(--display);
+  font-stretch: 90%;
+  font-variant-numeric: tabular-nums;
+}
+.sign-step {
+  color: var(--on-dark-2);
+  font-weight: 600;
+  min-height: 3em;
+}
+.journey-road {
+  position: relative;
+  background: var(--asphalt);
+  border-inline: 4px solid #3a4560;
+  border-radius: 6px;
+}
+.journey-road::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  margin-left: -2px;
+  background: repeating-linear-gradient(180deg, #f3f5f8 0 40px, transparent 40px 80px);
+  opacity: 0.8;
+}
+.journey-lorry {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 48px;
+  margin-left: -24px;
+  will-change: transform;
+}
+.journey-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+.journey-steps li {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+  min-height: 210px;
+  padding-bottom: 30px;
+  opacity: 0.4;
+  transition: opacity 0.35s;
+}
+.journey-steps li.reached {
+  opacity: 1;
+}
+.journey-steps li .stone {
+  transform: scale(0.92);
+  transition: transform 0.35s;
+}
+.journey-steps li.reached .stone {
+  transform: none;
+}
+.step-text h3 {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 850;
+  font-stretch: 112%;
+  margin: 18px 0 10px;
+}
+.step-text p {
+  color: var(--on-dark-2);
+  max-width: 48ch;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 900px) {
+  .journey-grid {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 0 18px;
+  }
+  .journey-sign {
+    display: none;
+  }
+  .journey-lorry {
+    width: 34px;
+    margin-left: -17px;
+  }
+  .journey-steps li {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    min-height: 0;
+    padding-bottom: 48px;
+  }
+}

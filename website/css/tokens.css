@@ -1,0 +1,32 @@
+/* Colours, type and shape. The palette is the road: night navy, ProCargo orange,
+   the yellow top of a national-highway milestone and the green of NH direction signs. */
+:root {
+  --navy: #0a1a3a;
+  --navy-2: #13295a;
+  --navy-3: #1d3a78;
+  --asphalt: #1b2236;
+  --orange: #ff7a1a;
+  --orange-hover: #ff9344;
+  --orange-text: #c24a08;
+  --yellow: #f2b705;
+  --sign-green: #0e5e3b;
+  --sign-green-2: #0b4d30;
+  --paper: #ffffff;
+  --stone: #eef1f5;
+  --ink: #0b1530;
+  --muted: #55627f;
+  --on-dark: #ffffff;
+  --on-dark-2: #b4c1dc;
+  --line: #dfe5ee;
+
+  --display: 'Anybody', 'Arial Narrow', sans-serif;
+  --text: 'Overpass', 'Noto Sans Kannada', system-ui, sans-serif;
+
+  --max: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --radius: 14px;
+  --shadow: 0 24px 60px rgba(3, 10, 30, 0.35);
+}
+html:lang(kn) {
+  --text: 'Noto Sans Kannada', 'Overpass', system-ui, sans-serif;
+}

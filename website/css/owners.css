@@ -1,0 +1,46 @@
+/* For lorry owners: the green of a direction sign, facts on the right. */
+.owners {
+  background: var(--sign-green);
+  color: #fff;
+  padding: 110px 0;
+}
+.owners-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+.owners h2 {
+  margin-bottom: 22px;
+}
+.owners-lede {
+  color: #cfe9da;
+  font-size: 1.12rem;
+  max-width: 44ch;
+  margin-bottom: 30px;
+}
+.owner-facts {
+  margin: 0;
+  display: grid;
+  gap: 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+}
+.owner-facts div {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+.owner-facts dt {
+  font: 900 1.5rem/1.1 var(--display);
+  font-stretch: 110%;
+  color: var(--yellow);
+  margin-bottom: 6px;
+}
+.owner-facts dd {
+  margin: 0;
+  color: #e3f3ea;
+}
+@media (max-width: 860px) {
+  .owners-grid {
+    grid-template-columns: 1fr;
+  }
+}

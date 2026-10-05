@@ -1,0 +1,162 @@
+/* The price form, dressed as a green NH direction sign on top of a white form. */
+.quote {
+  background: #fff;
+  color: var(--ink);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.quote-sign {
+  background: var(--sign-green);
+  color: #fff;
+  padding: 18px 22px;
+  border: 4px solid #fff;
+  border-radius: 14px;
+  margin: 8px;
+  box-shadow: 0 0 0 2px var(--sign-green);
+}
+.quote-sign h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: var(--text);
+  letter-spacing: 0;
+  font-stretch: 100%;
+  color: #d6f0e1;
+}
+.quote-route {
+  font: 900 1.7rem/1.1 var(--display);
+  font-stretch: 105%;
+  margin-top: 4px;
+}
+.quote-body {
+  padding: 14px 22px 22px;
+  display: grid;
+  gap: 14px;
+}
+.quote-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: end;
+}
+.quote-pair:nth-of-type(2) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.field > span:first-child {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.field select,
+.field input {
+  width: 100%;
+  min-height: 48px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--stone);
+  padding: 10px 12px;
+}
+.field select:focus,
+.field input:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 4px rgba(255, 122, 26, 0.18);
+}
+.input-unit {
+  position: relative;
+}
+.input-unit span {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-weight: 600;
+}
+.swap {
+  width: 44px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+}
+.swap svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--navy);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(90deg);
+}
+.swap:hover {
+  border-color: var(--navy);
+}
+.quote-result {
+  display: grid;
+  gap: 12px;
+  padding-top: 6px;
+  border-top: 2px dashed var(--line);
+  animation: unfold 0.35s ease-out;
+}
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+.quote-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 10px;
+}
+.quote-total span {
+  color: var(--muted);
+  font-weight: 600;
+}
+.quote-total b {
+  font: 900 2.4rem/1 var(--display);
+  font-stretch: 110%;
+  font-variant-numeric: tabular-nums;
+}
+.quote-lines {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 0.95rem;
+}
+.quote-lines div {
+  display: flex;
+  justify-content: space-between;
+}
+.quote-lines dt {
+  color: var(--muted);
+}
+.quote-lines dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.quote-note {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.quote-error {
+  background: #fdecec;
+  color: #8f2222;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+}

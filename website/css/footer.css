@@ -1,127 +1,43 @@
-/* CTA band */
-.cta-band {
-  border-radius: var(--r-xl);
-  background: var(--orange);
-  color: #fff;
-  padding: clamp(2rem, 5vw, 3.5rem);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 2rem;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
-.cta-band::after {
-  content: '';
-  position: absolute;
-  right: -80px;
-  top: -80px;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  border: 50px solid rgba(255, 255, 255, 0.12);
-}
-.cta-band h2 {
-  font-size: clamp(1.9rem, 4vw, 3rem);
-}
-@media (max-width: 760px) {
-  .cta-band {
-    grid-template-columns: 1fr;
-  }
-}
-.cta-band .btn-dark {
-  position: relative;
-  z-index: 1;
-}
-
-/* FOOTER */
-footer {
-  background: #060f24;
+/* Footer: the road ends at the Hubballi stone. */
+.site-footer {
+  background: var(--navy);
   color: var(--on-dark-2);
-  padding-block: 4rem 2rem;
-  font-size: 0.92rem;
 }
-.foot-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr));
-  gap: 2rem;
+.road-end {
+  height: 90px;
 }
-@media (max-width: 900px) {
-  .foot-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .foot-grid > div:first-child {
-    grid-column: 1/-1;
-  }
+.road-end::after {
+  top: 40px;
 }
-footer h4 {
-  font: 600 0.72rem/1 var(--mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
-  margin-bottom: 1rem;
+.stone-end {
+  position: absolute;
+  right: clamp(16px, 10vw, 160px);
+  bottom: 40px;
 }
-footer ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.55rem;
-}
-footer a {
-  text-decoration: none;
-}
-footer a:hover {
-  color: #fff;
-}
-.socials {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1.2rem;
-}
-.socials a {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.06);
-  transition:
-    background 0.25s,
-    transform 0.25s;
-}
-.socials a:hover {
-  background: var(--orange);
-  color: #fff;
-  transform: translateY(-3px);
-}
-.socials [data-lucide] {
-  width: 18px;
-  height: 18px;
-}
-.foot-bottom {
+.footer-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.82rem;
+  align-items: center;
+  gap: 18px 36px;
+  padding-block: 40px;
 }
-
-.sec-compact {
-  padding-block: 4rem;
+.footer-row img {
+  height: 30px;
+  width: auto;
 }
-.cta-text {
-  margin-top: 0.8rem;
-  opacity: 0.9;
-  max-width: 34rem;
+.footer-row nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
 }
-.brand-light {
+.footer-row nav a {
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer-row nav a:hover {
   color: #fff;
 }
-.footer-about {
-  margin-top: 1rem;
-  max-width: 22rem;
+.footer-row p {
+  margin-left: auto;
+  font-size: 0.9rem;
 }

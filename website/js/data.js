@@ -1,349 +1,70 @@
-// Content for the page: cities, vehicle classes, services, steps, safety points, testimonials, network lanes.
 /* ============ DATA ============ */
-const CITY = {
-  Bengaluru: [12.97, 77.59],
-  Mysuru: [12.3, 76.64],
-  Tumakuru: [13.34, 77.1],
-  Chitradurga: [14.23, 76.4],
-  Davanagere: [14.46, 75.92],
-  Hubballi: [15.36, 75.12],
-  Dharwad: [15.46, 75.01],
-  Belagavi: [15.85, 74.5],
-  Mangaluru: [12.91, 74.86],
-  Udupi: [13.34, 74.75],
-  Kalaburagi: [17.33, 76.83],
-  Ballari: [15.14, 76.92],
-  Shivamogga: [13.93, 75.57],
-  Hassan: [13.0, 76.1],
-  Vijayapura: [16.83, 75.71],
-  Mumbai: [19.08, 72.88],
-  Pune: [18.52, 73.86],
-  Kolhapur: [16.7, 74.24],
-  Nagpur: [21.15, 79.09],
-  Hyderabad: [17.39, 78.49],
-  Chennai: [13.08, 80.27],
-  Coimbatore: [11.02, 76.96],
-  Madurai: [9.93, 78.12],
-  Kochi: [9.93, 76.27],
-  Thiruvananthapuram: [8.52, 76.94],
-  Vijayawada: [16.51, 80.65],
-  Visakhapatnam: [17.69, 83.22],
-  Tirupati: [13.63, 79.42],
-  Panaji: [15.49, 73.83],
-  Salem: [11.66, 78.15],
-};
-const VEH = [
-  {
-    id: 'ace',
-    name: 'Tata Ace',
-    tag: 'Mini truck',
-    cap: 750,
-    dim: '7 × 4.8 × 6 ft',
-    goods: 'Parcels, FMCG, single-room moves',
-    rate: 16,
-    min: 450,
-    batta: 500,
-    kind: 'box',
-    bw: 112,
-    bh: 44,
-    cab: 'mini',
-    rear: [1],
-  },
-  {
-    id: 'pickup',
-    name: 'Pickup Truck',
-    tag: 'Open deck',
-    cap: 1500,
-    dim: '8 × 5.5 ft deck',
-    goods: 'Appliances, hardware, farm produce',
-    rate: 20,
-    min: 650,
-    batta: 500,
-    kind: 'open',
-    bw: 122,
-    bh: 30,
-    cab: 'lcv',
-    rear: [1],
-  },
-  {
-    id: '8ft',
-    name: '8 FT Truck',
-    tag: 'LCV · Closed',
-    cap: 2000,
-    dim: '8 × 5.5 × 6 ft',
-    goods: '1 BHK moves, retail stock',
-    rate: 22,
-    min: 900,
-    batta: 600,
-    kind: 'box',
-    bw: 130,
-    bh: 56,
-    cab: 'lcv',
-    rear: [1],
-  },
-  {
-    id: '14ft',
-    name: '14 FT Truck',
-    tag: 'LCV · Closed',
-    cap: 4000,
-    dim: '14 × 6 × 6.5 ft',
-    goods: '2–3 BHK moves, e-commerce, garments',
-    rate: 32,
-    min: 1800,
-    batta: 700,
-    kind: 'box',
-    bw: 160,
-    bh: 64,
-    cab: 'lcv',
-    rear: [1],
-  },
-  {
-    id: '17ft',
-    name: '17 FT Truck',
-    tag: 'ICV · Closed',
-    cap: 5000,
-    dim: '17 × 6.5 × 7 ft',
-    goods: 'Office moves, packaged goods',
-    rate: 38,
-    min: 2400,
-    batta: 800,
-    kind: 'box',
-    bw: 178,
-    bh: 68,
-    cab: 'hcv',
-    rear: [1],
-  },
-  {
-    id: '20ft',
-    name: '20 FT Truck',
-    tag: 'ICV · Closed',
-    cap: 7000,
-    dim: '20 × 7 × 7 ft',
-    goods: 'Electronics, FMCG distribution',
-    rate: 45,
-    min: 3000,
-    batta: 900,
-    kind: 'box',
-    bw: 194,
-    bh: 70,
-    cab: 'hcv',
-    rear: [2],
-  },
-  {
-    id: '22ft',
-    name: '22 FT Truck',
-    tag: '6-wheeler',
-    cap: 10000,
-    dim: '22 × 7.5 × 7 ft',
-    goods: 'Cement, tiles, bulk cartons',
-    rate: 52,
-    min: 3800,
-    batta: 900,
-    kind: 'box',
-    bw: 206,
-    bh: 72,
-    cab: 'hcv',
-    rear: [2],
-  },
-  {
-    id: '32ft',
-    name: '32 FT Truck',
-    tag: 'MXL · Closed',
-    cap: 16000,
-    dim: '32 × 8 × 8 ft',
-    goods: 'Factory loads, inter-state freight',
-    rate: 72,
-    min: 6500,
-    batta: 1000,
-    kind: 'box',
-    bw: 224,
-    bh: 78,
-    cab: 'hcv',
-    rear: [2, 3],
-  },
-  {
-    id: 'container',
-    name: 'Container',
-    tag: '24 FT · Sealed',
-    cap: 12000,
-    dim: '24 × 8 × 8 ft',
-    goods: 'High-value, weather-sensitive cargo',
-    rate: 60,
-    min: 5500,
-    batta: 1000,
-    kind: 'container',
-    bw: 220,
-    bh: 80,
-    cab: 'hcv',
-    rear: [2, 3],
-  },
-  {
-    id: 'open',
-    name: 'Open Body Truck',
-    tag: '10-wheeler',
-    cap: 21000,
-    dim: '24 × 8 ft · 4 ft sides',
-    goods: 'Steel, sand, agri produce, machinery',
-    rate: 65,
-    min: 6000,
-    batta: 1000,
-    kind: 'open',
-    bw: 222,
-    bh: 44,
-    cab: 'hcv',
-    rear: [2, 3],
-  },
-  {
-    id: 'trailer',
-    name: 'Trailer',
-    tag: '40 FT flatbed',
-    cap: 28000,
-    dim: '40 × 8 ft flatbed',
-    goods: 'Heavy machinery, coils, ODC',
-    rate: 95,
-    min: 12000,
-    batta: 1200,
-    kind: 'trailer',
-    bw: 230,
-    bh: 60,
-    cab: 'hcv',
-    rear: [3],
-  },
+// The same cities, lorry classes and rates as the ProCargo database (database/ProCargo.sql).
+// Used to fill the forms, and to estimate a price when the API can't be reached.
+
+const CITIES = [
+  { name: 'Bengaluru', kn: 'ಬೆಂಗಳೂರು', lat: 12.9716, lng: 77.5946 },
+  { name: 'Mysuru', kn: 'ಮೈಸೂರು', lat: 12.2958, lng: 76.6394 },
+  { name: 'Tumakuru', kn: 'ತುಮಕೂರು', lat: 13.3409, lng: 77.101 },
+  { name: 'Chitradurga', kn: 'ಚಿತ್ರದುರ್ಗ', lat: 14.2306, lng: 76.398 },
+  { name: 'Davanagere', kn: 'ದಾವಣಗೆರೆ', lat: 14.4644, lng: 75.9218 },
+  { name: 'Hubballi', kn: 'ಹುಬ್ಬಳ್ಳಿ', lat: 15.3647, lng: 75.124 },
+  { name: 'Belagavi', kn: 'ಬೆಳಗಾವಿ', lat: 15.8497, lng: 74.4977 },
+  { name: 'Mangaluru', kn: 'ಮಂಗಳೂರು', lat: 12.9141, lng: 74.856 },
+  { name: 'Kalaburagi', kn: 'ಕಲಬುರಗಿ', lat: 17.3297, lng: 76.8343 },
+  { name: 'Pune', lat: 18.5204, lng: 73.8567 },
+  { name: 'Mumbai', lat: 19.076, lng: 72.8777 },
+  { name: 'Chennai', lat: 13.0827, lng: 80.2707 },
+  { name: 'Hyderabad', lat: 17.385, lng: 78.4867 },
+  { name: 'Kochi', lat: 9.9312, lng: 76.2673 },
+  { name: 'Panaji', lat: 15.4909, lng: 73.8278 },
 ];
-const GOODS = [
-  'Household goods',
-  'Industrial goods',
-  'Agricultural produce',
-  'Construction materials',
-  'FMCG / retail',
-  'Electronics',
-  'Textiles & garments',
-  'Furniture',
-  'Machinery',
-  'Other',
-];
-const SERVICES = [
-  {
-    ic: 'truck',
-    t: 'Full Truck Load',
-    d: 'A dedicated vehicle for your cargo, loaded once and driven straight to the destination.',
-    li: ['Door-to-door, no transhipment', '14 FT to 40 FT trailers', 'Best for 4 tonnes and above'],
-  },
-  {
-    ic: 'package',
-    t: 'Part Load',
-    d: 'Share space on a truck already headed your way and pay only for what you use.',
-    li: ['Priced by weight and volume', 'Consolidated on fixed lanes', 'Ideal for 200 kg to 3 tonnes'],
-  },
-  {
-    ic: 'map-pin',
-    t: 'Local Transport',
-    d: 'Same-day moves inside Bengaluru, Mysuru, Hubballi and other cities.',
-    li: ['Tata Ace to 14 FT trucks', 'Hourly or per-trip pricing', 'Loading help on request'],
-  },
-  {
-    ic: 'route',
-    t: 'Intercity Transport',
-    d: 'Scheduled and on-demand trips across Karnataka, South and West India.',
-    li: ['NH 48, NH 44, NH 75 lanes', 'Return-load pricing', 'Live tracking included'],
-  },
-  {
-    ic: 'factory',
-    t: 'Industrial Goods',
-    d: 'Raw material and finished goods for factories, with vehicles matched to the load.',
-    li: ['MXL and trailer capacity', 'E-way bill support', 'Dedicated account manager'],
-  },
-  {
-    ic: 'wheat',
-    t: 'Agricultural Goods',
-    d: 'Farm-to-mandi and mandi-to-market transport for grain, produce and cotton.',
-    li: ['Open body and tarpaulin trucks', 'APMC market runs', 'Harvest-season booking'],
-  },
-  {
-    ic: 'hard-hat',
-    t: 'Construction Materials',
-    d: 'Cement, steel, sand, tiles and aggregates delivered to site on schedule.',
-    li: ['Tippers and open bodies', 'Site delivery windows', 'Multi-drop routes'],
-  },
-  {
-    ic: 'building-2',
-    t: 'Business Deliveries',
-    d: 'Recurring distribution for distributors, retailers and e-commerce sellers.',
-    li: ['Monthly contracts & credit', 'Consolidated GST invoicing', 'API and bulk booking'],
-  },
-];
-const STEPS = [
-  { ic: 'map-pin', t: 'Enter locations', d: 'Pickup and delivery points, anywhere in India.' },
-  {
-    ic: 'package-search',
-    t: 'Select goods & vehicle',
-    d: "Tell us what you're moving; we suggest the right truck.",
-  },
-  { ic: 'file-text', t: 'Receive quotation', d: 'Transparent price with every charge and tax listed.' },
-  { ic: 'circle-check', t: 'Confirm booking', d: 'Pay securely by UPI, card or net banking.' },
-  {
-    ic: 'user-check',
-    t: 'Vehicle & driver assigned',
-    d: 'A verified owner, vehicle and driver are allocated.',
-  },
-  { ic: 'locate-fixed', t: 'Track your shipment', d: 'Live location, ETA and status on your phone.' },
-  { ic: 'camera', t: 'Delivery proof uploaded', d: 'Driver uploads signed POD and delivery photos.' },
-  { ic: 'flag', t: 'Trip completed', d: 'Delivery OTP closes the trip and the invoice is issued.' },
-];
-const SAFETY = [
-  ['file-check', 'Verified vehicle documents'],
-  ['badge-check', 'Driver verification'],
-  ['key-round', 'Pickup OTP'],
-  ['lock', 'Delivery OTP'],
-  ['locate-fixed', 'Live tracking'],
-  ['clipboard-check', 'Digital POD'],
-  ['camera', 'Trip evidence photos'],
-  ['shield-alert', 'Fraud monitoring'],
-  ['headphones', '24×7 customer support'],
-  ['shield-check', 'Secure payments'],
-];
-const TST = [
-  {
-    q: 'We move yarn from Ballari to Tiruppur every week. The quote is the price we pay, and the POD reaches us the same evening.',
-    n: 'Suresh Hegde',
-    r: 'Textile trader · Ballari',
-  },
-  {
-    q: 'During harvest I could never find a lorry to the APMC yard. Now I book the night before and the driver calls me at 5 am.',
-    n: 'Basavaraj Kori',
-    r: 'Farmer · Haveri',
-  },
-  {
-    q: 'Our sites need cement and steel on time. Multi-drop trips with photo proof have cut our follow-up calls in half.',
-    n: 'Anitha Rao',
-    r: 'Projects head, construction firm · Mysuru',
-  },
-  {
-    q: 'Daily restock to eleven stores across Bengaluru. The dashboard shows every truck, so I stopped chasing drivers on the phone.',
-    n: 'Farhan Sheikh',
-    r: 'Retail chain operations · Bengaluru',
-  },
-  {
-    q: 'My two trucks used to come back empty from Pune. Return loads alone added about eight trips a month.',
-    n: 'Manjunath Patil',
-    r: 'Truck owner · Belagavi',
-  },
-  {
-    q: "Payment reaches my bank two days after POD approval. No commission cuts that I don't see on the statement.",
-    n: 'Lakshmi Naik',
-    r: 'Fleet owner, 6 trucks · Hubballi',
-  },
-];
-const NET_STATES = {
-  Karnataka: {
-    lat: 14.7,
-    lon: 76.0,
-    cities: ['Mysuru', 'Hubballi', 'Mangaluru', 'Belagavi', 'Kalaburagi', 'Davanagere'],
-  },
-  Maharashtra: { lat: 19.6, lon: 76.2, cities: ['Pune', 'Mumbai', 'Kolhapur', 'Nagpur'] },
-  'Tamil Nadu': { lat: 11.2, lon: 78.5, cities: ['Chennai', 'Coimbatore', 'Madurai', 'Salem'] },
-  Telangana: { lat: 17.9, lon: 79.2, cities: ['Hyderabad'] },
-  'Andhra Pradesh': { lat: 15.6, lon: 79.4, cities: ['Vijayawada', 'Visakhapatnam', 'Tirupati'] },
-  Goa: { lat: 15.3, lon: 74.0, cities: ['Panaji'] },
-  Kerala: { lat: 10.0, lon: 76.6, cities: ['Kochi', 'Thiruvananthapuram'] },
-};
+
+// code, name, body, max load (kg), length × width × height (ft), best for, ₹/km, minimum fare, driver ₹/day
+const VEHICLES = [
+  ['ACE', 'Tata Ace', 'Closed', 750, 7, 4.8, 6, 'Parcels, FMCG, single-room moves', 16, 450, 500],
+  ['PICKUP', 'Pickup Truck', 'Open', 1500, 8, 5.5, null, 'Appliances, hardware, farm produce', 20, 650, 500],
+  ['8FT', '8 FT Truck', 'Closed', 2000, 8, 5.5, 6, '1 BHK moves, retail stock', 22, 900, 600],
+  ['14FT', '14 FT Truck', 'Closed', 4000, 14, 6, 6.5, '2-3 BHK moves, e-commerce, garments', 32, 1800, 700],
+  ['17FT', '17 FT Truck', 'Closed', 5000, 17, 6.5, 7, 'Office moves, packaged goods', 38, 2400, 800],
+  ['20FT', '20 FT Truck', 'Closed', 7000, 20, 7, 7, 'Electronics, FMCG distribution', 45, 3000, 900],
+  ['22FT', '22 FT Truck', 'Closed', 10000, 22, 7.5, 7, 'Cement, tiles, bulk cartons', 52, 3800, 900],
+  ['32FT', '32 FT Truck', 'Closed', 16000, 32, 8, 8, 'Factory loads, inter-state freight', 72, 6500, 1000],
+  ['CONT24', 'Container', 'Container', 12000, 24, 8, 8, 'High-value, weather-sensitive cargo', 60, 5500, 1000],
+  ['OPEN10W', 'Open Body Truck', 'Open', 21000, 24, 8, null, 'Steel, sand, agri produce, machinery', 65, 6000, 1000],
+  ['TRAILER40', 'Trailer', 'Flatbed', 28000, 40, 8, null, 'Heavy machinery, coils, ODC', 95, 12000, 1200],
+].map(([code, name, body, maxKg, len, wid, hgt, goods, ratePerKm, minFare, battaPerDay]) => ({
+  code, name, body, maxKg, len, wid, hgt, goods, ratePerKm, minFare, battaPerDay,
+}));
+
+// Settings table: GST on freight and the owner commission
+const GST_PERCENT = 5;
+const QUOTE_HELD_MINUTES = 30;
+
+/** "₹1,23,456" */
+function inr(amount) {
+  return '₹' + Math.round(amount).toLocaleString('en-IN');
+}
+
+/** "3,000 kg" or "12 t" */
+function weightLabel(kg) {
+  return kg >= 10000 ? `${(kg / 1000).toLocaleString('en-IN')} t` : `${kg.toLocaleString('en-IN')} kg`;
+}
+
+/** The same estimate as the API's PriceCalculator, for when the API can't be reached. */
+function estimatePrice(from, to, vehicle) {
+  let km = 18;
+  if (from !== to) {
+    const rad = Math.PI / 180;
+    const dLat = (to.lat - from.lat) * rad;
+    const dLng = (to.lng - from.lng) * rad;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(from.lat * rad) * Math.cos(to.lat * rad) * Math.sin(dLng / 2) ** 2;
+    km = Math.round(2 * 6371 * Math.asin(Math.sqrt(a)) * 1.24 * 10) / 10;
+  }
+  const vehicleCost = Math.round(Math.max(vehicle.minFare, vehicle.ratePerKm * km));
+  const days = Math.max(1, Math.ceil(km / 400));
+  const driverCost = days * vehicle.battaPerDay;
+  const freight = vehicleCost + driverCost;
+  const taxAmount = Math.round(freight * GST_PERCENT) / 100;
+  return { distanceKm: km, days, vehicleCost, driverCost, taxAmount, totalAmount: freight + taxAmount, gstPercent: GST_PERCENT };
+}

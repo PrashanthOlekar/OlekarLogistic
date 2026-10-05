@@ -94,7 +94,7 @@ Open **http://localhost:5173**. The portal calls the API at `VITE_API_BASE_URL`,
 
 ### 4. Open the website
 
-Open `website/index.html` in your browser, or serve the folder with any static web server. If the portal runs somewhere other than `http://localhost:5173`, change `PORTAL_URL` in `website/js/config.js`.
+Open `website/index.html` in your browser, or better, right-click it in VS Code and choose **Open with Live Server** (the extension), which serves it at http://127.0.0.1:5500. With the API running, the price box asks the API for the live price; without it, it estimates from the same rate card and says so. Portal and API addresses are at the top of `website/js/config.js`.
 
 ### 5. Try the whole business in 10 minutes
 

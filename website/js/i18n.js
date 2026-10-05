@@ -1,13 +1,10 @@
-// Kannada text. Elements with data-i18n="key" switch to I18N.kn[key] when ಕನ್ನಡ is chosen.
-/* ============ KANNADA TRANSLATIONS ============ */
-// Text for elements marked data-i18n="key" when the visitor picks ಕನ್ನಡ.
+/* ============ ENGLISH / ಕನ್ನಡ ============ */
+// Elements with data-i18n="key" switch to I18N.kn[key] when ಕನ್ನಡ is chosen.
 const I18N = {
   kn: {
     tagline: 'ಭಾರತವನ್ನು ಮುನ್ನಡೆಸುತ್ತೇವೆ. ನಂಬಿಕೆ ತಲುಪಿಸುತ್ತೇವೆ.',
-    'nav.services': 'ಸೇವೆಗಳು',
     'nav.vehicles': 'ವಾಹನಗಳು',
     'nav.how': 'ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ',
-    'nav.tracking': 'ಟ್ರ್ಯಾಕಿಂಗ್',
     'nav.partner': 'ಪಾಲುದಾರರಾಗಿ',
     'nav.login': 'ಲಾಗಿನ್',
     'cta.book': 'ಲಾರಿ ಬುಕ್ ಮಾಡಿ',
@@ -19,22 +16,47 @@ const I18N = {
       'ಪರಿಶೀಲಿತ ಲಾರಿ ಮಾಲೀಕರು, ವೃತ್ತಿಪರ ಚಾಲಕರು ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಲಾಜಿಸ್ಟಿಕ್ಸ್ ತಂತ್ರಜ್ಞಾನದ ಬಲದಿಂದ ನಂಬಲರ್ಹ ಸಾರಿಗೆ.',
     'hero.p1': 'ಪರಿಶೀಲಿತ ಮಾಲೀಕರು ಮತ್ತು ಚಾಲಕರು',
     'hero.p2': 'ಪಿಕಪ್ ಮತ್ತು ಡೆಲಿವರಿಗೆ OTP',
-    'hero.p3': 'ಲೈವ್ GPS ಟ್ರ್ಯಾಕಿಂಗ್',
     'q.title': 'ತಕ್ಷಣ ದರ ಪಡೆಯಿರಿ',
     'q.pick': 'ಪಿಕಪ್ ಸ್ಥಳ',
     'q.drop': 'ಡೆಲಿವರಿ ಸ್ಥಳ',
-    'q.goods': 'ಸರಕಿನ ಪ್ರಕಾರ',
     'q.weight': 'ಅಂದಾಜು ತೂಕ',
     'q.vehicle': 'ವಾಹನದ ಪ್ರಕಾರ',
-    'q.date': 'ಪಿಕಪ್ ದಿನಾಂಕ',
     'q.cta': 'ಸಾರಿಗೆ ದರ ಪಡೆಯಿರಿ',
-    'svc.h': 'ಪ್ರತಿಯೊಂದು ಸರಕಿಗೂ ಒಂದೇ ವೇದಿಕೆ.',
     'veh.h': 'ಸರಿಯಾದ ವಾಹನವನ್ನು ಆಯ್ಕೆಮಾಡಿ',
     'how.h': 'ವಿಚಾರಣೆಯಿಂದ ಡೆಲಿವರಿವರೆಗೆ ಎಂಟು ಹಂತಗಳು.',
-    'trk.h': 'ನಿಮ್ಮ ಸರಕು ಎಲ್ಲಿದೆ ಎಂದು ಯಾವಾಗಲೂ ತಿಳಿಯಿರಿ.',
-    'trust.h': 'ನೀವು ನಂಬಬಹುದಾದ ಸಾರಿಗೆ',
     'safe.h': 'ಸುರಕ್ಷಿತ ಸಾರಿಗೆ. ಪರಿಶೀಲಿತ ಜಾಲ.',
     'own.h': 'ಲಾರಿ ಇದೆಯೇ? ನಮ್ಮೊಂದಿಗೆ ನಿಮ್ಮ ವ್ಯಾಪಾರ ಬೆಳೆಸಿ.',
-    'app.h': 'ನಿಮ್ಮ ಸಾರಿಗೆ ವ್ಯವಹಾರ ನಿಮ್ಮ ಜೇಬಿನಲ್ಲಿ',
   },
 };
+
+const LANG_KEY = 'procargo.site.lang';
+
+function setLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach((element) => {
+    element.dataset.en ??= element.textContent;
+    const translated = lang === 'kn' ? I18N.kn[element.dataset.i18n] : null;
+    element.textContent = translated ?? element.dataset.en;
+  });
+  document.querySelectorAll('[data-lang]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
+  });
+  try {
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    /* the choice just isn't remembered */
+  }
+}
+
+function initLanguage() {
+  document.querySelectorAll('[data-lang]').forEach((button) => {
+    button.addEventListener('click', () => setLanguage(button.dataset.lang));
+  });
+  let saved = 'en';
+  try {
+    saved = localStorage.getItem(LANG_KEY) || 'en';
+  } catch {
+    /* default to English */
+  }
+  if (saved !== 'en') setLanguage(saved);
+}
