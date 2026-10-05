@@ -88,6 +88,28 @@ public sealed class ValidationAndErrorTests(FakeRepositoriesApiFactory factory) 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
+    [Theory]
+    [InlineData("/api/v1/does-not-exist")]
+    [InlineData("/favicon.ico")]
+    [InlineData("/nothing/here")]
+    public async Task Unknown_routes_are_not_found_even_when_signed_out(string url)
+    {
+        HttpResponseMessage response = await factory.CreateClient().GetAsync(url);
+
+        await response.ShouldBeProblemAsync(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task The_root_address_opens_swagger_in_development()
+    {
+        HttpClient client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+
+        HttpResponseMessage response = await client.GetAsync("/");
+
+        Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        Assert.Equal("/swagger", response.Headers.Location?.ToString());
+    }
+
     [Fact]
     public async Task Server_errors_do_not_leak_details()
     {

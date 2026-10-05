@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using ProCargo.API.Configuration;
+using ProCargo.API.ErrorHandling;
 using ProCargo.API.Middleware;
 using ProCargo.Application.Abstractions.Persistence;
 using ProCargo.Domain.Common;
@@ -40,6 +41,28 @@ public static class WebApplicationExtensions
 
         app.MapControllers();
         app.MapHealthChecks("/health").AllowAnonymous().DisableRateLimiting();
+
+        // The API has no home page: in Development "/" opens Swagger, elsewhere it says where the API lives.
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapGet("/", () => Results.Redirect("/swagger")).AllowAnonymous().ExcludeFromDescription();
+        }
+        else
+        {
+            app.MapGet("/", () => Results.Ok(new { name = "ProCargo API", api = $"/{ApiRoutes.Base}", health = "/health" }))
+                .AllowAnonymous()
+                .ExcludeFromDescription();
+        }
+
+        // An address that matches nothing is 404, not 401: without this the "signed in" fallback policy
+        // would answer every unknown address with Unauthorized.
+        app.MapFallback(() => Results.Problem(
+                statusCode: StatusCodes.Status404NotFound,
+                title: "Not found",
+                detail: "There is nothing at this address. See /swagger (Development) or docs/API.md for the routes.",
+                type: ProblemTypes.NotFound))
+            .AllowAnonymous()
+            .ExcludeFromDescription();
 
         return app;
     }
